@@ -30,21 +30,20 @@ const RealEstateAnimation: React.FC = () => {
     const buildings = [];
     const buildingCount = 40; // More buildings for a more dense cityscape
     
-    // Generate buildings with different sizes
+    // Generate buildings with different sizes and colors
     for (let i = 0; i < buildingCount; i++) {
       const width = 5 + Math.random() * 15;
       const height = 20 + Math.random() * 100;
       const x = Math.random() * rect.width;
       
-      // Windows configuration
+      // Windows configuration for each building
       const windowRows = Math.floor(height / 10);
       const windowCols = Math.floor(width / 5);
       const windows = [];
       
-      // Create windows for the building
+      // Create windows with animation states
       for (let row = 0; row < windowRows; row++) {
         for (let col = 0; col < windowCols; col++) {
-          // Each window has its own state and timing for light animation
           windows.push({
             row,
             col,
@@ -56,17 +55,19 @@ const RealEstateAnimation: React.FC = () => {
         }
       }
       
+      // Different shades of green for buildings
+      const greenValue = 80 + Math.floor(Math.random() * 120);
       buildings.push({
         x,
         width,
         height,
         windows,
         y: rect.height - height / 2, // Position buildings at the bottom
-        color: `rgba(0, ${120 + Math.floor(Math.random() * 70)}, ${40 + Math.floor(Math.random() * 40)}, ${0.6 + Math.random() * 0.4})`
+        color: `rgba(0, ${greenValue}, ${Math.floor(greenValue/3)}, ${0.6 + Math.random() * 0.4})`
       });
     }
     
-    // Sort buildings by position for proper rendering (farther to nearer)
+    // Sort buildings by height for proper rendering
     buildings.sort((a, b) => (a.height < b.height) ? 1 : -1);
     
     // Create stars for the night sky
@@ -76,14 +77,14 @@ const RealEstateAnimation: React.FC = () => {
     for (let i = 0; i < starCount; i++) {
       stars.push({
         x: Math.random() * rect.width,
-        y: Math.random() * (rect.height * 0.5), // Stars only in the top half of the canvas
+        y: Math.random() * (rect.height * 0.5), // Stars only in the top half
         size: 0.5 + Math.random() * 1.5,
         twinkle: Math.random() * Math.PI * 2, // Phase for twinkling animation
         twinkleSpeed: 0.02 + Math.random() * 0.04
       });
     }
     
-    // Create moon
+    // Add moon
     const moon = {
       x: rect.width * 0.8,
       y: rect.height * 0.2,
@@ -91,7 +92,7 @@ const RealEstateAnimation: React.FC = () => {
       glow: 40
     };
     
-    // Create clouds
+    // Add floating clouds
     const clouds = [];
     const cloudCount = 5;
     
@@ -124,7 +125,7 @@ const RealEstateAnimation: React.FC = () => {
       ctx.fillStyle = skyGradient;
       ctx.fillRect(0, 0, rect.width, rect.height);
       
-      // Draw stars
+      // Draw stars with twinkling effect
       for (const star of stars) {
         star.twinkle += star.twinkleSpeed;
         const twinkle = Math.sin(star.twinkle) * 0.5 + 0.5; // 0-1 value for twinkling

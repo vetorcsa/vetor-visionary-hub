@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useAdmin } from '@/contexts/AdminContext';
 import Hero from '@/components/Home/Hero';
@@ -62,7 +63,7 @@ const Index: React.FC = () => {
                 <div className="absolute top-6 left-6 z-10 bg-vetor-green/10 p-3 rounded-full">
                   <Building2 className="w-8 h-8 text-vetor-green" />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
               </div>
               <div className="p-8">
                 <h3 className="text-2xl font-bold text-vetor-green mb-4">Tecnologia Imobiliária</h3>
