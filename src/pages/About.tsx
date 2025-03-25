@@ -64,10 +64,10 @@ const About: React.FC = () => {
   
   return (
     <div className="page-transition pt-20 bg-black text-white">
-      {/* Hero Section */}
+      {/* Hero Section - Expanded with more information */}
       <div className="bg-gradient-to-b from-vetor-black to-black py-20">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="max-w-3xl mx-auto text-center">
+          <div className="max-w-4xl mx-auto text-center">
             <Badge className="bg-vetor-green/20 text-vetor-green hover:bg-vetor-green/30 mb-6">Quem Somos</Badge>
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 animate-fade-in">
               {aboutData.title}
@@ -75,6 +75,43 @@ const About: React.FC = () => {
             <p className="text-lg text-gray-300 mb-8 animate-fade-in" style={{ animationDelay: '0.1s' }}>
               {aboutData.description}
             </p>
+            
+            {/* Expanded company info section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 text-left">
+              <div className="bg-black/40 backdrop-blur-sm p-6 rounded-xl border border-vetor-green/20 hover:border-vetor-green/40 transition-all duration-300">
+                <h3 className="text-xl font-semibold text-vetor-green mb-4">Desenvolvimento de Sites</h3>
+                <p className="text-gray-300">
+                  Criamos sites profissionais e responsivos que destacam a identidade da sua marca, 
+                  otimizados para conversão e com excelente experiência para o usuário em todos os dispositivos.
+                </p>
+              </div>
+              
+              <div className="bg-black/40 backdrop-blur-sm p-6 rounded-xl border border-vetor-green/20 hover:border-vetor-green/40 transition-all duration-300">
+                <h3 className="text-xl font-semibold text-vetor-green mb-4">Marketing Digital</h3>
+                <p className="text-gray-300">
+                  Desenvolvemos estratégias completas de marketing digital, incluindo SEO, gestão de redes sociais, 
+                  campanhas pagas e análise de dados para maximizar sua presença online e gerar resultados concretos.
+                </p>
+              </div>
+              
+              <div className="bg-black/40 backdrop-blur-sm p-6 rounded-xl border border-vetor-green/20 hover:border-vetor-green/40 transition-all duration-300">
+                <h3 className="text-xl font-semibold text-vetor-green mb-4">Projetos de Software</h3>
+                <p className="text-gray-300">
+                  Nossa equipe especializada desenvolve soluções de software personalizadas, 
+                  desde aplicações web e sistemas de gestão até integrações complexas, 
+                  atendendo às necessidades específicas do seu negócio.
+                </p>
+              </div>
+              
+              <div className="bg-black/40 backdrop-blur-sm p-6 rounded-xl border border-vetor-green/20 hover:border-vetor-green/40 transition-all duration-300">
+                <h3 className="text-xl font-semibold text-vetor-green mb-4">Projetos de Automação</h3>
+                <p className="text-gray-300">
+                  Automatizamos processos empresariais através de tecnologias avançadas, 
+                  reduzindo custos operacionais, eliminando tarefas repetitivas e aumentando 
+                  a eficiência e produtividade do seu negócio.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
