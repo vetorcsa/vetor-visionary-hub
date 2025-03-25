@@ -1,6 +1,5 @@
-
 import React, { useEffect, useRef } from 'react';
-import { Calculator, ChevronRight, ChevronLeft, World } from 'lucide-react';
+import { Calculator, ChevronRight, ChevronLeft, Globe } from 'lucide-react';
 
 // Animation for Fiscal Technology
 export const FiscalAnimation: React.FC = () => {
