@@ -61,23 +61,23 @@ const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseId, onClose }) => {
   }, [onClose]);
   
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center modal-overlay bg-black bg-opacity-75">
+    <div className="fixed inset-0 z-50 flex items-center justify-center modal-overlay bg-black bg-opacity-90 backdrop-blur-sm">
       <div 
-        className="bg-white rounded-lg shadow-xl w-11/12 max-w-4xl max-h-[90vh] overflow-y-auto animate-scale-in"
+        className="bg-vetor-black border border-gray-800 rounded-lg shadow-2xl w-11/12 max-w-4xl max-h-[90vh] overflow-y-auto animate-scale-in"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center border-b p-4">
-          <h3 className="text-xl font-bold text-vetor-darkgray">{caseStudy.title}</h3>
+        <div className="flex justify-between items-center border-b border-gray-800 p-4">
+          <h3 className="text-xl font-bold text-white">{caseStudy.title}</h3>
           <button 
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 transition-colors"
+            className="text-gray-400 hover:text-white transition-colors"
           >
             <X className="w-6 h-6" />
           </button>
         </div>
         
         <div className="p-6">
-          <div className="relative aspect-video bg-gray-100 rounded-lg mb-6 overflow-hidden">
+          <div className="relative aspect-video bg-gray-900 rounded-lg mb-6 overflow-hidden">
             {caseStudy.images.length > 0 ? (
               <>
                 <img 
@@ -115,7 +115,7 @@ const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseId, onClose }) => {
                           setTimeout(() => setIsAnimating(false), 500);
                         }}
                         className={`w-2 h-2 rounded-full transition-all ${
-                          currentImageIndex === index ? 'bg-vetor-green w-6' : 'bg-gray-300'
+                          currentImageIndex === index ? 'bg-vetor-green w-6' : 'bg-gray-600'
                         }`}
                       />
                     ))}
@@ -132,7 +132,7 @@ const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseId, onClose }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
               <h4 className="text-lg font-semibold mb-2 text-vetor-green">Cliente</h4>
-              <p className="text-vetor-darkgray">{caseStudy.client}</p>
+              <p className="text-gray-300">{caseStudy.client}</p>
               
               {partner && (
                 <>
@@ -143,7 +143,7 @@ const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseId, onClose }) => {
                       alt={partner.name}
                       className="w-10 h-10 object-contain mr-2"
                     />
-                    <p className="text-vetor-darkgray">{partner.name}</p>
+                    <p className="text-gray-300">{partner.name}</p>
                   </div>
                 </>
               )}
@@ -151,24 +151,24 @@ const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseId, onClose }) => {
             
             <div>
               <h4 className="text-lg font-semibold mb-2 text-vetor-green">Descrição</h4>
-              <p className="text-vetor-darkgray">{caseStudy.description}</p>
+              <p className="text-gray-300">{caseStudy.description}</p>
             </div>
           </div>
           
           <div className="grid grid-cols-1 gap-4 mb-6">
-            <div>
+            <div className="bg-black/40 rounded-lg p-4">
               <h4 className="text-lg font-semibold mb-2 text-vetor-green">Desafio</h4>
-              <p className="text-vetor-darkgray">{caseStudy.challenge}</p>
+              <p className="text-gray-300">{caseStudy.challenge}</p>
             </div>
             
-            <div>
+            <div className="bg-black/40 rounded-lg p-4">
               <h4 className="text-lg font-semibold mb-2 text-vetor-green">Solução</h4>
-              <p className="text-vetor-darkgray">{caseStudy.solution}</p>
+              <p className="text-gray-300">{caseStudy.solution}</p>
             </div>
             
-            <div>
+            <div className="bg-black/40 rounded-lg p-4">
               <h4 className="text-lg font-semibold mb-2 text-vetor-green">Resultado</h4>
-              <p className="text-vetor-darkgray">{caseStudy.result}</p>
+              <p className="text-gray-300">{caseStudy.result}</p>
             </div>
           </div>
         </div>
