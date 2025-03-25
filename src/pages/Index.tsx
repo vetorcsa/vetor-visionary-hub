@@ -3,9 +3,10 @@ import React from 'react';
 import { useAdmin } from '@/contexts/AdminContext';
 import Hero from '@/components/Home/Hero';
 import ServicesCard from '@/components/Home/ServicesCard';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { FiscalAnimation, LogisticsAnimation, CustomTechAnimation } from '@/components/Home/SectorAnimations';
+import { Badge } from '@/components/ui/badge';
 
 const Index: React.FC = () => {
   const { services } = useAdmin();
@@ -16,13 +17,14 @@ const Index: React.FC = () => {
       <Hero />
       
       {/* Services Section */}
-      <section className="py-20 bg-vetor-black">
+      <section className="py-24 bg-gradient-to-b from-black to-vetor-black">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            <Badge className="bg-vetor-green/20 text-vetor-green hover:bg-vetor-green/30 mb-4">Soluções</Badge>
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
               Nossas Soluções Tecnológicas
             </h2>
-            <p className="text-white/70 max-w-2xl mx-auto">
+            <p className="text-white/70 max-w-2xl mx-auto text-lg">
               Desenvolvemos soluções personalizadas para diferentes setores, trazendo inovação e eficiência para o seu negócio.
             </p>
           </div>
@@ -36,93 +38,106 @@ const Index: React.FC = () => {
       </section>
       
       {/* Technology Sectors Section */}
-      <section className="py-20 bg-black">
+      <section className="py-24 bg-black">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            <Badge className="bg-vetor-green/20 text-vetor-green hover:bg-vetor-green/30 mb-4">Setores</Badge>
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
               Setores de Atuação
             </h2>
-            <p className="text-white/70 max-w-2xl mx-auto">
+            <p className="text-white/70 max-w-2xl mx-auto text-lg">
               Nossa expertise em diferentes áreas garante soluções tecnológicas eficientes e personalizadas para o seu negócio.
             </p>
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             {/* Tecnologia Imobiliária */}
-            <div className="rounded-xl overflow-hidden shadow-lg border border-vetor-green/20 bg-black transition-all duration-300 hover:border-vetor-green/40 hover:shadow-vetor-green/20 hover:shadow-lg group">
-              <div className="h-48 relative bg-gradient-to-br from-black to-black/80 overflow-hidden">
-                <div className="absolute inset-0 flex items-center justify-center opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group">
+              <div className="h-56 relative bg-gradient-to-br from-black to-black/80 overflow-hidden">
+                <div className="absolute inset-0 flex items-center justify-center opacity-70 group-hover:opacity-100 transition-opacity duration-500">
                   <img 
                     src="/lovable-uploads/d8fa1f50-898b-4129-ad29-e52d76d892d5.png" 
                     alt="Real Estate Technology" 
-                    className="w-20 h-20 object-contain filter brightness-0 invert opacity-10"
+                    className="w-24 h-24 object-contain filter brightness-0 invert opacity-10"
                   />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                
+                {/* Efeito hover gradient inspirado no exemplo */}
+                <div className="absolute inset-0 bg-gradient-to-br from-vetor-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 
                 {/* Abstract Elements */}
                 <div className="absolute top-1/4 left-1/4 w-20 h-20 rounded-full border border-vetor-green/10 group-hover:border-vetor-green/30 transition-all duration-700"></div>
                 <div className="absolute top-1/3 right-1/4 w-16 h-16 rounded-full border border-vetor-green/5 group-hover:border-vetor-green/20 transition-all duration-500 delay-100"></div>
                 <div className="absolute bottom-1/4 right-1/3 w-12 h-12 rounded-full border border-vetor-green/20 group-hover:border-vetor-green/40 transition-all duration-700 delay-200"></div>
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-vetor-green mb-3">Tecnologia Imobiliária</h3>
-                <p className="text-white/80 mb-4">
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-vetor-green mb-4">Tecnologia Imobiliária</h3>
+                <p className="text-white/80 mb-6 text-lg">
                   Nossas soluções para o setor imobiliário automatizam processos, desde a captação de imóveis até o pós-venda, otimizando resultados e melhorando a experiência dos clientes.
                 </p>
-                <Link to="/sobre" className="text-vetor-green hover:text-vetor-lightgreen flex items-center gap-1 font-medium group-hover:translate-x-1 transition-transform duration-300">
-                  Saiba mais <ChevronRight className="w-4 h-4" />
+                <Link to="/sobre" className="text-vetor-green hover:text-vetor-lightgreen flex items-center gap-2 font-medium group-hover:translate-x-2 transition-transform duration-300 text-lg">
+                  Saiba mais <ChevronRight className="w-5 h-5" />
                 </Link>
               </div>
             </div>
             
             {/* Tecnologia Fiscal */}
-            <div className="rounded-xl overflow-hidden shadow-lg border border-vetor-green/20 bg-black transition-all duration-300 hover:border-vetor-green/40 hover:shadow-vetor-green/20 hover:shadow-lg group">
-              <div className="h-48 relative bg-gradient-to-br from-black to-black/80 overflow-hidden">
+            <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group">
+              <div className="h-56 relative bg-gradient-to-br from-black to-black/80 overflow-hidden">
                 <FiscalAnimation />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                
+                {/* Efeito hover gradient inspirado no exemplo */}
+                <div className="absolute inset-0 bg-gradient-to-br from-vetor-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-vetor-green mb-3">Tecnologia Fiscal</h3>
-                <p className="text-white/80 mb-4">
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-vetor-green mb-4">Tecnologia Fiscal</h3>
+                <p className="text-white/80 mb-6 text-lg">
                   Sistemas inteligentes para gestão fiscal e tributária que garantem conformidade com a legislação, reduzem custos e otimizam a carga tributária da sua empresa.
                 </p>
-                <Link to="/sobre" className="text-vetor-green hover:text-vetor-lightgreen flex items-center gap-1 font-medium group-hover:translate-x-1 transition-transform duration-300">
-                  Saiba mais <ChevronRight className="w-4 h-4" />
+                <Link to="/sobre" className="text-vetor-green hover:text-vetor-lightgreen flex items-center gap-2 font-medium group-hover:translate-x-2 transition-transform duration-300 text-lg">
+                  Saiba mais <ChevronRight className="w-5 h-5" />
                 </Link>
               </div>
             </div>
             
             {/* Tecnologia em Logística */}
-            <div className="rounded-xl overflow-hidden shadow-lg border border-vetor-green/20 bg-black transition-all duration-300 hover:border-vetor-green/40 hover:shadow-vetor-green/20 hover:shadow-lg group">
-              <div className="h-48 relative bg-gradient-to-br from-black to-black/80 overflow-hidden">
+            <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group">
+              <div className="h-56 relative bg-gradient-to-br from-black to-black/80 overflow-hidden">
                 <LogisticsAnimation />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                
+                {/* Efeito hover gradient inspirado no exemplo */}
+                <div className="absolute inset-0 bg-gradient-to-br from-vetor-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-vetor-green mb-3">Tecnologia em Logística</h3>
-                <p className="text-white/80 mb-4">
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-vetor-green mb-4">Tecnologia em Logística</h3>
+                <p className="text-white/80 mb-6 text-lg">
                   Otimização de rotas, gestão de frotas e controle de entregas em tempo real para maximizar a eficiência logística e reduzir custos operacionais.
                 </p>
-                <Link to="/sobre" className="text-vetor-green hover:text-vetor-lightgreen flex items-center gap-1 font-medium group-hover:translate-x-1 transition-transform duration-300">
-                  Saiba mais <ChevronRight className="w-4 h-4" />
+                <Link to="/sobre" className="text-vetor-green hover:text-vetor-lightgreen flex items-center gap-2 font-medium group-hover:translate-x-2 transition-transform duration-300 text-lg">
+                  Saiba mais <ChevronRight className="w-5 h-5" />
                 </Link>
               </div>
             </div>
             
             {/* Soluções Tecnológicas */}
-            <div className="rounded-xl overflow-hidden shadow-lg border border-vetor-green/20 bg-black transition-all duration-300 hover:border-vetor-green/40 hover:shadow-vetor-green/20 hover:shadow-lg group">
-              <div className="h-48 relative bg-gradient-to-br from-black to-black/80 overflow-hidden">
+            <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group">
+              <div className="h-56 relative bg-gradient-to-br from-black to-black/80 overflow-hidden">
                 <CustomTechAnimation />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                
+                {/* Efeito hover gradient inspirado no exemplo */}
+                <div className="absolute inset-0 bg-gradient-to-br from-vetor-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-vetor-green mb-3">Soluções Tecnológicas</h3>
-                <p className="text-white/80 mb-4">
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-vetor-green mb-4">Soluções Tecnológicas</h3>
+                <p className="text-white/80 mb-6 text-lg">
                   Desenvolvimento de software personalizado, consultoria em TI e implementação de infraestrutura tecnológica para diversos setores.
                 </p>
-                <Link to="/sobre" className="text-vetor-green hover:text-vetor-lightgreen flex items-center gap-1 font-medium group-hover:translate-x-1 transition-transform duration-300">
-                  Saiba mais <ChevronRight className="w-4 h-4" />
+                <Link to="/sobre" className="text-vetor-green hover:text-vetor-lightgreen flex items-center gap-2 font-medium group-hover:translate-x-2 transition-transform duration-300 text-lg">
+                  Saiba mais <ChevronRight className="w-5 h-5" />
                 </Link>
               </div>
             </div>
@@ -131,23 +146,29 @@ const Index: React.FC = () => {
       </section>
       
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-b from-black to-vetor-black">
-        <div className="container mx-auto px-4 md:px-6">
+      <section className="py-32 bg-gradient-to-b from-black to-vetor-black relative overflow-hidden">
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+            <Badge className="bg-vetor-green/20 text-vetor-green hover:bg-vetor-green/30 mb-6">Vamos Conversar</Badge>
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-8 leading-tight">
               Vamos transformar seu negócio com tecnologia?
             </h2>
-            <p className="text-white/70 mb-8 text-lg">
+            <p className="text-white/80 mb-10 text-xl">
               Entre em contato conosco para uma consulta inicial e descubra como nossas soluções tecnológicas podem impulsionar os resultados da sua empresa.
             </p>
             <Link 
               to="/contato" 
-              className="btn-primary inline-flex items-center gap-2"
+              className="inline-flex items-center gap-3 bg-vetor-green hover:bg-vetor-darkgreen text-white px-8 py-4 rounded-lg font-medium text-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-lg"
             >
-              Fale Conosco <ChevronRight className="w-4 h-4" />
+              Fale Conosco <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
         </div>
+        
+        {/* Background decorative elements */}
+        <div className="absolute -bottom-10 -left-10 w-40 h-40 border border-vetor-green/10 rounded-full"></div>
+        <div className="absolute top-20 -right-20 w-60 h-60 border border-vetor-green/5 rounded-full"></div>
+        <div className="absolute bottom-40 right-10 w-20 h-20 border border-vetor-green/20 rounded-full"></div>
       </section>
     </div>
   );
