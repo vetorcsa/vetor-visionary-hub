@@ -32,7 +32,7 @@ const Navbar: React.FC = () => {
   return (
     <header 
       className={`fixed w-full top-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'
+        scrolled ? 'bg-black shadow-md py-2' : 'bg-black py-4'
       }`}
     >
       <div className="container mx-auto px-4 md:px-6">
@@ -53,7 +53,7 @@ const Navbar: React.FC = () => {
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
               </div>
-              <span className="text-2xl font-bold ml-2 text-vetor-black">ETOR</span>
+              <span className="text-2xl font-bold ml-2 text-white">ETOR</span>
             </div>
           </Link>
 
@@ -62,7 +62,7 @@ const Navbar: React.FC = () => {
             <Link 
               to="/" 
               className={`font-medium transition-colors duration-200 hover:text-vetor-green ${
-                isActive('/') ? 'text-vetor-green animated-underline after:w-full' : 'text-vetor-darkgray animated-underline'
+                isActive('/') ? 'text-vetor-green animated-underline after:w-full' : 'text-white animated-underline'
               }`}
             >
               Início
@@ -70,7 +70,7 @@ const Navbar: React.FC = () => {
             <Link 
               to="/sobre" 
               className={`font-medium transition-colors duration-200 hover:text-vetor-green ${
-                isActive('/sobre') ? 'text-vetor-green animated-underline after:w-full' : 'text-vetor-darkgray animated-underline'
+                isActive('/sobre') ? 'text-vetor-green animated-underline after:w-full' : 'text-white animated-underline'
               }`}
             >
               Quem Somos
@@ -78,7 +78,7 @@ const Navbar: React.FC = () => {
             <Link 
               to="/parceiros" 
               className={`font-medium transition-colors duration-200 hover:text-vetor-green ${
-                isActive('/parceiros') ? 'text-vetor-green animated-underline after:w-full' : 'text-vetor-darkgray animated-underline'
+                isActive('/parceiros') ? 'text-vetor-green animated-underline after:w-full' : 'text-white animated-underline'
               }`}
             >
               Parceiros
@@ -86,7 +86,7 @@ const Navbar: React.FC = () => {
             <Link 
               to="/contato" 
               className={`font-medium transition-colors duration-200 hover:text-vetor-green ${
-                isActive('/contato') ? 'text-vetor-green animated-underline after:w-full' : 'text-vetor-darkgray animated-underline'
+                isActive('/contato') ? 'text-vetor-green animated-underline after:w-full' : 'text-white animated-underline'
               }`}
             >
               Contato
@@ -100,16 +100,16 @@ const Navbar: React.FC = () => {
                   Admin
                   <ChevronDown className="w-4 h-4 ml-1" />
                 </button>
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg overflow-hidden z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right">
+                <div className="absolute right-0 mt-2 w-48 bg-black rounded-md shadow-lg overflow-hidden z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right border border-vetor-green/20">
                   <Link 
                     to="/admin" 
-                    className="block px-4 py-2 text-sm text-vetor-darkgray hover:bg-vetor-green hover:text-white"
+                    className="block px-4 py-2 text-sm text-white hover:bg-vetor-green hover:text-white"
                   >
                     Configurações
                   </Link>
                   <button 
                     onClick={logout}
-                    className="w-full text-left block px-4 py-2 text-sm text-vetor-darkgray hover:bg-vetor-green hover:text-white"
+                    className="w-full text-left block px-4 py-2 text-sm text-white hover:bg-vetor-green hover:text-white"
                   >
                     Sair
                   </button>
@@ -121,7 +121,7 @@ const Navbar: React.FC = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden text-vetor-black focus:outline-none"
+            className="md:hidden text-white focus:outline-none"
             aria-label={isMenuOpen ? "Close Menu" : "Open Menu"}
           >
             {isMenuOpen ? (
@@ -135,7 +135,7 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`fixed inset-0 z-40 bg-white transform ${
+        className={`fixed inset-0 z-40 bg-black transform ${
           isMenuOpen ? "translate-x-0" : "translate-x-full"
         } transition-transform duration-300 ease-in-out md:hidden`}
         style={{ top: "60px" }}
@@ -144,7 +144,7 @@ const Navbar: React.FC = () => {
           <Link
             to="/"
             className={`py-3 px-4 rounded-md ${
-              isActive('/') ? 'bg-vetor-green text-white' : 'text-vetor-darkgray'
+              isActive('/') ? 'bg-vetor-green text-white' : 'text-white'
             }`}
             onClick={closeMenu}
           >
@@ -153,7 +153,7 @@ const Navbar: React.FC = () => {
           <Link
             to="/sobre"
             className={`py-3 px-4 rounded-md ${
-              isActive('/sobre') ? 'bg-vetor-green text-white' : 'text-vetor-darkgray'
+              isActive('/sobre') ? 'bg-vetor-green text-white' : 'text-white'
             }`}
             onClick={closeMenu}
           >
@@ -162,7 +162,7 @@ const Navbar: React.FC = () => {
           <Link
             to="/parceiros"
             className={`py-3 px-4 rounded-md ${
-              isActive('/parceiros') ? 'bg-vetor-green text-white' : 'text-vetor-darkgray'
+              isActive('/parceiros') ? 'bg-vetor-green text-white' : 'text-white'
             }`}
             onClick={closeMenu}
           >
@@ -171,7 +171,7 @@ const Navbar: React.FC = () => {
           <Link
             to="/contato"
             className={`py-3 px-4 rounded-md ${
-              isActive('/contato') ? 'bg-vetor-green text-white' : 'text-vetor-darkgray'
+              isActive('/contato') ? 'bg-vetor-green text-white' : 'text-white'
             }`}
             onClick={closeMenu}
           >
@@ -182,7 +182,7 @@ const Navbar: React.FC = () => {
               <Link
                 to="/admin"
                 className={`py-3 px-4 rounded-md ${
-                  isActive('/admin') ? 'bg-vetor-green text-white' : 'text-vetor-darkgray'
+                  isActive('/admin') ? 'bg-vetor-green text-white' : 'text-white'
                 }`}
                 onClick={closeMenu}
               >
@@ -193,7 +193,7 @@ const Navbar: React.FC = () => {
                   logout();
                   closeMenu();
                 }}
-                className="py-3 px-4 rounded-md text-left text-vetor-darkgray"
+                className="py-3 px-4 rounded-md text-left text-white"
               >
                 Sair
               </button>
