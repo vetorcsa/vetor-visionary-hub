@@ -1,8 +1,8 @@
 
 import RealEstateAnimation from './RealEstateAnimation';
 import FiscalAnimation from './FiscalAnimation';
-import LogisticsAnimation from '../SectorAnimations/LogisticsAnimation';
-import CustomTechAnimation from '../SectorAnimations/CustomTechAnimation';
+import LogisticsAnimation from './LogisticsAnimation';
+import CustomTechAnimation from './CustomTechAnimation';
 
 export {
   RealEstateAnimation,
