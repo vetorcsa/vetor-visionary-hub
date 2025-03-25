@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { Building2 } from 'lucide-react';
 
@@ -146,7 +145,7 @@ const RealEstateAnimation: React.FC = () => {
         ctx.fillStyle = 'rgba(0, 176, 80, 0.4)';
         ctx.fillRect(
           x - towerWidth/2 + 5 * scale, 
-          y - baseHeight - towerHeight - A5 * scale, 
+          y - baseHeight - towerHeight - 15 * scale, 
           towerWidth - 10 * scale, 
           15 * scale
         );
