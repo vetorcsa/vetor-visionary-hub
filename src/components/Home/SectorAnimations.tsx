@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { Truck, Home, FileText } from 'lucide-react';
 
@@ -12,23 +11,6 @@ export const LogisticsAnimation: React.FC = () => {
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-
-    // Resize canvas
-    const resizeCanvas = () => {
-      const rect = canvas.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
-      
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
-      
-      ctx.scale(dpr, dpr);
-      
-      // Regenerate elements after resize
-      initializeElements();
-    };
-
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
 
     // Store all elements in a ref to keep them available through rerenders
     let trucks = [];
@@ -110,7 +92,7 @@ export const LogisticsAnimation: React.FC = () => {
       });
     };
 
-    // Resize canvas - Now with initializeElements defined before it's called
+    // Resize canvas - with initializeElements defined before it's called
     const resizeCanvas = () => {
       const rect = canvas.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
