@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useAdmin } from '@/contexts/AdminContext';
 import Hero from '@/components/Home/Hero';
@@ -56,9 +55,9 @@ const Index: React.FC = () => {
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            {/* Tecnologia Imobiliária - Redesigned */}
+            {/* Tecnologia Imobiliária - Completely Redesigned */}
             <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group">
-              <div className="h-56 relative bg-black overflow-hidden">
+              <div className="h-64 relative bg-black overflow-hidden">
                 <RealEstateAnimation />
                 <div className="absolute top-6 left-6 z-10 bg-vetor-green/10 p-3 rounded-full">
                   <Building2 className="w-8 h-8 text-vetor-green" />

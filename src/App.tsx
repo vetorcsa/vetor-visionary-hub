@@ -7,7 +7,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AdminProvider } from "@/contexts/AdminContext";
 import Index from "./pages/Index";
 import About from "./pages/About";
-import Contact from "./pages/Contact";
 import Partners from "./pages/Partners";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
@@ -29,9 +28,9 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/sobre" element={<About />} />
-                <Route path="/contato" element={<Contact />} />
                 <Route path="/parceiros" element={<Partners />} />
                 <Route path="/admin" element={<Admin />} />
+                <Route path="/contato" element={<About />} /> {/* Redirect to About page */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
