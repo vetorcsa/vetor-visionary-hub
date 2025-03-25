@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import { Truck, Home, FileText } from 'lucide-react';
 
@@ -805,3 +806,298 @@ export const FiscalAnimation: React.FC = () => {
           bar.targetHeight = 15 + Math.random() * 40;
           bar.lastChange = frame;
         }
+        
+        // Smooth transition to target height
+        bar.height += (bar.targetHeight - bar.height) * 0.05;
+        
+        const x = barChartX + i * (barWidth + barSpacing);
+        const y = barChartY - bar.height;
+        
+        // Draw bar - outline only for minimalist style
+        ctx.strokeStyle = i % 2 === 0 ? '#00B050' : '#7ED957';
+        ctx.beginPath();
+        ctx.rect(x, y, barWidth, bar.height);
+        ctx.stroke();
+      });
+      
+      // Draw and update floating numbers (very reduced)
+      dataNumbers.forEach(num => {
+        // Move number upward
+        num.y -= num.speed;
+        
+        // Reset position when off screen
+        if (num.y < 0) {
+          num.y = rect.height;
+          num.x = Math.random() * rect.width;
+          num.value = Math.floor(Math.random() * 100);
+        }
+        
+        // Draw number
+        ctx.fillStyle = `rgba(0, 176, 80, ${num.opacity})`;
+        ctx.font = `${num.size}px monospace`;
+        ctx.textAlign = 'center';
+        ctx.fillText(num.value.toString(), num.x, num.y);
+      });
+    };
+    
+    animate();
+    
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+    };
+  }, []);
+
+  return (
+    <canvas 
+      ref={canvasRef} 
+      className="absolute inset-0 w-full h-full z-0"
+    />
+  );
+};
+
+// Animation for Technology Customization - Simple digital code patterns
+export const CustomTechAnimation: React.FC = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Resize canvas
+    const resizeCanvas = () => {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      
+      ctx.scale(dpr, dpr);
+    };
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    const rect = canvas.getBoundingClientRect();
+    
+    // Create code lines
+    const codeLines = [];
+    const lineCount = 30; // Moderate number of lines
+    
+    for (let i = 0; i < lineCount; i++) {
+      codeLines.push({
+        x: Math.random() * rect.width,
+        y: Math.random() * rect.height,
+        width: 20 + Math.random() * 80,
+        segments: Math.floor(Math.random() * 5) + 2,
+        speed: 0.2 + Math.random() * 0.3,
+        color: `rgba(0, ${Math.floor(150 + Math.random() * 50)}, ${Math.floor(50 + Math.random() * 30)}, ${0.2 + Math.random() * 0.3})`,
+        blink: 0
+      });
+    }
+    
+    // Create binary particles
+    const particles = [];
+    const particleCount = 40; // Moderate number of particles
+    
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: Math.random() * rect.width,
+        y: Math.random() * rect.height,
+        size: 4 + Math.random() * 4,
+        value: Math.random() > 0.5 ? '1' : '0',
+        opacity: 0.1 + Math.random() * 0.2,
+        speed: 0.1 + Math.random() * 0.2
+      });
+    }
+    
+    // Create connection nodes
+    const nodes = [];
+    const nodeCount = 8; // Small number of nodes
+    
+    for (let i = 0; i < nodeCount; i++) {
+      nodes.push({
+        x: Math.random() * rect.width,
+        y: Math.random() * rect.height,
+        size: 3 + Math.random() * 3,
+        connections: []
+      });
+    }
+    
+    // Create some connections between nodes
+    nodes.forEach((node, i) => {
+      const connectionCount = Math.floor(Math.random() * 2) + 1;
+      const indices = [...Array(nodeCount).keys()].filter(j => j !== i);
+      
+      for (let c = 0; c < connectionCount; c++) {
+        if (indices.length > 0) {
+          const randomIndex = Math.floor(Math.random() * indices.length);
+          const targetIndex = indices[randomIndex];
+          
+          node.connections.push(targetIndex);
+          indices.splice(randomIndex, 1);
+        }
+      }
+    });
+    
+    let frame = 0;
+    
+    // Animation function
+    const animate = () => {
+      requestAnimationFrame(animate);
+      ctx.clearRect(0, 0, rect.width, rect.height);
+      
+      frame++;
+      
+      // Draw grid - very subtle
+      ctx.lineWidth = 0.3;
+      ctx.strokeStyle = 'rgba(0, 176, 80, 0.03)';
+      
+      const gridSize = 40;
+      for (let x = 0; x < rect.width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, rect.height);
+        ctx.stroke();
+      }
+      
+      for (let y = 0; y < rect.height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(rect.width, y);
+        ctx.stroke();
+      }
+      
+      // Draw connections between nodes
+      nodes.forEach((node, i) => {
+        node.connections.forEach(targetIndex => {
+          const targetNode = nodes[targetIndex];
+          
+          // Draw line
+          ctx.beginPath();
+          ctx.moveTo(node.x, node.y);
+          ctx.lineTo(targetNode.x, targetNode.y);
+          ctx.strokeStyle = 'rgba(0, 176, 80, 0.1)';
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+          
+          // Draw data packet moving along the line
+          if (frame % 30 === i % 30) {
+            const progress = (frame % 120) / 120;
+            const packetX = node.x + (targetNode.x - node.x) * progress;
+            const packetY = node.y + (targetNode.y - node.y) * progress;
+            
+            ctx.beginPath();
+            ctx.arc(packetX, packetY, 2, 0, Math.PI * 2);
+            ctx.fillStyle = '#00B050';
+            ctx.fill();
+          }
+        });
+      });
+      
+      // Draw nodes
+      nodes.forEach(node => {
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0, 176, 80, 0.3)';
+        ctx.fill();
+        
+        // Pulse effect
+        if (Math.random() > 0.95) {
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, node.size * 2, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(0, 176, 80, 0.1)';
+          ctx.fill();
+        }
+      });
+      
+      // Update and draw code lines
+      codeLines.forEach(line => {
+        // Move line upward
+        line.y -= line.speed;
+        
+        // Reset position when off screen
+        if (line.y < -10) {
+          line.y = rect.height + 10;
+          line.x = Math.random() * rect.width;
+          line.width = 20 + Math.random() * 80;
+          line.segments = Math.floor(Math.random() * 5) + 2;
+        }
+        
+        // Draw line
+        const segmentWidth = line.width / line.segments;
+        
+        for (let i = 0; i < line.segments; i++) {
+          // Random chance to leave gaps between segments
+          if (Math.random() > 0.3) {
+            const x = line.x + i * segmentWidth;
+            const width = segmentWidth * 0.8;
+            
+            // Randomize blink effect
+            if (Math.random() > 0.997) {
+              line.blink = 5;
+            }
+            
+            const color = line.blink > 0 ? 'rgba(0, 255, 100, 0.4)' : line.color;
+            
+            ctx.fillStyle = color;
+            ctx.fillRect(x, line.y, width, 1);
+          }
+        }
+        
+        // Reduce blink counter
+        if (line.blink > 0) {
+          line.blink--;
+        }
+      });
+      
+      // Update and draw particles
+      particles.forEach(particle => {
+        // Move particle upward
+        particle.y -= particle.speed;
+        
+        // Reset position when off screen
+        if (particle.y < -10) {
+          particle.y = rect.height + 10;
+          particle.x = Math.random() * rect.width;
+          particle.value = Math.random() > 0.5 ? '1' : '0';
+        }
+        
+        // Draw particle
+        ctx.fillStyle = `rgba(0, 176, 80, ${particle.opacity})`;
+        ctx.font = `${particle.size}px monospace`;
+        ctx.textAlign = 'center';
+        ctx.fillText(particle.value, particle.x, particle.y);
+      });
+      
+      // Draw code brackets occasionally
+      if (frame % 60 === 0) {
+        const x = Math.random() * rect.width;
+        const y = Math.random() * rect.height;
+        
+        ctx.fillStyle = 'rgba(0, 176, 80, 0.2)';
+        ctx.font = '16px monospace';
+        ctx.fillText('{', x, y);
+        
+        if (Math.random() > 0.5) {
+          ctx.fillText('}', x + 20, y);
+        }
+      }
+    };
+    
+    animate();
+    
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+    };
+  }, []);
+
+  return (
+    <canvas 
+      ref={canvasRef} 
+      className="absolute inset-0 w-full h-full z-0"
+    />
+  );
+};
