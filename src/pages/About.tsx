@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAdmin } from '@/contexts/AdminContext';
-import { Check, Target, Eye, Heart, Mail, Phone, MapPin, Bot, Database, TrendingUp, MessageCircle, WhatsApp } from 'lucide-react';
+import { Check, Target, Eye, Heart, Mail, Phone, MapPin, Bot, Database, TrendingUp, MessageCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
@@ -238,7 +238,7 @@ const About: React.FC = () => {
                 <CardHeader className="pb-2">
                   <CardTitle className="text-2xl font-bold text-white flex items-center gap-3">
                     <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
-                      <WhatsApp className="w-6 h-6 text-white" />
+                      <MessageCircle className="w-6 h-6 text-white" />
                     </div>
                     Fale Conosco no WhatsApp
                   </CardTitle>
