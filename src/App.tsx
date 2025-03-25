@@ -7,7 +7,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AdminProvider } from "@/contexts/AdminContext";
 import Index from "./pages/Index";
 import About from "./pages/About";
-import Partners from "./pages/Partners";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import Navbar from "./components/Layout/Navbar";
@@ -28,7 +27,6 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/sobre" element={<About />} />
-                <Route path="/parceiros" element={<Partners />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
