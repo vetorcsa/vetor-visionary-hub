@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useAdmin } from '@/contexts/AdminContext';
 import { Code, FileText, Building, Truck, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -10,6 +10,7 @@ interface ServicesCardProps {
 
 const ServicesCard: React.FC<ServicesCardProps> = ({ serviceId }) => {
   const { services } = useAdmin();
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   
   const service = services.find(s => s.id === serviceId);
   
@@ -50,6 +51,95 @@ const ServicesCard: React.FC<ServicesCardProps> = ({ serviceId }) => {
         return <Code className="w-12 h-12 text-vetor-green" />;
     }
   };
+
+  // Simple, minimalist animation effect using Canvas
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Adjust canvas size to match parent container
+    const resizeCanvas = () => {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    };
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Create array to hold the particles
+    const particles = [];
+    const particleCount = 15; // Small number of particles for a minimalist look
+
+    // Initialize particles with random positions
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 1.5 + 0.5, // Very small particles
+        vx: (Math.random() - 0.5) * 0.3, // Slow movement
+        vy: (Math.random() - 0.5) * 0.3,
+        opacity: Math.random() * 0.25 + 0.05 // Very subtle opacity
+      });
+    }
+
+    // Animation function
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Update and draw particles
+      particles.forEach(particle => {
+        // Update position
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+
+        // Wrap particles around canvas
+        if (particle.x < 0) particle.x = canvas.width;
+        if (particle.x > canvas.width) particle.x = 0;
+        if (particle.y < 0) particle.y = canvas.height;
+        if (particle.y > canvas.height) particle.y = 0;
+
+        // Draw particle
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0, 176, 80, ${particle.opacity})`;
+        ctx.fill();
+      });
+
+      // Draw 2-3 connecting lines between nearby particles for tech network effect
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          // Only connect particles that are close to each other
+          if (distance < 50) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            // Very faint lines
+            ctx.strokeStyle = `rgba(0, 176, 80, ${0.03 * (1 - distance/50)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(animate);
+    };
+
+    const animationFrame = requestAnimationFrame(animate);
+
+    // Cleanup function
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+      cancelAnimationFrame(animationFrame);
+    };
+  }, []);
 
   // Function to generate random floating elements
   const renderFloatingElements = () => {
@@ -92,6 +182,12 @@ const ServicesCard: React.FC<ServicesCardProps> = ({ serviceId }) => {
 
   return (
     <div className="relative h-full overflow-hidden rounded-xl border border-vetor-green/20 bg-black shadow-lg">
+      {/* Canvas for tech animation */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full z-0"
+      />
+      
       {/* Floating background elements */}
       {renderFloatingElements()}
       
