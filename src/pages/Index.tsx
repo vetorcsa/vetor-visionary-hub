@@ -5,7 +5,7 @@ import Hero from '@/components/Home/Hero';
 import ServicesCard from '@/components/Home/ServicesCard';
 import { ChevronRight, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { FiscalAnimation, LogisticsAnimation, CustomTechAnimation } from '@/components/Home/SectorAnimations';
+import { FiscalAnimation, LogisticsAnimation, CustomTechAnimation, RealEstateAnimation } from '@/components/Home/SectorAnimations';
 import { Badge } from '@/components/ui/badge';
 
 const Index: React.FC = () => {
@@ -54,22 +54,11 @@ const Index: React.FC = () => {
             {/* Tecnologia Imobiliária */}
             <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group">
               <div className="h-56 relative bg-gradient-to-br from-black to-black/80 overflow-hidden">
-                <div className="absolute inset-0 flex items-center justify-center opacity-70 group-hover:opacity-100 transition-opacity duration-500">
-                  <img 
-                    src="/lovable-uploads/d8fa1f50-898b-4129-ad29-e52d76d892d5.png" 
-                    alt="Real Estate Technology" 
-                    className="w-24 h-24 object-contain filter brightness-0 invert opacity-10"
-                  />
-                </div>
+                <RealEstateAnimation />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
                 
                 {/* Efeito hover gradient inspirado no exemplo */}
                 <div className="absolute inset-0 bg-gradient-to-br from-vetor-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                
-                {/* Abstract Elements */}
-                <div className="absolute top-1/4 left-1/4 w-20 h-20 rounded-full border border-vetor-green/10 group-hover:border-vetor-green/30 transition-all duration-700"></div>
-                <div className="absolute top-1/3 right-1/4 w-16 h-16 rounded-full border border-vetor-green/5 group-hover:border-vetor-green/20 transition-all duration-500 delay-100"></div>
-                <div className="absolute bottom-1/4 right-1/3 w-12 h-12 rounded-full border border-vetor-green/20 group-hover:border-vetor-green/40 transition-all duration-700 delay-200"></div>
               </div>
               <div className="p-8">
                 <h3 className="text-2xl font-bold text-vetor-green mb-4">Tecnologia Imobiliária</h3>
