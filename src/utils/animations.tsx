@@ -393,7 +393,7 @@ export const LogisticsAnimation: React.FC = () => {
     
     // Create connection points around the globe
     const connectionPoints = [];
-    const connectionCount = 12;
+    const connectionCount = 10; // Reduced from 12
     
     // Generate connection points distributed across the globe
     for (let i = 0; i < connectionCount; i++) {
@@ -419,10 +419,10 @@ export const LogisticsAnimation: React.FC = () => {
       });
     }
     
-    // Create connections between points
+    // Create connections between points - fewer connections
     connectionPoints.forEach((point, index) => {
-      // Connect each point to 2-3 others
-      const connectionCount = 2 + Math.floor(Math.random() * 2);
+      // Connect each point to 1-2 others (reduced from 2-3)
+      const connectionCount = 1 + Math.floor(Math.random());
       
       for (let i = 0; i < connectionCount; i++) {
         // Choose a random point to connect to
@@ -435,9 +435,9 @@ export const LogisticsAnimation: React.FC = () => {
       }
     });
     
-    // Create moving trucks/packages between connection points
+    // Create moving packages between connection points
     const packages = [];
-    const packageCount = 5;
+    const packageCount = 4; // Reduced from 5
     
     for (let i = 0; i < packageCount; i++) {
       // Choose random start and end points
@@ -474,13 +474,13 @@ export const LogisticsAnimation: React.FC = () => {
       time += 0.01;
       rotationAngle += 0.002; // Slow rotation of the globe
       
-      // Draw globe outline with green grid
-      ctx.strokeStyle = 'rgba(0, 176, 80, 0.2)';
-      ctx.lineWidth = 1;
+      // Draw globe outline with green grid - fewer lines
+      ctx.strokeStyle = 'rgba(0, 176, 80, 0.15)'; // More transparent lines
+      ctx.lineWidth = 0.8; // Thinner lines
       
-      // Draw longitude lines
-      for (let i = 0; i < 8; i++) {
-        const angle = (i / 8) * Math.PI * 2 + rotationAngle;
+      // Draw fewer longitude lines - only 5 instead of 8
+      for (let i = 0; i < 5; i++) {
+        const angle = (i / 5) * Math.PI * 2 + rotationAngle;
         
         ctx.beginPath();
         ctx.ellipse(
@@ -495,9 +495,9 @@ export const LogisticsAnimation: React.FC = () => {
         ctx.stroke();
       }
       
-      // Draw latitude lines
-      for (let i = 1; i < 5; i++) {
-        const radius = globeRadius * (i / 5);
+      // Draw fewer latitude lines - only 3 instead of 5
+      for (let i = 1; i < 3; i++) {
+        const radius = globeRadius * (i / 3);
         
         ctx.beginPath();
         ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
@@ -521,8 +521,8 @@ export const LogisticsAnimation: React.FC = () => {
               ctx.beginPath();
               ctx.moveTo(point.x, point.y);
               ctx.lineTo(targetPoint.x, targetPoint.y);
-              ctx.strokeStyle = `rgba(0, 176, 80, ${(point.opacity + targetPoint.opacity) * 0.25})`;
-              ctx.lineWidth = 0.8;
+              ctx.strokeStyle = `rgba(0, 176, 80, ${(point.opacity + targetPoint.opacity) * 0.2})`; // More transparent
+              ctx.lineWidth = 0.5; // Thinner lines
               ctx.stroke();
             }
           });
@@ -582,13 +582,13 @@ export const LogisticsAnimation: React.FC = () => {
         ctx.fillStyle = pkg.color;
         ctx.fill();
         
-        // Draw package trail
+        // Draw simplified package trail (fewer points)
         ctx.beginPath();
         ctx.moveTo(pkg.x, pkg.y);
         
-        // Calculate trail points
-        for (let i = 1; i <= 5; i++) {
-          const trailT = Math.max(0, t - i * 0.04);
+        // Calculate trail points - reduced from 5 to 3
+        for (let i = 1; i <= 3; i++) {
+          const trailT = Math.max(0, t - i * 0.05);
           const trailMt = 1 - trailT;
           
           const trailX = trailMt * trailMt * startPoint.x + 2 * trailMt * trailT * midX + trailT * trailT * endPoint.x;
@@ -597,14 +597,14 @@ export const LogisticsAnimation: React.FC = () => {
           ctx.lineTo(trailX, trailY);
         }
         
-        ctx.strokeStyle = `rgba(${pkg.color.slice(1, 3)}, ${pkg.color.slice(3, 5)}, ${pkg.color.slice(5, 7)}, 0.2)`;
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = `rgba(${pkg.color.slice(1, 3)}, ${pkg.color.slice(3, 5)}, ${pkg.color.slice(5, 7)}, 0.15)`; // More transparent trail
+        ctx.lineWidth = 1.5;
         ctx.stroke();
       });
       
-      // Draw globe center glow
+      // Draw globe center glow - more subtle
       const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, globeRadius * 0.2);
-      gradient.addColorStop(0, 'rgba(0, 176, 80, 0.3)');
+      gradient.addColorStop(0, 'rgba(0, 176, 80, 0.25)'); // More transparent
       gradient.addColorStop(1, 'rgba(0, 176, 80, 0)');
       
       ctx.beginPath();
