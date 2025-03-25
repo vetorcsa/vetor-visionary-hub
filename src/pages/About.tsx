@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useAdmin } from '@/contexts/AdminContext';
-import { Check, Target, Eye, Heart, Mail, Phone, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { Check, Target, Eye, Heart, Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, Robot, Database, TrendingUp } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
 
@@ -99,7 +99,7 @@ const About: React.FC = () => {
                 <p className="text-gray-300">
                   Nossa equipe especializada desenvolve soluções de software personalizadas, 
                   desde aplicações web e sistemas de gestão até integrações complexas, 
-                  atendendo às necessidades específicas do seu negócio.
+                  atendendo às necessidades específicas do seu negócio e reduzindo significativamente a carga de trabalho operacional.
                 </p>
               </div>
               
@@ -115,6 +115,59 @@ const About: React.FC = () => {
           </div>
         </div>
       </div>
+      
+      {/* New section for Robotics and Advanced Technology */}
+      <section className="py-20 bg-black">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="text-center mb-16">
+            <Badge className="bg-vetor-green/20 text-vetor-green hover:bg-vetor-green/30 mb-4">Tecnologia Avançada</Badge>
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
+              Soluções para Aumentar seu Lucro
+            </h2>
+            <p className="text-white/70 max-w-2xl mx-auto text-lg">
+              Desenvolvemos tecnologias que automatizam processos, reduzem custos e maximizam o lucro da sua empresa.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-black/40 backdrop-blur-sm p-8 rounded-xl border border-vetor-green/20 hover:border-vetor-green/40 transition-all duration-300 flex flex-col items-center text-center">
+              <div className="w-16 h-16 bg-vetor-green/10 rounded-full flex items-center justify-center mb-6">
+                <Robot className="w-8 h-8 text-vetor-green" />
+              </div>
+              <h3 className="text-xl font-bold text-vetor-green mb-4">Robôs e Automação</h3>
+              <p className="text-gray-300">
+                Desenvolvemos robôs de software (RPA) que automatizam tarefas repetitivas, processos operacionais e fluxos de trabalho completos, permitindo que sua equipe foque em atividades estratégicas enquanto os robôs executam o trabalho operacional.
+              </p>
+            </div>
+            
+            <div className="bg-black/40 backdrop-blur-sm p-8 rounded-xl border border-vetor-green/20 hover:border-vetor-green/40 transition-all duration-300 flex flex-col items-center text-center">
+              <div className="w-16 h-16 bg-vetor-green/10 rounded-full flex items-center justify-center mb-6">
+                <Database className="w-8 h-8 text-vetor-green" />
+              </div>
+              <h3 className="text-xl font-bold text-vetor-green mb-4">Sistemas Integrados</h3>
+              <p className="text-gray-300">
+                Criamos sistemas inteligentes que integram todos os departamentos da sua empresa, eliminando retrabalho, reduzindo erros humanos e garantindo que todas as informações estejam centralizadas e acessíveis para tomadas de decisão mais eficientes.
+              </p>
+            </div>
+            
+            <div className="bg-black/40 backdrop-blur-sm p-8 rounded-xl border border-vetor-green/20 hover:border-vetor-green/40 transition-all duration-300 flex flex-col items-center text-center">
+              <div className="w-16 h-16 bg-vetor-green/10 rounded-full flex items-center justify-center mb-6">
+                <TrendingUp className="w-8 h-8 text-vetor-green" />
+              </div>
+              <h3 className="text-xl font-bold text-vetor-green mb-4">Otimização de Lucro</h3>
+              <p className="text-gray-300">
+                Nossas soluções tecnológicas são projetadas com foco no aumento da lucratividade, seja através da redução de custos operacionais, otimização de processos ou aumento da capacidade produtiva, gerando ROI mensurável para seu negócio.
+              </p>
+            </div>
+          </div>
+          
+          <div className="mt-16 text-center">
+            <p className="text-lg text-white/70 max-w-3xl mx-auto mb-8">
+              Nossas soluções já ajudaram diversas empresas a reduzir até 70% da carga de trabalho manual em processos administrativos, resultando em economia significativa e aumento médio de 30% nos lucros operacionais.
+            </p>
+          </div>
+        </div>
+      </section>
       
       {/* Mission, Vision, Values Section */}
       <section className="py-20 bg-vetor-black/80">
@@ -309,6 +362,7 @@ const About: React.FC = () => {
                       <option value="Imobiliário">Tecnologia Imobiliária</option>
                       <option value="Fiscal">Tecnologia Fiscal</option>
                       <option value="Logística">Tecnologia em Logística</option>
+                      <option value="Automação">Robôs e Automação</option>
                       <option value="Personalizado">Soluções Personalizadas</option>
                       <option value="Outro">Outro</option>
                     </select>
