@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { useAdmin } from '@/contexts/AdminContext';
-import { Check, Target, Eye, Heart, Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, Robot, Database, TrendingUp } from 'lucide-react';
+import { Check, Target, Eye, Heart, Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, Bot, Database, TrendingUp } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
 
@@ -76,7 +75,6 @@ const About: React.FC = () => {
               {aboutData.description}
             </p>
             
-            {/* Expanded company info section */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 text-left">
               <div className="bg-black/40 backdrop-blur-sm p-6 rounded-xl border border-vetor-green/20 hover:border-vetor-green/40 transition-all duration-300">
                 <h3 className="text-xl font-semibold text-vetor-green mb-4">Desenvolvimento de Sites</h3>
@@ -132,7 +130,7 @@ const About: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-black/40 backdrop-blur-sm p-8 rounded-xl border border-vetor-green/20 hover:border-vetor-green/40 transition-all duration-300 flex flex-col items-center text-center">
               <div className="w-16 h-16 bg-vetor-green/10 rounded-full flex items-center justify-center mb-6">
-                <Robot className="w-8 h-8 text-vetor-green" />
+                <Bot className="w-8 h-8 text-vetor-green" />
               </div>
               <h3 className="text-xl font-bold text-vetor-green mb-4">Robôs e Automação</h3>
               <p className="text-gray-300">
@@ -232,7 +230,6 @@ const About: React.FC = () => {
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Contact Info */}
             <div className="bg-black/40 backdrop-blur-sm p-8 rounded-xl border border-vetor-green/20">
               <h3 className="text-2xl font-bold text-white mb-6">
                 Informações de Contato
@@ -289,7 +286,6 @@ const About: React.FC = () => {
               </div>
             </div>
             
-            {/* Contact Form */}
             <div className="bg-black/40 backdrop-blur-sm rounded-xl border border-vetor-green/20 p-8">
               <h3 className="text-2xl font-bold text-white mb-6">
                 Envie uma Mensagem
@@ -423,3 +419,4 @@ const About: React.FC = () => {
 };
 
 export default About;
+
