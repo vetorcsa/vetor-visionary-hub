@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef } from 'react';
 
-// Animação para Tecnologia Imobiliária - Casas desenhadas em linha sem sobreposição
+// Animação para Tecnologia Imobiliária - Casas/prédios desenhados sem sobreposição
 export const RealEstateAnimation: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -23,23 +23,31 @@ export const RealEstateAnimation: React.FC = () => {
     window.addEventListener('resize', resizeCanvas);
 
     // Criar elementos de construção - usando estilo de desenho de linha
-    const houses = [];
-    const houseCount = 6; // Número reduzido para melhor claridade
+    const buildings = [];
+    const buildingCount = 6; // Número reduzido para evitar sobreposições
     
-    // Atribuir posições iniciais distantes umas das outras
-    for (let i = 0; i < houseCount; i++) {
-      // Distribuir casas uniformemente pela tela
-      const row = Math.floor(i / 3);
-      const col = i % 3;
+    // Grid para posicionar os edifícios sem sobreposição
+    const gridCols = 3;
+    const gridRows = 2;
+    const cellWidth = canvas.width / gridCols;
+    const cellHeight = canvas.height / gridRows;
+    
+    // Atribuir posições organizadas em grid para evitar sobreposição
+    for (let i = 0; i < buildingCount; i++) {
+      const row = Math.floor(i / gridCols);
+      const col = i % gridCols;
       
-      houses.push({
-        x: canvas.width * (0.25 + col * 0.25),
-        y: canvas.height * (0.3 + row * 0.4),
-        size: 20 + Math.random() * 8,
+      // Cada edifício fica em uma célula de grid com margem
+      const margin = 10;
+      
+      buildings.push({
+        x: cellWidth * col + cellWidth * 0.2 + Math.random() * (cellWidth * 0.6),
+        y: cellHeight * row + cellHeight * 0.2 + Math.random() * (cellHeight * 0.6),
+        size: 18 + Math.random() * 8,
         color: i % 3 === 0 ? '#00B050' : (i % 3 === 1 ? '#7ED957' : '#008C41'),
-        rotation: Math.random() * Math.PI * 0.1,
-        rotationSpeed: (Math.random() - 0.5) * 0.005,
-        elevation: Math.random() * 10,
+        rotation: (Math.random() - 0.5) * 0.1, // Menos rotação para melhor legibilidade
+        rotationSpeed: (Math.random() - 0.5) * 0.0005,
+        elevation: Math.random() * 5,
         elevationDirection: Math.random() > 0.5 ? 1 : -1,
         style: Math.floor(Math.random() * 3) // Diferentes estilos de casa
       });
@@ -93,147 +101,137 @@ export const RealEstateAnimation: React.FC = () => {
         ctx.stroke();
       });
       
-      // Atualizar e desenhar casas com verificações de posição
-      houses.forEach((house, idx) => {
-        // Mover suavemente as casas
-        house.x += Math.sin(time * 0.5 + idx) * 0.2;
-        house.y += Math.cos(time * 0.7 + idx) * 0.15;
+      // Atualizar e desenhar edifícios sem sobreposição
+      buildings.forEach((building, idx) => {
+        // Movimento suave em cada célula do grid
+        building.x += Math.sin(time * 0.5 + idx) * 0.1;
+        building.y += Math.cos(time * 0.7 + idx) * 0.05;
         
         // Atualizar rotação
-        house.rotation += house.rotationSpeed;
+        building.rotation += building.rotationSpeed;
         
         // Atualizar elevação para efeito flutuante
-        house.elevation += 0.1 * house.elevationDirection;
-        if (house.elevation > 10 || house.elevation < 0) {
-          house.elevationDirection *= -1;
+        building.elevation += 0.05 * building.elevationDirection;
+        if (building.elevation > 5 || building.elevation < 0) {
+          building.elevationDirection *= -1;
         }
         
-        // Desenhar sombra da casa (sutil)
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-        ctx.beginPath();
-        ctx.ellipse(
-          house.x, 
-          house.y + house.size/2 + 5, 
-          house.size/2, 
-          house.size/6, 
-          0, 0, Math.PI * 2
-        );
-        ctx.fill();
-        
-        // Desenhar casa com estilo de linha
+        // Desenhar edifício com estilo de linha
         ctx.save();
-        ctx.translate(house.x, house.y - house.elevation * 0.1);
-        ctx.rotate(house.rotation);
+        ctx.translate(building.x, building.y - building.elevation * 0.1);
+        ctx.rotate(building.rotation);
         
-        ctx.strokeStyle = house.color;
+        ctx.strokeStyle = building.color;
         ctx.lineWidth = 1.5;
         ctx.lineJoin = 'round';
         
-        // Diferentes estilos de casa usando arte em linha
-        if (house.style === 0) {
-          // Estilo 1: Casa simples com telhado
+        // Diferentes estilos de edifícios usando arte em linha
+        if (building.style === 0) {
+          // Estilo 1: Prédio moderno com vários andares
+          const floors = 3 + Math.floor(Math.random() * 3);
+          const buildingWidth = building.size;
+          const buildingHeight = building.size * 1.5;
+          const floorHeight = buildingHeight / floors;
           
-          // Contorno do corpo da casa
-          ctx.beginPath();
-          ctx.strokeRect(-house.size/2, -house.size/2, house.size, house.size);
+          // Contorno do prédio
+          ctx.strokeRect(-buildingWidth/2, -buildingHeight/2, buildingWidth, buildingHeight);
+          
+          // Linhas horizontais para andares
+          for (let i = 1; i < floors; i++) {
+            const y = -buildingHeight/2 + i * floorHeight;
+            ctx.beginPath();
+            ctx.moveTo(-buildingWidth/2, y);
+            ctx.lineTo(buildingWidth/2, y);
+            ctx.stroke();
+          }
+          
+          // Janelas
+          const windowsPerFloor = 2;
+          const windowWidth = buildingWidth / (windowsPerFloor * 2);
+          
+          for (let floor = 0; floor < floors; floor++) {
+            for (let w = 0; w < windowsPerFloor; w++) {
+              const windowX = -buildingWidth/2 + (w + 0.5) * buildingWidth/windowsPerFloor;
+              const windowY = -buildingHeight/2 + (floor + 0.5) * floorHeight;
+              
+              ctx.strokeRect(
+                windowX - windowWidth/2, 
+                windowY - floorHeight * 0.3, 
+                windowWidth, 
+                floorHeight * 0.6
+              );
+            }
+          }
+          
+        } else if (building.style === 1) {
+          // Estilo 2: Casa com telhado
+          const houseWidth = building.size;
+          const houseHeight = building.size * 0.8;
+          
+          // Corpo da casa
+          ctx.strokeRect(-houseWidth/2, -houseHeight/2, houseWidth, houseHeight);
           
           // Telhado
           ctx.beginPath();
-          ctx.moveTo(-house.size/2 - 2, -house.size/2);
-          ctx.lineTo(0, -house.size/2 - house.size/3);
-          ctx.lineTo(house.size/2 + 2, -house.size/2);
+          ctx.moveTo(-houseWidth/2 - 3, -houseHeight/2);
+          ctx.lineTo(0, -houseHeight/2 - houseHeight/2);
+          ctx.lineTo(houseWidth/2 + 3, -houseHeight/2);
           ctx.stroke();
           
           // Porta
           ctx.beginPath();
-          ctx.moveTo(-house.size/6, house.size/2);
-          ctx.lineTo(-house.size/6, 0);
-          ctx.lineTo(house.size/6, 0);
-          ctx.lineTo(house.size/6, house.size/2);
-          ctx.stroke();
+          const doorWidth = houseWidth * 0.3;
+          const doorHeight = houseHeight * 0.5;
+          ctx.strokeRect(-doorWidth/2, houseHeight/2 - doorHeight, doorWidth, doorHeight);
           
           // Janelas
-          ctx.strokeRect(-house.size/3, -house.size/3, house.size/4, house.size/4);
-          ctx.strokeRect(house.size/10, -house.size/3, house.size/4, house.size/4);
-          
-        } else if (house.style === 1) {
-          // Estilo 2: Casa moderna
-          
-          // Corpo da casa - dois retângulos conectados
-          ctx.beginPath();
-          ctx.strokeRect(-house.size/2, -house.size/3, house.size * 0.6, house.size * 0.8);
-          ctx.strokeRect(-house.size/2 + house.size * 0.6, -house.size/2, house.size * 0.4, house.size);
-          
-          // Janelas - linhas horizontais
-          for (let i = 0; i < 3; i++) {
-            ctx.beginPath();
-            ctx.moveTo(-house.size/2 + 2, -house.size/4 + i * house.size/6);
-            ctx.lineTo(-house.size/2 + house.size * 0.6 - 2, -house.size/4 + i * house.size/6);
-            ctx.stroke();
-          }
-          
-          // Janelas - linhas verticais na segunda seção
-          for (let i = 0; i < 2; i++) {
-            ctx.beginPath();
-            ctx.moveTo(-house.size/2 + house.size * 0.6 + house.size * 0.2, -house.size/2 + i * house.size/3);
-            ctx.lineTo(-house.size/2 + house.size * 0.6 + house.size * 0.2, -house.size/2 + house.size/4 + i * house.size/3);
-            ctx.stroke();
-          }
+          const windowSize = houseWidth * 0.25;
+          ctx.strokeRect(-houseWidth/3, -houseHeight/4, windowSize, windowSize);
+          ctx.strokeRect(houseWidth/6, -houseHeight/4, windowSize, windowSize);
           
         } else {
-          // Estilo 3: Casa circular
+          // Estilo 3: Torre/arranha-céu
+          const towerWidth = building.size * 0.6;
+          const towerHeight = building.size * 2;
           
-          // Estrutura principal circular
+          // Base da torre
+          ctx.strokeRect(-towerWidth/2, -towerHeight/2, towerWidth, towerHeight);
+          
+          // Linhas horizontais de detalhes
+          const detailCount = 5;
+          for (let i = 1; i < detailCount; i++) {
+            const y = -towerHeight/2 + (towerHeight * i / detailCount);
+            ctx.beginPath();
+            ctx.moveTo(-towerWidth/2, y);
+            ctx.lineTo(towerWidth/2, y);
+            ctx.stroke();
+          }
+          
+          // Topo da torre
           ctx.beginPath();
-          ctx.arc(0, 0, house.size/2, 0, Math.PI * 2);
+          ctx.moveTo(-towerWidth/2, -towerHeight/2);
+          ctx.lineTo(0, -towerHeight/2 - towerWidth/2);
+          ctx.lineTo(towerWidth/2, -towerHeight/2);
           ctx.stroke();
           
-          // Telhado em domo
+          // Antena
           ctx.beginPath();
-          ctx.arc(0, -house.size/2, house.size/3, 0, Math.PI, true);
-          ctx.stroke();
-          
-          // Porta
-          ctx.beginPath();
-          ctx.moveTo(-house.size/6, house.size/2);
-          ctx.lineTo(-house.size/6, house.size/6);
-          ctx.arc(0, house.size/6, house.size/6, Math.PI, 0, true);
-          ctx.lineTo(house.size/6, house.size/2);
-          ctx.stroke();
-          
-          // Janelas
-          ctx.beginPath();
-          ctx.arc(-house.size/4, -house.size/6, house.size/8, 0, Math.PI * 2);
-          ctx.stroke();
-          
-          ctx.beginPath();
-          ctx.arc(house.size/4, -house.size/6, house.size/8, 0, Math.PI * 2);
+          ctx.moveTo(0, -towerHeight/2 - towerWidth/2);
+          ctx.lineTo(0, -towerHeight/2 - towerWidth/2 - towerHeight * 0.2);
           ctx.stroke();
         }
         
         ctx.restore();
-        
-        // Pontos de dados digitais acima da casa (frequência reduzida)
-        if (Math.random() > 0.99) {
-          ctx.fillStyle = 'rgba(0, 176, 80, 0.8)';
-          ctx.font = '8px monospace';
-          ctx.fillText('1', house.x + (Math.random() - 0.5) * 20, house.y - house.size - Math.random() * 10);
-        }
-        if (Math.random() > 0.99) {
-          ctx.fillStyle = 'rgba(0, 176, 80, 0.8)';
-          ctx.font = '8px monospace';
-          ctx.fillText('0', house.x + (Math.random() - 0.5) * 20, house.y - house.size - Math.random() * 10);
-        }
       });
       
       // Desenhar um hub central
       ctx.beginPath();
-      ctx.arc(canvas.width/2, canvas.height/2, 15, 0, Math.PI * 2);
+      ctx.arc(canvas.width/2, canvas.height/2, 12, 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(0, 176, 80, 0.1)';
       ctx.fill();
       
       ctx.beginPath();
-      ctx.arc(canvas.width/2, canvas.height/2, 8, 0, Math.PI * 2);
+      ctx.arc(canvas.width/2, canvas.height/2, 6, 0, Math.PI * 2);
       ctx.fillStyle = '#00B050';
       ctx.fill();
       
@@ -367,7 +365,7 @@ export const FiscalAnimation: React.FC = () => {
   );
 };
 
-// Animação para Tecnologia em Logística
+// Animação para Tecnologia em Logística - com globo e pontos conectados
 export const LogisticsAnimation: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -388,136 +386,231 @@ export const LogisticsAnimation: React.FC = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Criar elementos de caminhões e rotas
-    const trucks: {
-      x: number;
-      y: number;
-      width: number;
-      height: number;
-      speed: number;
-      route: { x: number; y: number }[];
-      routeIndex: number;
-      color: string;
-      angle: number;
-      visible: boolean;
-    }[] = [];
+    // Define the globe radius
+    const globeRadius = Math.min(canvas.width, canvas.height) * 0.35;
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
     
-    const createTrucks = () => {
-      trucks.length = 0;
-      const truckCount = 4; // Reduzido para melhor visualização
+    // Create connection points around the globe
+    const connectionPoints = [];
+    const connectionCount = 12;
+    
+    // Generate connection points distributed across the globe
+    for (let i = 0; i < connectionCount; i++) {
+      // Use spherical coordinates to place points around the globe
+      const phi = Math.acos(-1 + (2 * i) / connectionCount);
+      const theta = Math.sqrt(connectionCount * Math.PI) * phi;
       
-      for (let i = 0; i < truckCount; i++) {
-        // Criar rota com vários pontos
-        const routePoints = [];
-        const pointCount = Math.floor(Math.random() * 3) + 3;
+      // Convert to cartesian coordinates
+      const x = centerX + globeRadius * Math.cos(theta) * Math.sin(phi);
+      const y = centerY + globeRadius * Math.sin(theta) * Math.sin(phi);
+      
+      // Add depth effect - points further back are more transparent
+      const depthFactor = Math.sin(phi) * Math.cos(theta);
+      const opacity = 0.3 + (depthFactor + 1) * 0.35;
+      
+      connectionPoints.push({
+        x,
+        y,
+        size: 2 + Math.random() * 3,
+        opacity,
+        connections: [],
+        active: Math.random() > 0.3 // Some points start active
+      });
+    }
+    
+    // Create connections between points
+    connectionPoints.forEach((point, index) => {
+      // Connect each point to 2-3 others
+      const connectionCount = 2 + Math.floor(Math.random() * 2);
+      
+      for (let i = 0; i < connectionCount; i++) {
+        // Choose a random point to connect to
+        let targetIndex;
+        do {
+          targetIndex = Math.floor(Math.random() * connectionPoints.length);
+        } while (targetIndex === index || point.connections.includes(targetIndex));
         
-        // Dividir a tela em 4 quadrantes e criar rotas que não se sobreponham muito
-        const quadrantWidth = canvas.width / 2;
-        const quadrantHeight = canvas.height / 2;
-        const quadrantX = i % 2;
-        const quadrantY = Math.floor(i / 2);
-        
-        for (let j = 0; j < pointCount; j++) {
-          routePoints.push({
-            x: quadrantX * quadrantWidth + Math.random() * quadrantWidth,
-            y: quadrantY * quadrantHeight + Math.random() * quadrantHeight
-          });
-        }
-        
-        const startPoint = routePoints[0];
-        
-        trucks.push({
-          x: startPoint.x,
-          y: startPoint.y,
-          width: 20,
-          height: 10,
-          speed: 0.5 + Math.random() * 0.3, // Velocidade mais consistente
-          route: routePoints,
-          routeIndex: 0,
-          color: i % 2 === 0 ? '#00B050' : '#7ED957',
-          angle: 0,
-          visible: true // Garantir que todos os caminhões sejam visíveis
-        });
+        point.connections.push(targetIndex);
       }
-    };
+    });
     
-    createTrucks();
+    // Create moving trucks/packages between connection points
+    const packages = [];
+    const packageCount = 5;
     
-    // Animar os caminhões nas rotas
+    for (let i = 0; i < packageCount; i++) {
+      // Choose random start and end points
+      const startPointIndex = Math.floor(Math.random() * connectionPoints.length);
+      let endPointIndex;
+      
+      do {
+        endPointIndex = Math.floor(Math.random() * connectionPoints.length);
+      } while (endPointIndex === startPointIndex);
+      
+      const startPoint = connectionPoints[startPointIndex];
+      const endPoint = connectionPoints[endPointIndex];
+      
+      packages.push({
+        startPointIndex,
+        endPointIndex,
+        x: startPoint.x,
+        y: startPoint.y,
+        progress: 0,
+        speed: 0.002 + Math.random() * 0.003,
+        color: i % 2 === 0 ? '#00B050' : '#7ED957',
+        size: 4 + Math.random() * 3
+      });
+    }
+    
+    let rotationAngle = 0;
+    let time = 0;
+    
+    // Animation function
     const animate = () => {
       requestAnimationFrame(animate);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Desenhar rotas
+      time += 0.01;
+      rotationAngle += 0.002; // Slow rotation of the globe
+      
+      // Draw globe outline with green grid
+      ctx.strokeStyle = 'rgba(0, 176, 80, 0.2)';
       ctx.lineWidth = 1;
-      ctx.setLineDash([5, 3]);
       
-      trucks.forEach(truck => {
-        if (!truck.visible) return;
+      // Draw longitude lines
+      for (let i = 0; i < 8; i++) {
+        const angle = (i / 8) * Math.PI * 2 + rotationAngle;
         
-        // Desenhar a rota
-        ctx.strokeStyle = `rgba(0, 176, 80, 0.3)`;
         ctx.beginPath();
-        ctx.moveTo(truck.route[0].x, truck.route[0].y);
-        
-        for (let i = 1; i < truck.route.length; i++) {
-          ctx.lineTo(truck.route[i].x, truck.route[i].y);
-        }
-        
+        ctx.ellipse(
+          centerX, 
+          centerY, 
+          globeRadius * Math.abs(Math.cos(angle)), 
+          globeRadius, 
+          0, 
+          0, 
+          Math.PI * 2
+        );
         ctx.stroke();
-        
-        // Desenhar pontos de rota
-        truck.route.forEach((point, i) => {
-          ctx.beginPath();
-          ctx.arc(point.x, point.y, 4, 0, Math.PI * 2);
-          ctx.fillStyle = i === truck.routeIndex ? '#00B050' : 'rgba(0, 176, 80, 0.3)';
-          ctx.fill();
-        });
-      });
+      }
       
-      ctx.setLineDash([]);
+      // Draw latitude lines
+      for (let i = 1; i < 5; i++) {
+        const radius = globeRadius * (i / 5);
+        
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        ctx.stroke();
+      }
       
-      // Atualizar e desenhar caminhões
-      trucks.forEach(truck => {
-        if (!truck.visible) return;
-        
-        const currentPoint = truck.route[truck.routeIndex];
-        const dx = currentPoint.x - truck.x;
-        const dy = currentPoint.y - truck.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        
-        if (distance < truck.speed) {
-          // Chegou ao ponto, move para o próximo
-          truck.routeIndex = (truck.routeIndex + 1) % truck.route.length;
-        } else {
-          // Move em direção ao ponto
-          truck.angle = Math.atan2(dy, dx);
-          truck.x += Math.cos(truck.angle) * truck.speed;
-          truck.y += Math.sin(truck.angle) * truck.speed;
+      // Update connection points
+      connectionPoints.forEach((point, index) => {
+        // Random activation of points
+        if (Math.random() > 0.995) {
+          point.active = !point.active;
         }
         
-        // Desenhar caminhão
-        ctx.save();
-        ctx.translate(truck.x, truck.y);
-        ctx.rotate(truck.angle);
+        // Draw connections
+        if (point.active) {
+          point.connections.forEach(targetIndex => {
+            const targetPoint = connectionPoints[targetIndex];
+            
+            if (targetPoint.active) {
+              // Draw connection line
+              ctx.beginPath();
+              ctx.moveTo(point.x, point.y);
+              ctx.lineTo(targetPoint.x, targetPoint.y);
+              ctx.strokeStyle = `rgba(0, 176, 80, ${(point.opacity + targetPoint.opacity) * 0.25})`;
+              ctx.lineWidth = 0.8;
+              ctx.stroke();
+            }
+          });
+        }
         
-        // Corpo do caminhão
-        ctx.fillStyle = truck.color;
-        ctx.fillRect(0, -truck.height / 2, truck.width, truck.height);
-        
-        // Cabine
-        ctx.fillStyle = '#333';
-        ctx.fillRect(-truck.width * 0.3, -truck.height / 2, truck.width * 0.3, truck.height);
-        
-        // Rodas
-        ctx.fillStyle = '#111';
-        ctx.fillRect(-truck.width * 0.2, -truck.height / 2 - 2, 4, 2);
-        ctx.fillRect(-truck.width * 0.2, truck.height / 2, 4, 2);
-        ctx.fillRect(truck.width * 0.6, -truck.height / 2 - 2, 4, 2);
-        ctx.fillRect(truck.width * 0.6, truck.height / 2, 4, 2);
-        
-        ctx.restore();
+        // Draw point
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, point.size, 0, Math.PI * 2);
+        ctx.fillStyle = point.active 
+          ? `rgba(0, 176, 80, ${point.opacity})` 
+          : `rgba(0, 176, 80, ${point.opacity * 0.3})`;
+        ctx.fill();
       });
+      
+      // Update and draw packages
+      packages.forEach(pkg => {
+        // Update position
+        pkg.progress += pkg.speed;
+        
+        // Reset when reaching end point
+        if (pkg.progress >= 1) {
+          pkg.progress = 0;
+          pkg.startPointIndex = pkg.endPointIndex;
+          
+          // Choose a new end point
+          do {
+            pkg.endPointIndex = Math.floor(Math.random() * connectionPoints.length);
+          } while (pkg.endPointIndex === pkg.startPointIndex);
+          
+          // Activate both points
+          connectionPoints[pkg.startPointIndex].active = true;
+          connectionPoints[pkg.endPointIndex].active = true;
+        }
+        
+        const startPoint = connectionPoints[pkg.startPointIndex];
+        const endPoint = connectionPoints[pkg.endPointIndex];
+        
+        // Calculate current position (with slight arc for 3D effect)
+        const dx = endPoint.x - startPoint.x;
+        const dy = endPoint.y - startPoint.y;
+        
+        // Add a slight arc to the path
+        const midX = (startPoint.x + endPoint.x) / 2;
+        const midY = (startPoint.y + endPoint.y) / 2;
+        const arcHeight = Math.sqrt(dx * dx + dy * dy) * 0.2;
+        
+        // Use quadratic bezier curve for position
+        const t = pkg.progress;
+        const mt = 1 - t;
+        
+        pkg.x = mt * mt * startPoint.x + 2 * mt * t * midX + t * t * endPoint.x;
+        pkg.y = mt * mt * startPoint.y + 2 * mt * t * (midY - arcHeight * Math.sin(t * Math.PI)) + t * t * endPoint.y;
+        
+        // Draw package/truck
+        ctx.beginPath();
+        ctx.arc(pkg.x, pkg.y, pkg.size, 0, Math.PI * 2);
+        ctx.fillStyle = pkg.color;
+        ctx.fill();
+        
+        // Draw package trail
+        ctx.beginPath();
+        ctx.moveTo(pkg.x, pkg.y);
+        
+        // Calculate trail points
+        for (let i = 1; i <= 5; i++) {
+          const trailT = Math.max(0, t - i * 0.04);
+          const trailMt = 1 - trailT;
+          
+          const trailX = trailMt * trailMt * startPoint.x + 2 * trailMt * trailT * midX + trailT * trailT * endPoint.x;
+          const trailY = trailMt * trailMt * startPoint.y + 2 * trailMt * trailT * (midY - arcHeight * Math.sin(trailT * Math.PI)) + trailT * trailT * endPoint.y;
+          
+          ctx.lineTo(trailX, trailY);
+        }
+        
+        ctx.strokeStyle = `rgba(${pkg.color.slice(1, 3)}, ${pkg.color.slice(3, 5)}, ${pkg.color.slice(5, 7)}, 0.2)`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      });
+      
+      // Draw globe center glow
+      const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, globeRadius * 0.2);
+      gradient.addColorStop(0, 'rgba(0, 176, 80, 0.3)');
+      gradient.addColorStop(1, 'rgba(0, 176, 80, 0)');
+      
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, globeRadius * 0.2, 0, Math.PI * 2);
+      ctx.fillStyle = gradient;
+      ctx.fill();
     };
     
     animate();
@@ -535,7 +628,7 @@ export const LogisticsAnimation: React.FC = () => {
   );
 };
 
-// Animação para Tecnologia Customizada - Restaurado para a versão original que estava funcionando bem
+// Animação para Tecnologia Customizada - Computador desenhado
 export const CustomTechAnimation: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -556,73 +649,335 @@ export const CustomTechAnimation: React.FC = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Criar elementos de código
-    const codeLines: {
-      x: number;
-      y: number;
-      width: number;
-      opacity: number;
-      speed: number;
-    }[] = [];
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
     
-    const createCodeLines = () => {
-      codeLines.length = 0;
-      const lineCount = 20;
-      
-      for (let i = 0; i < lineCount; i++) {
-        codeLines.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          width: Math.random() * 100 + 50,
-          opacity: Math.random() * 0.8 + 0.2,
-          speed: Math.random() * 0.5 + 0.1
-        });
-      }
+    // Criando elementos do computador
+    const computerElements = {
+      monitor: {
+        width: canvas.width * 0.6,
+        height: canvas.height * 0.5,
+        x: centerX,
+        y: centerY - canvas.height * 0.1,
+        borderRadius: 5,
+        bezels: 8
+      },
+      screen: {
+        codeLines: [],
+        lineCount: 10
+      },
+      keyboard: {
+        width: canvas.width * 0.5,
+        height: canvas.height * 0.1,
+        x: centerX,
+        y: centerY + canvas.height * 0.25,
+        keys: []
+      },
+      mouse: {
+        x: centerX + canvas.width * 0.2,
+        y: centerY + canvas.height * 0.25,
+        width: 20,
+        height: 30
+      },
+      particles: []
     };
     
-    createCodeLines();
+    // Criar linhas de código para a tela
+    for (let i = 0; i < computerElements.screen.lineCount; i++) {
+      computerElements.screen.codeLines.push({
+        width: Math.random() * 0.6 + 0.2, // Comprimento da linha como porcentagem da tela
+        y: i,
+        opacity: 0.3 + Math.random() * 0.5,
+        animationOffset: Math.random() * Math.PI * 2
+      });
+    }
     
-    // Animar as linhas de código
+    // Criar teclas do teclado
+    const keyRows = 3;
+    const keysPerRow = 10;
+    
+    for (let row = 0; row < keyRows; row++) {
+      for (let col = 0; col < keysPerRow; col++) {
+        computerElements.keyboard.keys.push({
+          row,
+          col,
+          pressed: false,
+          pressTime: 0,
+          pressChance: 0.01 + Math.random() * 0.03
+        });
+      }
+    }
+    
+    // Criar partículas para efeito tech
+    const particleCount = 30;
+    
+    for (let i = 0; i < particleCount; i++) {
+      computerElements.particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 2 + 1,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        opacity: Math.random() * 0.3 + 0.1
+      });
+    }
+    
+    let time = 0;
+    
+    // Animation function
     const animate = () => {
       requestAnimationFrame(animate);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      codeLines.forEach(line => {
+      time += 0.02;
+      
+      // Atualizar e desenhar partículas
+      computerElements.particles.forEach(particle => {
         // Atualizar posição
-        line.y += line.speed;
+        particle.x += particle.vx;
+        particle.y += particle.vy;
         
-        // Reposicionar quando sair da tela
-        if (line.y > canvas.height) {
-          line.y = -10;
-          line.x = Math.random() * canvas.width;
-          line.width = Math.random() * 100 + 50;
+        // Wraparound
+        if (particle.x < 0) particle.x = canvas.width;
+        if (particle.x > canvas.width) particle.x = 0;
+        if (particle.y < 0) particle.y = canvas.height;
+        if (particle.y > canvas.height) particle.y = 0;
+        
+        // Desenhar partícula
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0, 176, 80, ${particle.opacity})`;
+        ctx.fill();
+      });
+      
+      // Conectar algumas partículas próximas
+      for (let i = 0; i < computerElements.particles.length; i++) {
+        for (let j = i + 1; j < computerElements.particles.length; j++) {
+          const p1 = computerElements.particles[i];
+          const p2 = computerElements.particles[j];
+          
+          const dx = p1.x - p2.x;
+          const dy = p1.y - p2.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance < 80) {
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = `rgba(0, 176, 80, ${0.05 * (1 - distance / 80)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
         }
+      }
+      
+      // Desenhar monitor
+      const monitor = computerElements.monitor;
+      
+      // Desenhar base
+      ctx.beginPath();
+      ctx.moveTo(monitor.x - 20, monitor.y + monitor.height/2 + 10);
+      ctx.lineTo(monitor.x + 20, monitor.y + monitor.height/2 + 10);
+      ctx.lineTo(monitor.x + 15, monitor.y + monitor.height/2 + 20);
+      ctx.lineTo(monitor.x - 15, monitor.y + monitor.height/2 + 20);
+      ctx.closePath();
+      ctx.fillStyle = '#00B050';
+      ctx.fill();
+      
+      // Desenhar suporte
+      ctx.beginPath();
+      ctx.rect(monitor.x - 3, monitor.y + monitor.height/2, 6, 10);
+      ctx.fillStyle = '#008C41';
+      ctx.fill();
+      
+      // Desenhar monitor
+      ctx.beginPath();
+      ctx.roundRect(
+        monitor.x - monitor.width/2, 
+        monitor.y - monitor.height/2, 
+        monitor.width, 
+        monitor.height, 
+        monitor.borderRadius
+      );
+      ctx.fillStyle = '#008C41';
+      ctx.fill();
+      
+      // Desenhar tela
+      ctx.beginPath();
+      ctx.roundRect(
+        monitor.x - monitor.width/2 + monitor.bezels, 
+        monitor.y - monitor.height/2 + monitor.bezels, 
+        monitor.width - monitor.bezels * 2, 
+        monitor.height - monitor.bezels * 2, 
+        monitor.borderRadius / 2
+      );
+      ctx.fillStyle = 'rgba(0, 30, 20, 0.9)';
+      ctx.fill();
+      
+      // Desenhar código na tela
+      const screenWidth = monitor.width - monitor.bezels * 2;
+      const screenHeight = monitor.height - monitor.bezels * 2;
+      const screenX = monitor.x - monitor.width/2 + monitor.bezels;
+      const screenY = monitor.y - monitor.height/2 + monitor.bezels;
+      const lineHeight = screenHeight / computerElements.screen.lineCount;
+      
+      computerElements.screen.codeLines.forEach((line, index) => {
+        // Fazer algumas linhas piscarem
+        const blinkingEffect = (Math.sin(time * 3 + line.animationOffset) + 1) / 2;
+        const adjustedOpacity = line.opacity * (0.7 + blinkingEffect * 0.3);
         
         // Desenhar linha de código
-        ctx.fillStyle = `rgba(0, 176, 80, ${line.opacity})`;
-        ctx.fillRect(line.x, line.y, line.width, 2);
+        ctx.beginPath();
+        ctx.rect(
+          screenX + 10, 
+          screenY + index * lineHeight + lineHeight * 0.4, 
+          screenWidth * line.width - 20, 
+          lineHeight * 0.2
+        );
+        ctx.fillStyle = `rgba(0, 176, 80, ${adjustedOpacity})`;
+        ctx.fill();
         
-        // Adicionar alguns detalhes para simular código
-        const segmentCount = Math.floor(line.width / 15);
-        for (let i = 0; i < segmentCount; i++) {
-          if (Math.random() > 0.7) {
-            ctx.fillRect(line.x + i * 15, line.y - 4, 8, 2);
-          }
-          if (Math.random() > 0.8) {
-            ctx.fillRect(line.x + i * 15 + 5, line.y + 4, 5, 2);
+        // Alguns detalhes (indentações e pequenos blocos)
+        if (index % 2 === 0) {
+          ctx.beginPath();
+          ctx.rect(
+            screenX + 10, 
+            screenY + index * lineHeight + lineHeight * 0.7, 
+            screenWidth * line.width * 0.7 - 20, 
+            lineHeight * 0.2
+          );
+          ctx.fillStyle = `rgba(0, 176, 80, ${adjustedOpacity * 0.8})`;
+          ctx.fill();
+        }
+        
+        // Pequenos blocos extras
+        if (Math.random() > 0.7) {
+          for (let i = 0; i < 2; i++) {
+            ctx.beginPath();
+            ctx.rect(
+              screenX + 10 + i * 70, 
+              screenY + index * lineHeight + lineHeight * 0.7, 
+              30, 
+              lineHeight * 0.15
+            );
+            ctx.fillStyle = `rgba(0, 176, 80, ${adjustedOpacity * 0.5})`;
+            ctx.fill();
           }
         }
       });
       
-      // Adicionar alguns elementos binários flutuando
-      for (let i = 0; i < 10; i++) {
-        ctx.fillStyle = `rgba(0, 176, 80, ${Math.random() * 0.3 + 0.1})`;
-        ctx.font = `${Math.random() * 14 + 10}px monospace`;
-        ctx.fillText(
-          Math.random() > 0.5 ? '1' : '0',
-          Math.random() * canvas.width,
-          Math.random() * canvas.height
+      // Desenhar teclado
+      const keyboard = computerElements.keyboard;
+      
+      // Base do teclado
+      ctx.beginPath();
+      ctx.roundRect(
+        keyboard.x - keyboard.width/2, 
+        keyboard.y - keyboard.height/2, 
+        keyboard.width, 
+        keyboard.height, 
+        3
+      );
+      ctx.fillStyle = '#007040';
+      ctx.fill();
+      
+      // Desenhar teclas
+      const keyWidth = keyboard.width / 12;
+      const keyHeight = keyboard.height / 4;
+      const keySpacing = 2;
+      
+      keyboard.keys.forEach(key => {
+        // Verificar se a tecla deve ser pressionada
+        if (Math.random() < key.pressChance) {
+          key.pressed = true;
+          key.pressTime = time;
+        }
+        
+        // Soltar tecla após um curto período
+        if (key.pressed && time - key.pressTime > 0.2) {
+          key.pressed = false;
+        }
+        
+        const keyX = keyboard.x - keyboard.width/2 + key.col * (keyWidth + keySpacing) + keyWidth;
+        const keyY = keyboard.y - keyboard.height/2 + key.row * (keyHeight + keySpacing) + keyHeight;
+        
+        // Desenhar tecla
+        ctx.beginPath();
+        ctx.roundRect(
+          keyX - keyWidth/2 + keySpacing/2, 
+          keyY - keyHeight/2 + keySpacing/2, 
+          keyWidth - keySpacing, 
+          keyHeight - keySpacing, 
+          2
         );
+        
+        // Tom mais escuro para teclas pressionadas
+        ctx.fillStyle = key.pressed ? 'rgba(0, 80, 50, 0.9)' : 'rgba(0, 120, 70, 0.9)';
+        ctx.fill();
+      });
+      
+      // Desenhar mouse
+      const mouse = computerElements.mouse;
+      
+      // Corpo do mouse
+      ctx.beginPath();
+      ctx.roundRect(
+        mouse.x - mouse.width/2, 
+        mouse.y - mouse.height/2, 
+        mouse.width, 
+        mouse.height, 
+        mouse.width/2
+      );
+      ctx.fillStyle = '#007040';
+      ctx.fill();
+      
+      // Botões do mouse
+      ctx.beginPath();
+      ctx.rect(
+        mouse.x - mouse.width/2, 
+        mouse.y - mouse.height/2, 
+        mouse.width/2, 
+        mouse.height/3
+      );
+      ctx.fillStyle = '#008C41';
+      ctx.fill();
+      
+      ctx.beginPath();
+      ctx.rect(
+        mouse.x, 
+        mouse.y - mouse.height/2, 
+        mouse.width/2, 
+        mouse.height/3
+      );
+      ctx.fillStyle = '#006030';
+      ctx.fill();
+      
+      // Luz de scroll/sensor
+      ctx.beginPath();
+      ctx.arc(mouse.x, mouse.y - mouse.height/6, 2, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(0, 176, 80, 0.8)';
+      ctx.fill();
+      
+      // Adicionar um efeito de brilho pulsante na tela
+      const pulseSize = 100 + Math.sin(time) * 20;
+      const gradient = ctx.createRadialGradient(centerX, centerY - 20, 0, centerX, centerY - 20, pulseSize);
+      gradient.addColorStop(0, 'rgba(0, 176, 80, 0.03)');
+      gradient.addColorStop(1, 'rgba(0, 176, 80, 0)');
+      
+      ctx.beginPath();
+      ctx.arc(centerX, centerY - 20, pulseSize, 0, Math.PI * 2);
+      ctx.fillStyle = gradient;
+      ctx.fill();
+      
+      // Adicionar pequenos números binários ocasionais flutuando da tela
+      if (Math.random() > 0.95) {
+        const digit = Math.random() > 0.5 ? '1' : '0';
+        const digitX = screenX + Math.random() * screenWidth;
+        const digitY = screenY + Math.random() * (screenHeight * 0.8);
+        
+        ctx.fillStyle = 'rgba(0, 176, 80, 0.7)';
+        ctx.font = '10px monospace';
+        ctx.fillText(digit, digitX, digitY);
       }
     };
     
