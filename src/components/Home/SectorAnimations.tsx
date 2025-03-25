@@ -21,155 +21,193 @@ export const LogisticsAnimation: React.FC = () => {
       canvas.height = rect.height * dpr;
       
       ctx.scale(dpr, dpr);
+      
+      // Regenerate elements after resize
+      initializeElements();
     };
 
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    const rect = canvas.getBoundingClientRect();
+    // Store all elements in a ref to keep them available through rerenders
+    let trucks = [];
+    let pathPoints = [];
     
-    // Create minimalist trucks
-    const trucks = [];
-    const truckCount = 5;
-    
-    for (let i = 0; i < truckCount; i++) {
-      trucks.push({
-        x: Math.random() * rect.width,
-        y: Math.random() * rect.height,
-        width: 24 + Math.random() * 12,
-        height: 14 + Math.random() * 6,
-        speed: 0.5 + Math.random() * 0.8,
-        angle: Math.random() * Math.PI * 2,
-        color: i % 2 === 0 ? '#00B050' : '#7ED957',
-        turnRate: (Math.random() - 0.5) * 0.03
-      });
-    }
-    
-    // Create path points for truck routes
-    const gridSize = 4;
-    const pathPoints = [];
-    
-    for (let i = 0; i <= gridSize; i++) {
-      for (let j = 0; j <= gridSize; j++) {
-        pathPoints.push({
-          x: (rect.width / gridSize) * i,
-          y: (rect.height / gridSize) * j,
-          radius: 3 + Math.random() * 2,
-          connections: []
+    // Initialize all elements for the animation
+    const initializeElements = () => {
+      const rect = canvas.getBoundingClientRect();
+      
+      // Create minimalist trucks
+      trucks = [];
+      const truckCount = 5;
+      
+      for (let i = 0; i < truckCount; i++) {
+        trucks.push({
+          x: Math.random() * rect.width,
+          y: Math.random() * rect.height,
+          width: 24 + Math.random() * 12,
+          height: 14 + Math.random() * 6,
+          speed: 0.5 + Math.random() * 0.8,
+          angle: Math.random() * Math.PI * 2,
+          color: i % 2 === 0 ? '#00B050' : '#7ED957',
+          turnRate: (Math.random() - 0.5) * 0.03
         });
       }
-    }
-    
-    // Create connections between path points (grid with some diagonals)
-    pathPoints.forEach((point, index) => {
-      // Connect to right point (if not last in row)
-      if ((index + 1) % (gridSize + 1) !== 0 && index + 1 < pathPoints.length) {
-        point.connections.push(index + 1);
-      }
       
-      // Connect to bottom point
-      if (index + gridSize + 1 < pathPoints.length) {
-        point.connections.push(index + gridSize + 1);
-        
-        // Some diagonal connections
-        if (Math.random() > 0.5 && (index + 1) % (gridSize + 1) !== 0) {
-          point.connections.push(index + gridSize + 2);
+      // Create path points for truck routes
+      const gridSize = 4;
+      pathPoints = [];
+      
+      for (let i = 0; i <= gridSize; i++) {
+        for (let j = 0; j <= gridSize; j++) {
+          pathPoints.push({
+            x: (rect.width / gridSize) * i,
+            y: (rect.height / gridSize) * j,
+            radius: 3 + Math.random() * 2,
+            connections: []
+          });
         }
       }
-    });
-    
-    // Assign trucks to paths
-    trucks.forEach(truck => {
-      truck.currentPoint = Math.floor(Math.random() * pathPoints.length);
       
-      // Make sure the target point is connected
-      const possibleTargets = pathPoints[truck.currentPoint].connections;
-      truck.targetPoint = possibleTargets[Math.floor(Math.random() * possibleTargets.length)];
-    });
+      // Create connections between path points (grid with some diagonals)
+      pathPoints.forEach((point, index) => {
+        // Connect to right point (if not last in row)
+        if ((index + 1) % (gridSize + 1) !== 0 && index + 1 < pathPoints.length) {
+          point.connections.push(index + 1);
+        }
+        
+        // Connect to bottom point
+        if (index + gridSize + 1 < pathPoints.length) {
+          point.connections.push(index + gridSize + 1);
+          
+          // Some diagonal connections
+          if (Math.random() > 0.5 && (index + 1) % (gridSize + 1) !== 0) {
+            point.connections.push(index + gridSize + 2);
+          }
+        }
+      });
+      
+      // Assign trucks to paths with safety checks
+      trucks.forEach(truck => {
+        truck.currentPoint = Math.floor(Math.random() * pathPoints.length);
+        
+        // Make sure the current point exists
+        if (pathPoints[truck.currentPoint]) {
+          // Make sure the target point is connected and exists
+          const possibleTargets = pathPoints[truck.currentPoint].connections;
+          if (possibleTargets && possibleTargets.length > 0) {
+            truck.targetPoint = possibleTargets[Math.floor(Math.random() * possibleTargets.length)];
+          } else {
+            // Fallback if no connections
+            truck.targetPoint = truck.currentPoint;
+          }
+        } else {
+          // Fallback if current point doesn't exist
+          truck.currentPoint = 0;
+          truck.targetPoint = 0;
+        }
+      });
+    };
     
     // Animation function
     const animate = () => {
-      requestAnimationFrame(animate);
+      const animationId = requestAnimationFrame(animate);
+      if (!canvas.isConnected) {
+        cancelAnimationFrame(animationId);
+        return;
+      }
+      
+      const rect = canvas.getBoundingClientRect();
       ctx.clearRect(0, 0, rect.width, rect.height);
       
-      // Draw path connections
+      // Draw path connections with safety checks
       ctx.lineWidth = 1;
       ctx.strokeStyle = 'rgba(0, 176, 80, 0.15)';
       
       pathPoints.forEach((point, index) => {
-        point.connections.forEach(targetIndex => {
-          const targetPoint = pathPoints[targetIndex];
-          
-          ctx.beginPath();
-          ctx.moveTo(point.x, point.y);
-          ctx.lineTo(targetPoint.x, targetPoint.y);
-          ctx.stroke();
-        });
+        if (point && point.connections) {
+          point.connections.forEach(targetIndex => {
+            const targetPoint = pathPoints[targetIndex];
+            
+            if (targetPoint) {
+              ctx.beginPath();
+              ctx.moveTo(point.x, point.y);
+              ctx.lineTo(targetPoint.x, targetPoint.y);
+              ctx.stroke();
+            }
+          });
+        }
       });
       
-      // Draw path points
+      // Draw path points with safety checks
       pathPoints.forEach(point => {
-        ctx.beginPath();
-        ctx.arc(point.x, point.y, point.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0, 176, 80, 0.2)';
-        ctx.fill();
+        if (point) {
+          ctx.beginPath();
+          ctx.arc(point.x, point.y, point.radius, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(0, 176, 80, 0.2)';
+          ctx.fill();
+        }
       });
       
-      // Update and draw trucks
+      // Update and draw trucks with safety checks
       trucks.forEach(truck => {
+        if (!truck) return;
+        
         const currentPoint = pathPoints[truck.currentPoint];
         const targetPoint = pathPoints[truck.targetPoint];
         
-        // Calculate direction to target
-        const dx = targetPoint.x - truck.x;
-        const dy = targetPoint.y - truck.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        
-        // Adjust truck angle to face target with smooth turning
-        const targetAngle = Math.atan2(dy, dx);
-        const angleDiff = targetAngle - truck.angle;
-        
-        // Normalize angle difference
-        const normalizedDiff = Math.atan2(Math.sin(angleDiff), Math.cos(angleDiff));
-        truck.angle += normalizedDiff * 0.1;
-        
-        // Move truck
-        if (distance < truck.speed) {
-          // Reached the target point, select a new target
-          truck.currentPoint = truck.targetPoint;
+        // Only proceed if both points exist
+        if (currentPoint && targetPoint) {
+          // Calculate direction to target
+          const dx = targetPoint.x - truck.x;
+          const dy = targetPoint.y - truck.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
           
-          // Choose next target point
-          const possibleTargets = pathPoints[truck.currentPoint].connections;
-          if (possibleTargets.length > 0) {
-            truck.targetPoint = possibleTargets[Math.floor(Math.random() * possibleTargets.length)];
+          // Adjust truck angle to face target with smooth turning
+          const targetAngle = Math.atan2(dy, dx);
+          const angleDiff = targetAngle - truck.angle;
+          
+          // Normalize angle difference
+          const normalizedDiff = Math.atan2(Math.sin(angleDiff), Math.cos(angleDiff));
+          truck.angle += normalizedDiff * 0.1;
+          
+          // Move truck
+          if (distance < truck.speed) {
+            // Reached the target point, select a new target
+            truck.currentPoint = truck.targetPoint;
+            
+            // Choose next target point with safety check
+            if (currentPoint.connections && currentPoint.connections.length > 0) {
+              truck.targetPoint = currentPoint.connections[Math.floor(Math.random() * currentPoint.connections.length)];
+            }
+          } else {
+            // Move toward target
+            truck.x += Math.cos(truck.angle) * truck.speed;
+            truck.y += Math.sin(truck.angle) * truck.speed;
           }
-        } else {
-          // Move toward target
-          truck.x += Math.cos(truck.angle) * truck.speed;
-          truck.y += Math.sin(truck.angle) * truck.speed;
+          
+          // Draw truck (minimalist style)
+          ctx.save();
+          ctx.translate(truck.x, truck.y);
+          ctx.rotate(truck.angle);
+          
+          // Draw truck body
+          ctx.fillStyle = truck.color;
+          ctx.fillRect(-truck.width/2, -truck.height/2, truck.width, truck.height);
+          
+          // Draw truck cab
+          ctx.fillStyle = 'rgba(0, 50, 30, 0.7)';
+          ctx.fillRect(-truck.width/2, -truck.height/2, truck.width * 0.3, truck.height);
+          
+          // Draw wheels
+          ctx.fillStyle = '#333';
+          ctx.fillRect(-truck.width/3, -truck.height/2 - 2, 4, 2);
+          ctx.fillRect(-truck.width/3, truck.height/2, 4, 2);
+          ctx.fillRect(truck.width/4, -truck.height/2 - 2, 4, 2);
+          ctx.fillRect(truck.width/4, truck.height/2, 4, 2);
+          
+          ctx.restore();
         }
-        
-        // Draw truck (minimalist style)
-        ctx.save();
-        ctx.translate(truck.x, truck.y);
-        ctx.rotate(truck.angle);
-        
-        // Draw truck body
-        ctx.fillStyle = truck.color;
-        ctx.fillRect(-truck.width/2, -truck.height/2, truck.width, truck.height);
-        
-        // Draw truck cab
-        ctx.fillStyle = 'rgba(0, 50, 30, 0.7)';
-        ctx.fillRect(-truck.width/2, -truck.height/2, truck.width * 0.3, truck.height);
-        
-        // Draw wheels
-        ctx.fillStyle = '#333';
-        ctx.fillRect(-truck.width/3, -truck.height/2 - 2, 4, 2);
-        ctx.fillRect(-truck.width/3, truck.height/2, 4, 2);
-        ctx.fillRect(truck.width/4, -truck.height/2 - 2, 4, 2);
-        ctx.fillRect(truck.width/4, truck.height/2, 4, 2);
-        
-        ctx.restore();
       });
       
       // Draw a compass or legend in the corner
@@ -198,6 +236,7 @@ export const LogisticsAnimation: React.FC = () => {
       ctx.restore();
     };
     
+    // Start the animation
     animate();
     
     return () => {
