@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react';
-import { Truck, Home, FileText } from 'lucide-react';
 
-// Animation for Logistics Technology - with globe and connected points
+import React, { useEffect, useRef } from 'react';
+
+// Updated LogisticsAnimation - Elegant night-time globe with fewer elements
 export const LogisticsAnimation: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -16,10 +16,8 @@ export const LogisticsAnimation: React.FC = () => {
     const resizeCanvas = () => {
       const rect = canvas.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
-      
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
-      
       ctx.scale(dpr, dpr);
     };
 
@@ -29,45 +27,40 @@ export const LogisticsAnimation: React.FC = () => {
     const rect = canvas.getBoundingClientRect();
 
     // Define the globe radius and center
-    const globeRadius = Math.min(rect.width, rect.height) * 0.35;
+    const globeRadius = Math.min(rect.width, rect.height) * 0.3;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
     
-    // Create connection points around the globe
+    // Create connection points around the globe - fewer points for elegance
     const connectionPoints = [];
-    const connectionCount = 14;
+    const connectionCount = 10;
     
     // Generate connection points distributed across the globe
     for (let i = 0; i < connectionCount; i++) {
-      // Use spherical coordinates to place points around the globe
       const phi = Math.acos(-1 + (2 * i) / connectionCount);
       const theta = Math.sqrt(connectionCount * Math.PI) * phi;
       
-      // Convert to cartesian coordinates
       const x = centerX + globeRadius * Math.cos(theta) * Math.sin(phi);
       const y = centerY + globeRadius * Math.sin(theta) * Math.sin(phi);
       
-      // Add depth effect - points further back are more transparent
       const depthFactor = Math.sin(phi) * Math.cos(theta);
-      const opacity = 0.3 + (depthFactor + 1) * 0.35;
+      const opacity = 0.2 + (depthFactor + 1) * 0.3;
       
       connectionPoints.push({
         x,
         y,
-        size: 2 + Math.random() * 3,
+        size: 1.5 + Math.random() * 1.5,
         opacity,
         connections: [],
-        active: Math.random() > 0.3 // Some points start active
+        active: Math.random() > 0.4
       });
     }
     
-    // Create connections between points
+    // Create connections between points - fewer connections for cleaner look
     connectionPoints.forEach((point, index) => {
-      // Connect each point to 2-3 others
-      const connectionCount = 2 + Math.floor(Math.random() * 2);
+      const connectionCount = 1 + Math.floor(Math.random() * 2);
       
       for (let i = 0; i < connectionCount; i++) {
-        // Choose a random point to connect to
         let targetIndex;
         do {
           targetIndex = Math.floor(Math.random() * connectionPoints.length);
@@ -79,10 +72,9 @@ export const LogisticsAnimation: React.FC = () => {
     
     // Create moving packages/data points between connection points
     const packages = [];
-    const packageCount = 6;
+    const packageCount = 4; // Fewer packages for elegance
     
     for (let i = 0; i < packageCount; i++) {
-      // Choose random start and end points
       const startPointIndex = Math.floor(Math.random() * connectionPoints.length);
       let endPointIndex;
       
@@ -99,30 +91,32 @@ export const LogisticsAnimation: React.FC = () => {
         x: startPoint.x,
         y: startPoint.y,
         progress: 0,
-        speed: 0.002 + Math.random() * 0.003,
+        speed: 0.002 + Math.random() * 0.002,
         color: i % 2 === 0 ? '#00B050' : '#7ED957',
-        size: 4 + Math.random() * 3
+        size: 2 + Math.random() * 2
       });
     }
     
     let rotationAngle = 0;
-    let time = 0;
     
     // Animation function
     const animate = () => {
       requestAnimationFrame(animate);
       ctx.clearRect(0, 0, rect.width, rect.height);
       
-      time += 0.01;
-      rotationAngle += 0.002; // Slow rotation of the globe
+      rotationAngle += 0.001; // Slower rotation for elegance
       
-      // Draw globe outline with green grid
-      ctx.strokeStyle = 'rgba(0, 176, 80, 0.2)';
-      ctx.lineWidth = 1;
+      // Dark background for night-time globe effect
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+      ctx.fillRect(0, 0, rect.width, rect.height);
       
-      // Draw longitude lines
-      for (let i = 0; i < 8; i++) {
-        const angle = (i / 8) * Math.PI * 2 + rotationAngle;
+      // Draw globe outline
+      ctx.strokeStyle = 'rgba(0, 176, 80, 0.15)';
+      ctx.lineWidth = 0.5;
+      
+      // Draw fewer longitude lines for cleaner look
+      for (let i = 0; i < 6; i++) {
+        const angle = (i / 6) * Math.PI * 2 + rotationAngle;
         
         ctx.beginPath();
         ctx.ellipse(
@@ -137,19 +131,33 @@ export const LogisticsAnimation: React.FC = () => {
         ctx.stroke();
       }
       
-      // Draw latitude lines
-      for (let i = 1; i < 5; i++) {
-        const radius = globeRadius * (i / 5);
+      // Draw fewer latitude lines for cleaner look
+      for (let i = 1; i < 4; i++) {
+        const radius = globeRadius * (i / 4);
         
         ctx.beginPath();
         ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
         ctx.stroke();
       }
       
+      // Draw elegant glow around the globe
+      const gradient = ctx.createRadialGradient(
+        centerX, centerY, 0,
+        centerX, centerY, globeRadius * 1.2
+      );
+      gradient.addColorStop(0, 'rgba(0, 176, 80, 0.15)');
+      gradient.addColorStop(0.5, 'rgba(0, 176, 80, 0.05)');
+      gradient.addColorStop(1, 'rgba(0, 176, 80, 0)');
+      
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, globeRadius * 1.2, 0, Math.PI * 2);
+      ctx.fill();
+      
       // Update connection points
       connectionPoints.forEach((point, index) => {
         // Random activation of points
-        if (Math.random() > 0.995) {
+        if (Math.random() > 0.998) {
           point.active = !point.active;
         }
         
@@ -163,8 +171,8 @@ export const LogisticsAnimation: React.FC = () => {
               ctx.beginPath();
               ctx.moveTo(point.x, point.y);
               ctx.lineTo(targetPoint.x, targetPoint.y);
-              ctx.strokeStyle = `rgba(0, 176, 80, ${(point.opacity + targetPoint.opacity) * 0.25})`;
-              ctx.lineWidth = 0.8;
+              ctx.strokeStyle = `rgba(0, 176, 80, ${(point.opacity + targetPoint.opacity) * 0.2})`;
+              ctx.lineWidth = 0.5;
               ctx.stroke();
             }
           });
@@ -189,12 +197,10 @@ export const LogisticsAnimation: React.FC = () => {
           pkg.progress = 0;
           pkg.startPointIndex = pkg.endPointIndex;
           
-          // Choose a new end point
           do {
             pkg.endPointIndex = Math.floor(Math.random() * connectionPoints.length);
           } while (pkg.endPointIndex === pkg.startPointIndex);
           
-          // Activate both points
           connectionPoints[pkg.startPointIndex].active = true;
           connectionPoints[pkg.endPointIndex].active = true;
         }
@@ -202,16 +208,14 @@ export const LogisticsAnimation: React.FC = () => {
         const startPoint = connectionPoints[pkg.startPointIndex];
         const endPoint = connectionPoints[pkg.endPointIndex];
         
-        // Calculate current position (with slight arc for 3D effect)
+        // Calculate current position with slight arc
         const dx = endPoint.x - startPoint.x;
         const dy = endPoint.y - startPoint.y;
         
-        // Add a slight arc to the path
         const midX = (startPoint.x + endPoint.x) / 2;
         const midY = (startPoint.y + endPoint.y) / 2;
-        const arcHeight = Math.sqrt(dx * dx + dy * dy) * 0.2;
+        const arcHeight = Math.sqrt(dx * dx + dy * dy) * 0.1;
         
-        // Use quadratic bezier curve for position
         const t = pkg.progress;
         const mt = 1 - t;
         
@@ -223,42 +227,38 @@ export const LogisticsAnimation: React.FC = () => {
         ctx.arc(pkg.x, pkg.y, pkg.size, 0, Math.PI * 2);
         ctx.fillStyle = pkg.color;
         ctx.fill();
-        
-        // Draw package trail
-        ctx.beginPath();
-        ctx.moveTo(pkg.x, pkg.y);
-        
-        // Calculate trail points
-        for (let i = 1; i <= 5; i++) {
-          const trailT = Math.max(0, t - i * 0.04);
-          const trailMt = 1 - trailT;
-          
-          const trailX = trailMt * trailMt * startPoint.x + 2 * trailMt * trailT * midX + trailT * trailT * endPoint.x;
-          const trailY = trailMt * trailMt * startPoint.y + 2 * trailMt * trailT * (midY - arcHeight * Math.sin(trailT * Math.PI)) + trailT * trailT * endPoint.y;
-          
-          ctx.lineTo(trailX, trailY);
-        }
-        
-        ctx.strokeStyle = `rgba(${pkg.color.slice(1, 3)}, ${pkg.color.slice(3, 5)}, ${pkg.color.slice(5, 7)}, 0.2)`;
-        ctx.lineWidth = 2;
-        ctx.stroke();
       });
       
-      // Draw globe center glow
-      const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, globeRadius * 0.2);
-      gradient.addColorStop(0, 'rgba(0, 176, 80, 0.3)');
-      gradient.addColorStop(1, 'rgba(0, 176, 80, 0)');
+      // Draw elegant center glow
+      const centerGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, globeRadius * 0.15);
+      centerGradient.addColorStop(0, 'rgba(0, 176, 80, 0.3)');
+      centerGradient.addColorStop(1, 'rgba(0, 176, 80, 0)');
       
       ctx.beginPath();
-      ctx.arc(centerX, centerY, globeRadius * 0.2, 0, Math.PI * 2);
-      ctx.fillStyle = gradient;
+      ctx.arc(centerX, centerY, globeRadius * 0.15, 0, Math.PI * 2);
+      ctx.fillStyle = centerGradient;
       ctx.fill();
+      
+      // Draw stars for night-time effect
+      for (let i = 0; i < 50; i++) {
+        if (Math.random() > 0.99) {
+          const x = Math.random() * rect.width;
+          const y = Math.random() * rect.height;
+          const size = Math.random() * 1;
+          
+          ctx.beginPath();
+          ctx.arc(x, y, size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.2})`;
+          ctx.fill();
+        }
+      }
     };
     
-    animate();
+    const animationFrame = requestAnimationFrame(animate);
     
     return () => {
       window.removeEventListener('resize', resizeCanvas);
+      cancelAnimationFrame(animationFrame);
     };
   }, []);
 
@@ -270,7 +270,7 @@ export const LogisticsAnimation: React.FC = () => {
   );
 };
 
-// Animation for Real Estate Technology - Line-drawing houses on a digital grid
+// RealEstateAnimation - Modern digital grid with property elements
 export const RealEstateAnimation: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -285,10 +285,8 @@ export const RealEstateAnimation: React.FC = () => {
     const resizeCanvas = () => {
       const rect = canvas.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
-      
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
-      
       ctx.scale(dpr, dpr);
     };
 
@@ -297,69 +295,65 @@ export const RealEstateAnimation: React.FC = () => {
 
     const rect = canvas.getBoundingClientRect();
     
-    // Create houses - using line drawing style
-    const houses = [];
-    const houseCount = 8; // Reduced number for cleaner look
-    
-    for (let i = 0; i < houseCount; i++) {
-      houses.push({
-        x: Math.random() * rect.width,
-        y: Math.random() * rect.height,
-        size: 18 + Math.random() * 8, // Slightly larger for better line visibility
-        color: i % 3 === 0 ? '#00B050' : (i % 3 === 1 ? '#7ED957' : '#008C41'),
-        rotation: Math.random() * Math.PI * 0.1, // Less rotation for better readability
-        rotationSpeed: (Math.random() - 0.5) * 0.005,
-        elevation: Math.random() * 10,
-        elevationDirection: Math.random() > 0.5 ? 1 : -1,
-        style: Math.floor(Math.random() * 3) // Different house styles
-      });
-    }
-    
-    // Draw grid for digital effect - simplified
+    // Create a cleaner grid system
     const gridCells = {
       horizontal: [],
       vertical: []
     };
     
-    const gridDensity = 12; // Reduced density
+    const gridDensity = 10;
     
     for (let i = 0; i <= gridDensity; i++) {
       gridCells.horizontal.push({
         y: (rect.height / gridDensity) * i,
-        opacity: 0.07 + Math.random() * 0.08 // Lighter lines
+        opacity: 0.05 + Math.random() * 0.05
       });
       
       gridCells.vertical.push({
         x: (rect.width / gridDensity) * i,
-        opacity: 0.07 + Math.random() * 0.08 // Lighter lines
+        opacity: 0.05 + Math.random() * 0.05
       });
     }
     
-    // Connection points for houses
+    // Create building blocks - using simple geometric shapes
+    const buildings = [];
+    const buildingCount =
+     6;
+    
+    for (let i = 0; i < buildingCount; i++) {
+      buildings.push({
+        x: (rect.width / (buildingCount + 1)) * (i + 1),
+        y: rect.height / 2 + 20,
+        width: 20 + Math.random() * 15,
+        height: 30 + Math.random() * 40,
+        style: Math.floor(Math.random() * 3),
+        pulseTime: Math.random() * Math.PI * 2,
+        pulseSpeed: 0.03 + Math.random() * 0.02
+      });
+    }
+    
+    // Connection points for data flow
     const connectionPoints = [];
-    const pointCount = 6; // Reduced for cleaner look
     
-    for (let i = 0; i < pointCount; i++) {
+    for (let i = 0; i < 8; i++) {
       connectionPoints.push({
-        x: rect.width/2 + (rect.width/3) * Math.cos(i * Math.PI * 2 / pointCount),
-        y: rect.height/2 + (rect.height/3) * Math.sin(i * Math.PI * 2 / pointCount),
-        connections: []
+        x: Math.random() * rect.width,
+        y: Math.random() * rect.height,
+        size: 2 + Math.random() * 2,
+        connections: [],
+        active: true
       });
     }
     
-    // Create a circular connection between points
-    for (let i = 0; i < pointCount; i++) {
-      connectionPoints[i].connections.push((i + 1) % pointCount);
-      
-      // Add some cross connections
-      if (i < pointCount - 2) {
-        connectionPoints[i].connections.push((i + 2) % pointCount);
+    // Create connections
+    connectionPoints.forEach((point, i) => {
+      const connectionCount = Math.floor(Math.random() * 2) + 1;
+      for (let c = 0; c < connectionCount; c++) {
+        let targetIndex = Math.floor(Math.random() * connectionPoints.length);
+        if (targetIndex !== i) {
+          point.connections.push(targetIndex);
+        }
       }
-    }
-    
-    // Assign houses to connection points
-    houses.forEach(house => {
-      house.pointIndex = Math.floor(Math.random() * pointCount);
     });
     
     let time = 0;
@@ -371,8 +365,8 @@ export const RealEstateAnimation: React.FC = () => {
       
       time += 0.01;
       
-      // Draw grid
-      ctx.lineWidth = 0.5; // Thinner lines
+      // Draw grid - lighter, more elegant
+      ctx.lineWidth = 0.5;
       
       gridCells.horizontal.forEach(line => {
         ctx.beginPath();
@@ -390,188 +384,186 @@ export const RealEstateAnimation: React.FC = () => {
         ctx.stroke();
       });
       
-      // Draw connection points and lines
-      connectionPoints.forEach((point, index) => {
+      // Draw connections between points
+      connectionPoints.forEach(point => {
         // Draw connections
         point.connections.forEach(targetIndex => {
+          const targetPoint = connectionPoints[targetIndex];
+          
           ctx.beginPath();
           ctx.moveTo(point.x, point.y);
-          ctx.lineTo(connectionPoints[targetIndex].x, connectionPoints[targetIndex].y);
-          ctx.strokeStyle = 'rgba(0, 176, 80, 0.1)'; // Lighter connections
+          ctx.lineTo(targetPoint.x, targetPoint.y);
+          ctx.strokeStyle = 'rgba(0, 176, 80, 0.1)';
+          ctx.lineWidth = 0.8;
           ctx.stroke();
+          
+          // Draw moving data packet
+          if (Math.random() > 0.98) {
+            const progress = Math.random();
+            const x = point.x + (targetPoint.x - point.x) * progress;
+            const y = point.y + (targetPoint.y - point.y) * progress;
+            
+            ctx.beginPath();
+            ctx.arc(x, y, 2, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(0, 176, 80, 0.8)';
+            ctx.fill();
+          }
         });
         
         // Draw point
         ctx.beginPath();
-        ctx.arc(point.x, point.y, 3, 0, Math.PI * 2);
+        ctx.arc(point.x, point.y, point.size, 0, Math.PI * 2);
         ctx.fillStyle = 'rgba(0, 176, 80, 0.2)';
         ctx.fill();
       });
       
-      // Update and draw houses
-      houses.forEach(house => {
-        // Update house position
-        const pointIndex = house.pointIndex;
-        const point = connectionPoints[pointIndex];
+      // Draw buildings
+      buildings.forEach(building => {
+        // Update pulse
+        building.pulseTime += building.pulseSpeed;
+        const pulse = Math.sin(building.pulseTime) * 0.5 + 0.5;
         
-        // Move house along circular path around its assigned point
-        const angle = time + (pointIndex * Math.PI / 4);
-        const orbitRadius = 30 + Math.sin(time * 0.5) * 10;
+        ctx.save();
+        ctx.translate(building.x, building.y);
         
-        house.x = point.x + Math.cos(angle) * orbitRadius;
-        house.y = point.y + Math.sin(angle) * orbitRadius;
-        
-        // Update rotation
-        house.rotation += house.rotationSpeed;
-        
-        // Update elevation for floating effect
-        house.elevation += 0.1 * house.elevationDirection;
-        if (house.elevation > 10 || house.elevation < 0) {
-          house.elevationDirection *= -1;
-        }
-        
-        // Draw house shadow (subtle)
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        // Draw building shadow
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
         ctx.beginPath();
-        ctx.ellipse(
-          house.x, 
-          house.y + house.size/2 + 5, 
-          house.size/2, 
-          house.size/6, 
-          0, 0, Math.PI * 2
-        );
+        ctx.ellipse(0, 5, building.width/2, building.width/6, 0, 0, Math.PI * 2);
         ctx.fill();
         
-        // Draw house with line style
-        ctx.save();
-        ctx.translate(house.x, house.y - house.elevation * 0.1);
-        ctx.rotate(house.rotation);
-        
-        ctx.strokeStyle = house.color;
-        ctx.lineWidth = 1.5;
-        ctx.lineJoin = 'round';
-        
-        // Different house styles using line art
-        if (house.style === 0) {
-          // Style 1: Simple house with roof
+        // Different building styles
+        if (building.style === 0) {
+          // Simple skyscraper
+          ctx.strokeStyle = `rgba(0, 176, 80, ${0.4 + pulse * 0.3})`;
+          ctx.lineWidth = 1;
           
-          // House body outline
+          // Building body
           ctx.beginPath();
-          ctx.strokeRect(-house.size/2, -house.size/2, house.size, house.size);
-          
-          // Roof
-          ctx.beginPath();
-          ctx.moveTo(-house.size/2 - 2, -house.size/2);
-          ctx.lineTo(0, -house.size/2 - house.size/3);
-          ctx.lineTo(house.size/2 + 2, -house.size/2);
-          ctx.stroke();
-          
-          // Door
-          ctx.beginPath();
-          ctx.moveTo(-house.size/6, house.size/2);
-          ctx.lineTo(-house.size/6, 0);
-          ctx.lineTo(house.size/6, 0);
-          ctx.lineTo(house.size/6, house.size/2);
+          ctx.rect(-building.width/2, -building.height, building.width, building.height);
           ctx.stroke();
           
           // Windows
-          ctx.strokeRect(-house.size/3, -house.size/3, house.size/4, house.size/4);
-          ctx.strokeRect(house.size/10, -house.size/3, house.size/4, house.size/4);
+          const floors = Math.floor(building.height / 8);
+          const sides = 3;
           
-        } else if (house.style === 1) {
-          // Style 2: Modern house
-          
-          // House body - two connected rectangles
-          ctx.beginPath();
-          ctx.strokeRect(-house.size/2, -house.size/3, house.size * 0.6, house.size * 0.8);
-          ctx.strokeRect(-house.size/2 + house.size * 0.6, -house.size/2, house.size * 0.4, house.size);
-          
-          // Windows - horizontal lines
-          for (let i = 0; i < 3; i++) {
-            ctx.beginPath();
-            ctx.moveTo(-house.size/2 + 2, -house.size/4 + i * house.size/6);
-            ctx.lineTo(-house.size/2 + house.size * 0.6 - 2, -house.size/4 + i * house.size/6);
-            ctx.stroke();
+          for (let f = 0; f < floors; f++) {
+            for (let s = 0; s < sides; s++) {
+              if (Math.random() > 0.3) {
+                const windowWidth = building.width / (sides + 1);
+                const x = -building.width/2 + (s + 1) * windowWidth - windowWidth/2;
+                const y = -building.height + f * 8 + 3;
+                
+                ctx.fillStyle = `rgba(0, 176, 80, ${0.1 + Math.random() * 0.2})`;
+                ctx.fillRect(x, y, windowWidth - 2, 3);
+              }
+            }
           }
           
-          // Windows - vertical lines on second section
-          for (let i = 0; i < 2; i++) {
+        } else if (building.style === 1) {
+          // Modern curved building
+          ctx.strokeStyle = `rgba(0, 176, 80, ${0.4 + pulse * 0.3})`;
+          ctx.lineWidth = 1;
+          
+          // Building body
+          ctx.beginPath();
+          ctx.moveTo(-building.width/2, 0);
+          ctx.quadraticCurveTo(
+            building.width/4, -building.height * 0.6,
+            building.width/2, -building.height
+          );
+          ctx.lineTo(building.width/2, 0);
+          ctx.closePath();
+          ctx.stroke();
+          
+          // Windows
+          const lines = 6;
+          for (let l = 1; l < lines; l++) {
+            const y = -building.height * (l / lines);
+            const xStart = -building.width/2 + building.width * (l / lines) * 0.5;
+            const xEnd = building.width/2;
+            
             ctx.beginPath();
-            ctx.moveTo(-house.size/2 + house.size * 0.6 + house.size * 0.2, -house.size/2 + i * house.size/3);
-            ctx.lineTo(-house.size/2 + house.size * 0.6 + house.size * 0.2, -house.size/2 + house.size/4 + i * house.size/3);
+            ctx.moveTo(xStart, y);
+            ctx.lineTo(xEnd, y);
+            ctx.strokeStyle = `rgba(0, 176, 80, ${0.1 + Math.random() * 0.1})`;
             ctx.stroke();
           }
           
         } else {
-          // Style 3: Circular house
+          // Futuristic building
+          ctx.strokeStyle = `rgba(0, 176, 80, ${0.4 + pulse * 0.3})`;
+          ctx.lineWidth = 1;
           
-          // Circular main structure
+          // Building main body
           ctx.beginPath();
-          ctx.arc(0, 0, house.size/2, 0, Math.PI * 2);
+          ctx.moveTo(-building.width/2, 0);
+          ctx.lineTo(-building.width/2, -building.height * 0.7);
+          ctx.lineTo(-building.width/4, -building.height * 0.9);
+          ctx.lineTo(building.width/4, -building.height * 0.9);
+          ctx.lineTo(building.width/2, -building.height * 0.7);
+          ctx.lineTo(building.width/2, 0);
+          ctx.closePath();
           ctx.stroke();
           
-          // Dome roof
+          // Building top
           ctx.beginPath();
-          ctx.arc(0, -house.size/2, house.size/3, 0, Math.PI, true);
+          ctx.moveTo(-building.width/4, -building.height * 0.9);
+          ctx.lineTo(0, -building.height);
+          ctx.lineTo(building.width/4, -building.height * 0.9);
           ctx.stroke();
           
-          // Door
-          ctx.beginPath();
-          ctx.moveTo(-house.size/6, house.size/2);
-          ctx.lineTo(-house.size/6, house.size/6);
-          ctx.arc(0, house.size/6, house.size/6, Math.PI, 0, true);
-          ctx.lineTo(house.size/6, house.size/2);
-          ctx.stroke();
-          
-          // Windows
-          ctx.beginPath();
-          ctx.arc(-house.size/4, -house.size/6, house.size/8, 0, Math.PI * 2);
-          ctx.stroke();
-          
-          ctx.beginPath();
-          ctx.arc(house.size/4, -house.size/6, house.size/8, 0, Math.PI * 2);
-          ctx.stroke();
+          // Horizontal lines
+          const floors = 5;
+          for (let f = 1; f < floors; f++) {
+            const y = -building.height * 0.7 * (f / floors);
+            
+            ctx.beginPath();
+            ctx.moveTo(-building.width/2, y);
+            ctx.lineTo(building.width/2, y);
+            ctx.strokeStyle = `rgba(0, 176, 80, ${0.1 + Math.random() * 0.1})`;
+            ctx.stroke();
+          }
         }
+        
+        // Pulse effect at top of building
+        ctx.beginPath();
+        ctx.arc(0, -building.height, 2 + pulse * 2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0, 176, 80, ${0.3 + pulse * 0.5})`;
+        ctx.fill();
         
         ctx.restore();
-        
-        // Digital data points above house (reduced frequency)
-        if (Math.random() > 0.99) {
-          ctx.fillStyle = 'rgba(0, 176, 80, 0.8)';
-          ctx.font = '8px monospace';
-          ctx.fillText('1', house.x + (Math.random() - 0.5) * 20, house.y - house.size - Math.random() * 10);
-        }
-        if (Math.random() > 0.99) {
-          ctx.fillStyle = 'rgba(0, 176, 80, 0.8)';
-          ctx.font = '8px monospace';
-          ctx.fillText('0', house.x + (Math.random() - 0.5) * 20, house.y - house.size - Math.random() * 10);
-        }
       });
+      
+      // Occasional data points
+      if (Math.random() > 0.95) {
+        ctx.fillStyle = 'rgba(0, 176, 80, 0.6)';
+        ctx.font = '8px monospace';
+        ctx.fillText('1', Math.random() * rect.width, Math.random() * rect.height);
+      }
+      if (Math.random() > 0.95) {
+        ctx.fillStyle = 'rgba(0, 176, 80, 0.6)';
+        ctx.font = '8px monospace';
+        ctx.fillText('0', Math.random() * rect.width, Math.random() * rect.height);
+      }
       
       // Draw a central hub
       ctx.beginPath();
-      ctx.arc(rect.width/2, rect.height/2, 15, 0, Math.PI * 2);
+      ctx.arc(rect.width/2, rect.height/2, 10, 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(0, 176, 80, 0.1)';
       ctx.fill();
       
       ctx.beginPath();
-      ctx.arc(rect.width/2, rect.height/2, 8, 0, Math.PI * 2);
-      ctx.fillStyle = '#00B050';
+      ctx.arc(rect.width/2, rect.height/2, 5, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(0, 176, 80, 0.4)';
       ctx.fill();
-      
-      // Pulse effect
-      const pulseSize = 15 + Math.sin(time * 3) * 5;
-      ctx.beginPath();
-      ctx.arc(rect.width/2, rect.height/2, pulseSize, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(0, 176, 80, 0.3)';
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
     };
     
-    animate();
+    const animationFrame = requestAnimationFrame(animate);
     
     return () => {
       window.removeEventListener('resize', resizeCanvas);
+      cancelAnimationFrame(animationFrame);
     };
   }, []);
 
@@ -583,7 +575,7 @@ export const RealEstateAnimation: React.FC = () => {
   );
 };
 
-// Animation for Fiscal Technology - Simplified financial data
+// FiscalAnimation - Minimalist financial data visualization
 export const FiscalAnimation: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -598,10 +590,8 @@ export const FiscalAnimation: React.FC = () => {
     const resizeCanvas = () => {
       const rect = canvas.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
-      
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
-      
       ctx.scale(dpr, dpr);
     };
 
@@ -610,40 +600,9 @@ export const FiscalAnimation: React.FC = () => {
 
     const rect = canvas.getBoundingClientRect();
     
-    // Create documents with financial data - reduced number
-    const documents = [];
-    const documentCount = 5; // Reduced from 8
-    
-    for (let i = 0; i < documentCount; i++) {
-      documents.push({
-        x: Math.random() * rect.width,
-        y: Math.random() * rect.height,
-        width: 30 + Math.random() * 20,
-        height: 40 + Math.random() * 20,
-        rotation: (Math.random() - 0.5) * 0.2, // Less rotation
-        color: i % 3 === 0 ? '#00B050' : (i % 3 === 1 ? '#7ED957' : '#008C41'),
-        speed: 0.15 + Math.random() * 0.2, // Slower movement
-        dataLines: Math.floor(Math.random() * 3) + 2,
-        scale: 0.7 + Math.random() * 0.4
-      });
-    }
-    
-    // Create graph bars (for minimalist bar chart)
-    const graphBars = [];
-    const barCount = 5; // Reduced from 6
-    
-    for (let i = 0; i < barCount; i++) {
-      graphBars.push({
-        height: 0,
-        targetHeight: 20 + Math.random() * 40, // Lower bars
-        changeInterval: 250 + Math.random() * 300, // Slower changes
-        lastChange: 0
-      });
-    }
-    
-    // Create data points for line chart
+    // Create line chart points
     const lineChartPoints = [];
-    const pointCount = 6; // Reduced from 8
+    const pointCount = 8;
     
     for (let i = 0; i < pointCount; i++) {
       lineChartPoints.push({
@@ -654,22 +613,38 @@ export const FiscalAnimation: React.FC = () => {
       });
     }
     
-    // Data numbers floating around - significantly reduced
-    const dataNumbers = [];
-    const numberCount = 6; // Reduced from 15
+    // Create bar chart data
+    const barChart = {
+      bars: [],
+      barCount: 5
+    };
     
-    for (let i = 0; i < numberCount; i++) {
-      dataNumbers.push({
-        x: Math.random() * rect.width,
-        y: Math.random() * rect.height,
-        value: Math.floor(Math.random() * 100),
-        size: 8 + Math.random() * 4,
-        opacity: 0.2 + Math.random() * 0.3, // More transparent
-        speed: 0.15 + Math.random() * 0.2 // Slower movement
+    for (let i = 0; i < barChart.barCount; i++) {
+      barChart.bars.push({
+        height: 0,
+        targetHeight: 20 + Math.random() * 40,
+        changeInterval: 200 + Math.random() * 300,
+        lastChange: 0
       });
     }
     
-    let time = 0;
+    // Create floating financial numbers and symbols
+    const financialElements = [];
+    const elementCount = 5;
+    const symbols = ['$', '%', '+', '-', '='];
+    
+    for (let i = 0; i < elementCount; i++) {
+      financialElements.push({
+        x: Math.random() * rect.width,
+        y: Math.random() * rect.height,
+        type: Math.random() > 0.5 ? 'number' : 'symbol',
+        value: Math.random() > 0.5 ? Math.floor(Math.random() * 100) : symbols[Math.floor(Math.random() * symbols.length)],
+        size: 10 + Math.random() * 6,
+        opacity: 0.1 + Math.random() * 0.2,
+        speed: 0.2 + Math.random() * 0.3
+      });
+    }
+    
     let frame = 0;
     
     // Animation function
@@ -677,14 +652,17 @@ export const FiscalAnimation: React.FC = () => {
       requestAnimationFrame(animate);
       ctx.clearRect(0, 0, rect.width, rect.height);
       
-      time += 0.01;
       frame++;
       
-      // Draw background grid - sparser grid
-      ctx.lineWidth = 0.3; // Thinner lines
-      ctx.strokeStyle = 'rgba(0, 176, 80, 0.05)'; // More transparent
+      // Center coordinates
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
       
-      const gridSize = 60; // Larger grid cells
+      // Draw background grid
+      ctx.lineWidth = 0.2;
+      ctx.strokeStyle = 'rgba(0, 176, 80, 0.05)';
+      
+      const gridSize = 30;
       for (let x = 0; x < rect.width; x += gridSize) {
         ctx.beginPath();
         ctx.moveTo(x, 0);
@@ -699,66 +677,11 @@ export const FiscalAnimation: React.FC = () => {
         ctx.stroke();
       }
       
-      // Draw and update floating documents
-      documents.forEach(doc => {
-        // Move document upward
-        doc.y -= doc.speed;
-        
-        // Reset position when off screen
-        if (doc.y + doc.height < 0) {
-          doc.y = rect.height;
-          doc.x = Math.random() * rect.width;
-        }
-        
-        // Draw document
-        ctx.save();
-        ctx.translate(doc.x + doc.width/2, doc.y + doc.height/2);
-        ctx.rotate(doc.rotation);
-        ctx.scale(doc.scale, doc.scale);
-        
-        // Document outline only (minimalist style)
-        ctx.strokeStyle = doc.color;
-        ctx.lineWidth = 1;
-        ctx.strokeRect(-doc.width/2, -doc.height/2, doc.width, doc.height);
-        
-        // Document header line
-        ctx.beginPath();
-        ctx.moveTo(-doc.width/2, -doc.height/2 + 5);
-        ctx.lineTo(doc.width/2, -doc.height/2 + 5);
-        ctx.stroke();
-        
-        // Document data lines - just outlines
-        for (let i = 0; i < doc.dataLines; i++) {
-          const lineY = -doc.height/2 + 12 + i * 8;
-          const lineWidth = doc.width - 14 - Math.random() * 10;
-          
-          ctx.beginPath();
-          ctx.moveTo(-doc.width/2 + 7, lineY);
-          ctx.lineTo(-doc.width/2 + 7 + lineWidth, lineY);
-          ctx.stroke();
-        }
-        
-        // Document $ symbol
-        ctx.fillStyle = doc.color;
-        ctx.font = '10px Arial';
-        ctx.fillText('$', -doc.width/4, doc.height/6);
-        
-        ctx.restore();
-      });
-      
-      // Center everything for better organization
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      
       // Draw line chart - top half
       const lineChartWidth = 140;
       const lineChartHeight = 50;
       const lineChartX = centerX - lineChartWidth/2;
-      const lineChartY = centerY - 80;
-      
-      // Line chart background - just outline
-      ctx.strokeStyle = 'rgba(0, 176, 80, 0.2)';
-      ctx.strokeRect(lineChartX, lineChartY, lineChartWidth, lineChartHeight);
+      const lineChartY = centerY - 60;
       
       // Update line chart points
       lineChartPoints.forEach((point, i) => {
@@ -768,8 +691,12 @@ export const FiscalAnimation: React.FC = () => {
         }
         
         // Smooth transition to target value
-        point.value += (point.targetValue - point.value) * 0.04;
+        point.value += (point.targetValue - point.value) * 0.05;
       });
+      
+      // Line chart outline
+      ctx.strokeStyle = 'rgba(0, 176, 80, 0.15)';
+      ctx.strokeRect(lineChartX, lineChartY, lineChartWidth, lineChartHeight);
       
       // Draw line chart
       ctx.beginPath();
@@ -790,16 +717,38 @@ export const FiscalAnimation: React.FC = () => {
         ctx.fill();
       });
       
-      ctx.strokeStyle = '#00B050';
-      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = 'rgba(0, 176, 80, 0.5)';
+      ctx.lineWidth = 1.2;
       ctx.stroke();
       
-      // Draw and update bar chart - bottom half
+      // Fill area below line chart
+      ctx.beginPath();
+      lineChartPoints.forEach((point, i) => {
+        const x = lineChartX + (i * lineChartWidth / (pointCount - 1));
+        const y = lineChartY + lineChartHeight - (point.value * lineChartHeight / 100);
+        
+        if (i === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      });
+      ctx.lineTo(lineChartX + lineChartWidth, lineChartY + lineChartHeight);
+      ctx.lineTo(lineChartX, lineChartY + lineChartHeight);
+      ctx.closePath();
+      
+      const gradient = ctx.createLinearGradient(0, lineChartY, 0, lineChartY + lineChartHeight);
+      gradient.addColorStop(0, 'rgba(0, 176, 80, 0.15)');
+      gradient.addColorStop(1, 'rgba(0, 176, 80, 0.01)');
+      ctx.fillStyle = gradient;
+      ctx.fill();
+      
+      // Draw bar chart - bottom half
       const barWidth = 8;
-      const barSpacing = 15;
-      const barChartWidth = (barWidth + barSpacing) * barCount;
+      const barSpacing = 12;
+      const barChartWidth = (barWidth + barSpacing) * barChart.barCount;
       const barChartX = centerX - barChartWidth/2;
-      const barChartY = centerY + 50;
+      const barChartY = centerY + 40;
       
       // Bar chart base line
       ctx.beginPath();
@@ -810,9 +759,9 @@ export const FiscalAnimation: React.FC = () => {
       ctx.stroke();
       
       // Update and draw bars
-      graphBars.forEach((bar, i) => {
+      barChart.bars.forEach((bar, i) => {
         if (frame - bar.lastChange > bar.changeInterval) {
-          bar.targetHeight = 15 + Math.random() * 40;
+          bar.targetHeight = 15 + Math.random() * 35;
           bar.lastChange = frame;
         }
         
@@ -822,37 +771,52 @@ export const FiscalAnimation: React.FC = () => {
         const x = barChartX + i * (barWidth + barSpacing);
         const y = barChartY - bar.height;
         
-        // Draw bar - outline only for minimalist style
-        ctx.strokeStyle = i % 2 === 0 ? '#00B050' : '#7ED957';
-        ctx.beginPath();
-        ctx.rect(x, y, barWidth, bar.height);
-        ctx.stroke();
+        // Draw bar outline
+        ctx.strokeStyle = i % 2 === 0 ? 'rgba(0, 176, 80, 0.5)' : 'rgba(126, 217, 87, 0.5)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x, y, barWidth, bar.height);
+        
+        // Draw bar fill
+        ctx.fillStyle = i % 2 === 0 ? 'rgba(0, 176, 80, 0.1)' : 'rgba(126, 217, 87, 0.1)';
+        ctx.fillRect(x, y, barWidth, bar.height);
       });
       
-      // Draw and update floating numbers (very reduced)
-      dataNumbers.forEach(num => {
-        // Move number upward
-        num.y -= num.speed;
+      // Draw and update floating financial elements
+      financialElements.forEach(element => {
+        // Move element upward
+        element.y -= element.speed;
         
         // Reset position when off screen
-        if (num.y < 0) {
-          num.y = rect.height;
-          num.x = Math.random() * rect.width;
-          num.value = Math.floor(Math.random() * 100);
+        if (element.y < 0) {
+          element.y = rect.height;
+          element.x = Math.random() * rect.width;
+          element.value = element.type === 'number' 
+            ? Math.floor(Math.random() * 100) 
+            : symbols[Math.floor(Math.random() * symbols.length)];
         }
         
-        // Draw number
-        ctx.fillStyle = `rgba(0, 176, 80, ${num.opacity})`;
-        ctx.font = `${num.size}px monospace`;
+        // Draw element
+        ctx.fillStyle = `rgba(0, 176, 80, ${element.opacity})`;
+        ctx.font = `${element.size}px monospace`;
         ctx.textAlign = 'center';
-        ctx.fillText(num.value.toString(), num.x, num.y);
+        ctx.fillText(element.value.toString(), element.x, element.y);
       });
+      
+      // Draw central dollar sign
+      if (Math.random() > 0.01) {
+        ctx.fillStyle = 'rgba(0, 176, 80, 0.1)';
+        ctx.font = '60px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('$', centerX, centerY);
+      }
     };
     
-    animate();
+    const animationFrame = requestAnimationFrame(animate);
     
     return () => {
       window.removeEventListener('resize', resizeCanvas);
+      cancelAnimationFrame(animationFrame);
     };
   }, []);
 
@@ -864,7 +828,7 @@ export const FiscalAnimation: React.FC = () => {
   );
 };
 
-// Animation for Technology Customization - Simple digital code patterns
+// CustomTechAnimation - Computer and code-based visualization
 export const CustomTechAnimation: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -879,10 +843,8 @@ export const CustomTechAnimation: React.FC = () => {
     const resizeCanvas = () => {
       const rect = canvas.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
-      
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
-      
       ctx.scale(dpr, dpr);
     };
 
@@ -891,65 +853,61 @@ export const CustomTechAnimation: React.FC = () => {
 
     const rect = canvas.getBoundingClientRect();
     
-    // Create code lines
-    const codeLines = [];
-    const lineCount = 30; // Moderate number of lines
+    // Draw computer in the center
+    const computer = {
+      x: rect.width / 2,
+      y: rect.height / 2,
+      width: 80,
+      height: 60,
+      screenWidth: 70,
+      screenHeight: 45,
+      pulseTime: 0,
+      codeLines: []
+    };
     
-    for (let i = 0; i < lineCount; i++) {
-      codeLines.push({
-        x: Math.random() * rect.width,
-        y: Math.random() * rect.height,
-        width: 20 + Math.random() * 80,
-        segments: Math.floor(Math.random() * 5) + 2,
-        speed: 0.2 + Math.random() * 0.3,
-        color: `rgba(0, ${Math.floor(150 + Math.random() * 50)}, ${Math.floor(50 + Math.random() * 30)}, ${0.2 + Math.random() * 0.3})`,
-        blink: 0
+    // Generate simulated code lines for the screen
+    for (let i = 0; i < 6; i++) {
+      computer.codeLines.push({
+        width: 10 + Math.random() * 40,
+        indent: Math.floor(Math.random() * 3) * 8,
+        blinkInterval: 100 + Math.random() * 200,
+        lastBlink: Math.floor(Math.random() * 100)
       });
     }
     
-    // Create binary particles
-    const particles = [];
-    const particleCount = 40; // Moderate number of particles
+    // Create floating binary/code elements
+    const codeElements = [];
+    const elementCount = 20;
     
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
+    for (let i = 0; i < elementCount; i++) {
+      codeElements.push({
         x: Math.random() * rect.width,
         y: Math.random() * rect.height,
-        size: 4 + Math.random() * 4,
+        type: Math.random() > 0.6 ? 'symbol' : 'binary',
         value: Math.random() > 0.5 ? '1' : '0',
-        opacity: 0.1 + Math.random() * 0.2,
-        speed: 0.1 + Math.random() * 0.2
+        size: 8 + Math.random() * 4,
+        opacity: 0.05 + Math.random() * 0.15,
+        speed: 0.2 + Math.random() * 0.3
       });
     }
     
     // Create connection nodes
     const nodes = [];
-    const nodeCount = 8; // Small number of nodes
+    const nodeCount = 8;
     
     for (let i = 0; i < nodeCount; i++) {
+      const angle = (i / nodeCount) * Math.PI * 2;
+      const radius = 100;
+      
       nodes.push({
-        x: Math.random() * rect.width,
-        y: Math.random() * rect.height,
-        size: 3 + Math.random() * 3,
-        connections: []
+        x: computer.x + Math.cos(angle) * radius,
+        y: computer.y + Math.sin(angle) * radius,
+        size: 2 + Math.random() * 2,
+        connections: [computer],
+        pulseTime: Math.random() * Math.PI * 2,
+        pulseSpeed: 0.02 + Math.random() * 0.03
       });
     }
-    
-    // Create some connections between nodes
-    nodes.forEach((node, i) => {
-      const connectionCount = Math.floor(Math.random() * 2) + 1;
-      const indices = [...Array(nodeCount).keys()].filter(j => j !== i);
-      
-      for (let c = 0; c < connectionCount; c++) {
-        if (indices.length > 0) {
-          const randomIndex = Math.floor(Math.random() * indices.length);
-          const targetIndex = indices[randomIndex];
-          
-          node.connections.push(targetIndex);
-          indices.splice(randomIndex, 1);
-        }
-      }
-    });
     
     let frame = 0;
     
@@ -959,12 +917,13 @@ export const CustomTechAnimation: React.FC = () => {
       ctx.clearRect(0, 0, rect.width, rect.height);
       
       frame++;
+      computer.pulseTime += 0.05;
       
-      // Draw grid - very subtle
-      ctx.lineWidth = 0.3;
-      ctx.strokeStyle = 'rgba(0, 176, 80, 0.03)';
+      // Draw background grid
+      ctx.lineWidth = 0.2;
+      ctx.strokeStyle = 'rgba(0, 176, 80, 0.05)';
       
-      const gridSize = 40;
+      const gridSize = 30;
       for (let x = 0; x < rect.width; x += gridSize) {
         ctx.beginPath();
         ctx.moveTo(x, 0);
@@ -979,127 +938,132 @@ export const CustomTechAnimation: React.FC = () => {
         ctx.stroke();
       }
       
-      // Draw connections between nodes
-      nodes.forEach((node, i) => {
-        node.connections.forEach(targetIndex => {
-          const targetNode = nodes[targetIndex];
-          
-          // Draw line
-          ctx.beginPath();
-          ctx.moveTo(node.x, node.y);
-          ctx.lineTo(targetNode.x, targetNode.y);
-          ctx.strokeStyle = 'rgba(0, 176, 80, 0.1)';
-          ctx.lineWidth = 0.5;
-          ctx.stroke();
-          
-          // Draw data packet moving along the line
-          if (frame % 30 === i % 30) {
-            const progress = (frame % 120) / 120;
-            const packetX = node.x + (targetNode.x - node.x) * progress;
-            const packetY = node.y + (targetNode.y - node.y) * progress;
-            
-            ctx.beginPath();
-            ctx.arc(packetX, packetY, 2, 0, Math.PI * 2);
-            ctx.fillStyle = '#00B050';
-            ctx.fill();
-          }
-        });
-      });
-      
-      // Draw nodes
+      // Draw nodes and connections
       nodes.forEach(node => {
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0, 176, 80, 0.3)';
-        ctx.fill();
+        // Update pulse
+        node.pulseTime += node.pulseSpeed;
+        const pulse = Math.sin(node.pulseTime) * 0.5 + 0.5;
         
-        // Pulse effect
+        // Draw connection to computer
+        ctx.beginPath();
+        ctx.moveTo(node.x, node.y);
+        ctx.lineTo(computer.x, computer.y);
+        ctx.strokeStyle = `rgba(0, 176, 80, ${0.1 + pulse * 0.1})`;
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+        
+        // Draw data packet moving along connection
         if (Math.random() > 0.95) {
+          const progress = Math.random();
+          const x = node.x + (computer.x - node.x) * progress;
+          const y = node.y + (computer.y - node.y) * progress;
+          
           ctx.beginPath();
-          ctx.arc(node.x, node.y, node.size * 2, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(0, 176, 80, 0.1)';
+          ctx.arc(x, y, 2, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(0, 176, 80, 0.8)';
           ctx.fill();
         }
+        
+        // Draw node
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0, 176, 80, ${0.2 + pulse * 0.3})`;
+        ctx.fill();
       });
       
-      // Update and draw code lines
-      codeLines.forEach(line => {
-        // Move line upward
-        line.y -= line.speed;
-        
-        // Reset position when off screen
-        if (line.y < -10) {
-          line.y = rect.height + 10;
-          line.x = Math.random() * rect.width;
-          line.width = 20 + Math.random() * 80;
-          line.segments = Math.floor(Math.random() * 5) + 2;
+      // Draw computer
+      const computerGlow = Math.sin(computer.pulseTime) * 0.5 + 0.5;
+      
+      // Monitor body
+      ctx.beginPath();
+      ctx.rect(
+        computer.x - computer.width/2, 
+        computer.y - computer.height/2 - 5, 
+        computer.width, 
+        computer.height
+      );
+      ctx.strokeStyle = `rgba(0, 176, 80, ${0.5 + computerGlow * 0.3})`;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      
+      // Monitor screen
+      ctx.fillStyle = 'rgba(0, 20, 5, 0.6)';
+      ctx.fillRect(
+        computer.x - computer.screenWidth/2, 
+        computer.y - computer.screenHeight/2 - 5, 
+        computer.screenWidth, 
+        computer.screenHeight
+      );
+      
+      // Monitor base/stand
+      ctx.beginPath();
+      ctx.moveTo(computer.x - 15, computer.y + computer.height/2 - 5);
+      ctx.lineTo(computer.x + 15, computer.y + computer.height/2 - 5);
+      ctx.lineTo(computer.x + 10, computer.y + computer.height/2 + 10);
+      ctx.lineTo(computer.x - 10, computer.y + computer.height/2 + 10);
+      ctx.closePath();
+      ctx.stroke();
+      
+      // Monitor base platform
+      ctx.beginPath();
+      ctx.rect(computer.x - 20, computer.y + computer.height/2 + 10, 40, 3);
+      ctx.stroke();
+      
+      // Draw code lines on screen
+      computer.codeLines.forEach((line, i) => {
+        const isBlinking = (frame - line.lastBlink) > line.blinkInterval;
+        if (isBlinking && Math.random() > 0.7) {
+          line.lastBlink = frame;
+          line.width = 10 + Math.random() * 40;
         }
         
-        // Draw line
-        const segmentWidth = line.width / line.segments;
+        const y = computer.y - computer.screenHeight/2 + 8 + i * 7 - 5;
+        const x = computer.x - computer.screenWidth/2 + 5 + line.indent;
         
-        for (let i = 0; i < line.segments; i++) {
-          // Random chance to leave gaps between segments
-          if (Math.random() > 0.3) {
-            const x = line.x + i * segmentWidth;
-            const width = segmentWidth * 0.8;
-            
-            // Randomize blink effect
-            if (Math.random() > 0.997) {
-              line.blink = 5;
-            }
-            
-            const color = line.blink > 0 ? 'rgba(0, 255, 100, 0.4)' : line.color;
-            
-            ctx.fillStyle = color;
-            ctx.fillRect(x, line.y, width, 1);
-          }
-        }
-        
-        // Reduce blink counter
-        if (line.blink > 0) {
-          line.blink--;
-        }
+        ctx.fillStyle = `rgba(0, 176, 80, ${0.5 + computerGlow * 0.3})`;
+        ctx.fillRect(x, y, line.width, 2);
       });
       
-      // Update and draw particles
-      particles.forEach(particle => {
-        // Move particle upward
-        particle.y -= particle.speed;
+      // Draw screen glow
+      const screenGradient = ctx.createRadialGradient(
+        computer.x, computer.y - 5, 0,
+        computer.x, computer.y - 5, computer.screenWidth/1.5
+      );
+      screenGradient.addColorStop(0, `rgba(0, 176, 80, ${0.03 + computerGlow * 0.02})`);
+      screenGradient.addColorStop(1, 'rgba(0, 176, 80, 0)');
+      
+      ctx.fillStyle = screenGradient;
+      ctx.beginPath();
+      ctx.arc(computer.x, computer.y - 5, computer.screenWidth/1.5, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Draw floating code elements
+      codeElements.forEach(element => {
+        // Move element upward
+        element.y -= element.speed;
         
         // Reset position when off screen
-        if (particle.y < -10) {
-          particle.y = rect.height + 10;
-          particle.x = Math.random() * rect.width;
-          particle.value = Math.random() > 0.5 ? '1' : '0';
+        if (element.y < 0) {
+          element.y = rect.height;
+          element.x = Math.random() * rect.width;
+          element.value = element.type === 'binary' 
+            ? (Math.random() > 0.5 ? '1' : '0')
+            : ['<', '>', '{', '}', '(', ')', ';', '='][Math.floor(Math.random() * 8)];
         }
         
-        // Draw particle
-        ctx.fillStyle = `rgba(0, 176, 80, ${particle.opacity})`;
-        ctx.font = `${particle.size}px monospace`;
+        // Draw element
+        ctx.fillStyle = `rgba(0, 176, 80, ${element.opacity})`;
+        ctx.font = `${element.size}px monospace`;
         ctx.textAlign = 'center';
-        ctx.fillText(particle.value, particle.x, particle.y);
+        ctx.fillText(element.value.toString(), element.x, element.y);
       });
-      
-      // Draw code brackets occasionally
-      if (frame % 60 === 0) {
-        const x = Math.random() * rect.width;
-        const y = Math.random() * rect.height;
-        
-        ctx.fillStyle = 'rgba(0, 176, 80, 0.2)';
-        ctx.font = '16px monospace';
-        ctx.fillText('{', x, y);
-        
-        if (Math.random() > 0.5) {
-          ctx.fillText('}', x + 20, y);
-        }
-      }
     };
     
-    animate();
+    const animationFrame = requestAnimationFrame(animate);
     
     return () => {
       window.removeEventListener('resize', resizeCanvas);
+      cancelAnimationFrame(animationFrame);
     };
   }, []);
 

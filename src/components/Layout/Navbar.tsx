@@ -94,7 +94,7 @@ const Navbar: React.FC = () => {
             {isAdmin && (
               <div className="relative group">
                 <button 
-                  className="flex items-center font-medium text-vetor-green group-hover:text-vetor-darkgreen transition-colors duration-200"
+                  className="flex items-center font-medium text-vetor-green group-hover:text-vetor-lightgreen transition-colors duration-200"
                 >
                   <Lock className="w-4 h-4 mr-1" />
                   Admin
@@ -144,7 +144,7 @@ const Navbar: React.FC = () => {
           <Link
             to="/"
             className={`py-3 px-4 rounded-md ${
-              isActive('/') ? 'bg-vetor-green text-white' : 'text-white'
+              isActive('/') ? 'bg-vetor-green text-white' : 'text-white hover:bg-vetor-green/10'
             }`}
             onClick={closeMenu}
           >
@@ -153,7 +153,7 @@ const Navbar: React.FC = () => {
           <Link
             to="/sobre"
             className={`py-3 px-4 rounded-md ${
-              isActive('/sobre') ? 'bg-vetor-green text-white' : 'text-white'
+              isActive('/sobre') ? 'bg-vetor-green text-white' : 'text-white hover:bg-vetor-green/10'
             }`}
             onClick={closeMenu}
           >
@@ -162,7 +162,7 @@ const Navbar: React.FC = () => {
           <Link
             to="/parceiros"
             className={`py-3 px-4 rounded-md ${
-              isActive('/parceiros') ? 'bg-vetor-green text-white' : 'text-white'
+              isActive('/parceiros') ? 'bg-vetor-green text-white' : 'text-white hover:bg-vetor-green/10'
             }`}
             onClick={closeMenu}
           >
@@ -171,7 +171,7 @@ const Navbar: React.FC = () => {
           <Link
             to="/contato"
             className={`py-3 px-4 rounded-md ${
-              isActive('/contato') ? 'bg-vetor-green text-white' : 'text-white'
+              isActive('/contato') ? 'bg-vetor-green text-white' : 'text-white hover:bg-vetor-green/10'
             }`}
             onClick={closeMenu}
           >
@@ -182,7 +182,7 @@ const Navbar: React.FC = () => {
               <Link
                 to="/admin"
                 className={`py-3 px-4 rounded-md ${
-                  isActive('/admin') ? 'bg-vetor-green text-white' : 'text-white'
+                  isActive('/admin') ? 'bg-vetor-green text-white' : 'text-white hover:bg-vetor-green/10'
                 }`}
                 onClick={closeMenu}
               >
@@ -193,7 +193,7 @@ const Navbar: React.FC = () => {
                   logout();
                   closeMenu();
                 }}
-                className="py-3 px-4 rounded-md text-left text-white"
+                className="py-3 px-4 rounded-md text-left text-white hover:bg-vetor-green/10"
               >
                 Sair
               </button>

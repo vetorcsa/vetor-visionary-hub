@@ -3,7 +3,7 @@ import React from 'react';
 import { useAdmin } from '@/contexts/AdminContext';
 import Hero from '@/components/Home/Hero';
 import ServicesCard from '@/components/Home/ServicesCard';
-import { ChevronRight, ArrowRight } from 'lucide-react';
+import { ChevronRight, ArrowRight, Building2, FileBarChart, Globe, MonitorSmartphone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { FiscalAnimation, LogisticsAnimation, CustomTechAnimation, RealEstateAnimation } from '@/components/Home/SectorAnimations';
 import { Badge } from '@/components/ui/badge';
@@ -37,7 +37,7 @@ const Index: React.FC = () => {
         </div>
       </section>
       
-      {/* Technology Sectors Section */}
+      {/* Technology Sectors Section - Completely Redesigned */}
       <section className="py-24 bg-black">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-16">
@@ -51,14 +51,14 @@ const Index: React.FC = () => {
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            {/* Tecnologia Imobiliária */}
+            {/* Tecnologia Imobiliária - Redesigned */}
             <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group">
-              <div className="h-56 relative bg-gradient-to-br from-black to-black/80 overflow-hidden">
+              <div className="h-56 relative bg-black overflow-hidden">
                 <RealEstateAnimation />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                
-                {/* Efeito hover gradient inspirado no exemplo */}
-                <div className="absolute inset-0 bg-gradient-to-br from-vetor-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute top-6 left-6 z-10 bg-vetor-green/10 p-3 rounded-full">
+                  <Building2 className="w-8 h-8 text-vetor-green" />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
               </div>
               <div className="p-8">
                 <h3 className="text-2xl font-bold text-vetor-green mb-4">Tecnologia Imobiliária</h3>
@@ -71,14 +71,14 @@ const Index: React.FC = () => {
               </div>
             </div>
             
-            {/* Tecnologia Fiscal */}
+            {/* Tecnologia Fiscal - Redesigned */}
             <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group">
-              <div className="h-56 relative bg-gradient-to-br from-black to-black/80 overflow-hidden">
+              <div className="h-56 relative bg-black overflow-hidden">
                 <FiscalAnimation />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                
-                {/* Efeito hover gradient inspirado no exemplo */}
-                <div className="absolute inset-0 bg-gradient-to-br from-vetor-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute top-6 left-6 z-10 bg-vetor-green/10 p-3 rounded-full">
+                  <FileBarChart className="w-8 h-8 text-vetor-green" />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
               </div>
               <div className="p-8">
                 <h3 className="text-2xl font-bold text-vetor-green mb-4">Tecnologia Fiscal</h3>
@@ -91,14 +91,14 @@ const Index: React.FC = () => {
               </div>
             </div>
             
-            {/* Tecnologia em Logística */}
+            {/* Tecnologia em Logística - Redesigned */}
             <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group">
-              <div className="h-56 relative bg-gradient-to-br from-black to-black/80 overflow-hidden">
+              <div className="h-56 relative bg-black overflow-hidden">
                 <LogisticsAnimation />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                
-                {/* Efeito hover gradient inspirado no exemplo */}
-                <div className="absolute inset-0 bg-gradient-to-br from-vetor-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute top-6 left-6 z-10 bg-vetor-green/10 p-3 rounded-full">
+                  <Globe className="w-8 h-8 text-vetor-green" />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
               </div>
               <div className="p-8">
                 <h3 className="text-2xl font-bold text-vetor-green mb-4">Tecnologia em Logística</h3>
@@ -111,14 +111,14 @@ const Index: React.FC = () => {
               </div>
             </div>
             
-            {/* Soluções Tecnológicas */}
+            {/* Soluções Tecnológicas - Redesigned */}
             <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group">
-              <div className="h-56 relative bg-gradient-to-br from-black to-black/80 overflow-hidden">
+              <div className="h-56 relative bg-black overflow-hidden">
                 <CustomTechAnimation />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                
-                {/* Efeito hover gradient inspirado no exemplo */}
-                <div className="absolute inset-0 bg-gradient-to-br from-vetor-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute top-6 left-6 z-10 bg-vetor-green/10 p-3 rounded-full">
+                  <MonitorSmartphone className="w-8 h-8 text-vetor-green" />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
               </div>
               <div className="p-8">
                 <h3 className="text-2xl font-bold text-vetor-green mb-4">Soluções Tecnológicas</h3>
