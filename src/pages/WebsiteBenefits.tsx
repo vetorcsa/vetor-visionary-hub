@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -10,7 +11,8 @@ import {
   Shield, BarChart, Search, Zap, ArrowRight, Check,
   Palette, LayoutGrid, Users, ClipboardCheck, MousePointer,
   Headphones, MessageSquare, HeartHandshake, Lightbulb,
-  Building, FileText
+  Building, FileText, Shopping, CreditCard, TruckFast, 
+  Percent, FileImage, EarthIcon
 } from 'lucide-react';
 
 const WebsiteBenefits: React.FC = () => {
@@ -567,4 +569,259 @@ const WebsiteBenefits: React.FC = () => {
                   transition={{ delay: index * 0.1, duration: 0.6 }}
                 >
                   <div className={`md:w-1/2 ${process.align === "right" ? "md:text-right" : "md:text-left"} mb-8 md:mb-0`}>
-                    <div className="inline-block bg-vetor-green/10 px-3 py-1 rounded
+                    <div className="inline-block bg-vetor-green/10 px-3 py-1 rounded text-vetor-green text-sm font-medium">Etapa {process.step}</div>
+                    <h3 className="text-2xl font-bold text-white mt-2 mb-3">{process.title}</h3>
+                    <p className="text-gray-300">{process.description}</p>
+                  </div>
+                  
+                  <div className="md:w-1/2 flex justify-center">
+                    <div className="relative">
+                      <div className="absolute -inset-0.5 bg-vetor-green/20 rounded-full blur-md opacity-70"></div>
+                      <div className="relative bg-black/70 border border-vetor-green/20 rounded-full w-24 h-24 flex items-center justify-center z-10">
+                        {process.icon}
+                      </div>
+                      
+                      <div className="absolute top-0 left-0 w-full h-full rounded-full bg-vetor-green/5 animate-pulse" style={{ animationDelay: `${index * 0.1}s` }}></div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Testimonials Section */}
+      <section ref={testimonialsRef} className="py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-radial from-vetor-green/5 to-transparent opacity-20"></div>
+        
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <motion.div 
+            className="max-w-2xl mx-auto text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            animate={isTestimonialsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Badge className="bg-vetor-green/10 text-vetor-green hover:bg-vetor-green/20 mb-4 py-1.5 px-4 text-xs font-medium tracking-wider">CLIENTES SATISFEITOS</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+              O que nossos clientes dizem
+            </h2>
+            <p className="text-gray-300 text-lg">
+              Resultados reais compartilhados por empresas que transformaram sua presença online com nossos websites.
+            </p>
+          </motion.div>
+          
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            variants={staggerContainer}
+            initial="hidden"
+            animate={isTestimonialsInView ? "visible" : "hidden"}
+          >
+            {testimonials.map((testimonial, index) => (
+              <motion.div 
+                key={index}
+                variants={fadeIn}
+                className="relative group"
+              >
+                <div className="absolute -inset-0.5 bg-gradient-to-br from-vetor-green/20 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-md"></div>
+                <Card className="h-full bg-black/40 backdrop-blur-sm border border-vetor-green/10 relative rounded-xl overflow-hidden group-hover:border-vetor-green/30 transition-all duration-300">
+                  <CardContent className="p-6 flex flex-col h-full">
+                    <div className="flex items-center mb-6">
+                      <div className="mr-4 relative">
+                        <div className="absolute -inset-0.5 bg-vetor-green/20 rounded-full blur-sm"></div>
+                        <img 
+                          src={testimonial.image} 
+                          alt={testimonial.name} 
+                          className="relative w-16 h-16 rounded-full border-2 border-vetor-green/20"
+                        />
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-semibold text-white">{testimonial.name}</h4>
+                        <p className="text-sm text-gray-400">{testimonial.role}</p>
+                      </div>
+                    </div>
+                    
+                    <p className="text-gray-300 italic flex-grow">"{testimonial.content}"</p>
+                    
+                    <div className="mt-6 flex text-vetor-green">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-5 h-5 fill-vetor-green" />
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+      
+      {/* Pricing Section */}
+      <section ref={pricingRef} className="py-20 bg-black relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:30px_30px] opacity-20"></div>
+        
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <motion.div 
+            className="max-w-2xl mx-auto text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            animate={isPricingInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Badge className="bg-vetor-green/10 text-vetor-green hover:bg-vetor-green/20 mb-4 py-1.5 px-4 text-xs font-medium tracking-wider">INVESTIMENTO</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+              Planos para todos os tamanhos de negócio
+            </h2>
+            <p className="text-gray-300 text-lg">
+              Escolha o plano que melhor se adapta às necessidades do seu negócio e comece a transformar sua presença online.
+            </p>
+          </motion.div>
+          
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto"
+            variants={staggerContainer}
+            initial="hidden"
+            animate={isPricingInView ? "visible" : "hidden"}
+          >
+            {[
+              {
+                name: "Básico",
+                price: "1.500",
+                description: "Ideal para pequenos negócios que estão começando sua presença online.",
+                features: [
+                  "Design responsivo",
+                  "Até 5 páginas",
+                  "Otimização básica para SEO",
+                  "Formulário de contato",
+                  "Integração com redes sociais",
+                  "3 meses de suporte"
+                ],
+                highlighted: false
+              },
+              {
+                name: "Profissional",
+                price: "5.000",
+                description: "Para empresas que buscam uma presença online completa e profissional.",
+                features: [
+                  "Design personalizado premium",
+                  "Até 10 páginas",
+                  "Otimização avançada para SEO",
+                  "Blog integrado",
+                  "Área administrativa",
+                  "Chat ao vivo",
+                  "Análise de desempenho",
+                  "6 meses de suporte"
+                ],
+                highlighted: true
+              },
+              {
+                name: "Empresarial",
+                price: "20.000",
+                description: "Solução completa para empresas que exigem recursos avançados e personalizações.",
+                features: [
+                  "Design exclusivo premium",
+                  "Páginas ilimitadas",
+                  "SEO avançado + consultoria",
+                  "Sistema de blog avançado",
+                  "Área de membros/clientes",
+                  "Integrações personalizadas",
+                  "Otimização de conversão",
+                  "12 meses de suporte prioritário"
+                ],
+                highlighted: false
+              }
+            ].map((plan, index) => (
+              <motion.div 
+                key={index}
+                variants={fadeIn}
+                className="relative"
+              >
+                {plan.highlighted && (
+                  <div className="absolute -top-5 inset-x-0 flex justify-center">
+                    <Badge className="bg-vetor-green text-white py-1 px-3">Mais Popular</Badge>
+                  </div>
+                )}
+                
+                <div className={`absolute inset-0 ${plan.highlighted ? 'bg-gradient-to-b from-vetor-green/20 via-vetor-green/10 to-transparent' : 'bg-gradient-to-b from-white/5 to-transparent'} rounded-xl opacity-30 blur-md`}></div>
+                
+                <Card className={`h-full relative bg-black/60 backdrop-blur-md ${plan.highlighted ? 'border-vetor-green/30' : 'border-white/10'} rounded-xl overflow-hidden`}>
+                  <CardContent className="p-8">
+                    <h3 className="text-xl font-bold text-white mb-2">{plan.name}</h3>
+                    <div className="mb-6">
+                      <span className="text-3xl font-bold text-white">R$ {plan.price}</span>
+                      <span className="text-gray-400 ml-1">/ único</span>
+                    </div>
+                    
+                    <p className="text-gray-300 mb-6">
+                      {plan.description}
+                    </p>
+                    
+                    <div className="space-y-3 mb-8">
+                      {plan.features.map((feature, i) => (
+                        <div key={i} className="flex items-center">
+                          <div className={`w-5 h-5 rounded-full ${plan.highlighted ? 'bg-vetor-green/20' : 'bg-white/10'} flex items-center justify-center mr-3`}>
+                            <Check className={`w-3 h-3 ${plan.highlighted ? 'text-vetor-green' : 'text-white'}`} />
+                          </div>
+                          <span className="text-gray-300 text-sm">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <Button 
+                      className={`w-full ${plan.highlighted ? 'bg-vetor-green hover:bg-vetor-green/90' : 'bg-white/10 hover:bg-white/20'} transition-colors`}
+                    >
+                      Solicitar Orçamento
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+      
+      {/* CTA Section */}
+      <section ref={ctaRef} className="py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-vetor-green/10 to-black"></div>
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMyMjIiIGZpbGwtb3BhY2l0eT0iMC4wMSI+PHBhdGggZD0iTTM2IDM0djJoLTJ2LTJoMnptMC00aDJ2MmgtMnYtMnptLTQgMHYyaC0ydi0yaDJ6bTItNGgtMnYyaC0yaC0ydjJoMnYyaC0ydjJoMnYyaDJ2LTJoMnYyaDJ2LTJoMnYtMmgtMnYtMmgydi0yaC0ydi0yaC0yek00MiAzMHYyaC0ydi0yaDJ6bS00IDRoMnYyaC0ydi0yek0zNiAyNnYyaC0ydi0yaDJ6bS00IDBoMnYyaC0ydi0yek0zMCAzMHYyaC0ydi0yaDJ6bS00IDBoMnYyaC0ydi0yek0yNiAyNnYyaC0ydi0yaDJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-5"></div>
+        
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <motion.div 
+            className="max-w-4xl mx-auto text-center"
+            initial={{ opacity: 0, y: 30 }}
+            animate={isCtaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.7 }}
+          >
+            <Badge className="bg-vetor-green/10 text-vetor-green hover:bg-vetor-green/20 mb-6 py-1.5 px-4 text-xs font-medium tracking-wider">COMECE AGORA</Badge>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+              Pronto para transformar sua<br />
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-vetor-green to-vetor-lightgreen">presença digital?</span>
+            </h2>
+            <p className="text-xl text-gray-300 mb-10 max-w-3xl mx-auto">
+              Entre em contato hoje mesmo e descubra como podemos criar um website profissional que trará resultados para o seu negócio.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <Button 
+                size="lg" 
+                className="bg-vetor-green hover:bg-vetor-darkgreen text-white gap-2 text-lg px-8 py-6 h-auto group"
+              >
+                <span>Solicitar Orçamento</span>
+                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-vetor-green/30 text-vetor-green hover:bg-vetor-green/10 text-lg px-8 py-6 h-auto"
+              >
+                <HeartHandshake className="mr-2 h-5 w-5" />
+                <span>Fale com um Consultor</span>
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default WebsiteBenefits;
