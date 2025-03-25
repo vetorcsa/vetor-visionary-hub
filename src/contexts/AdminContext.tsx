@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
 // Tipos para os dados editáveis
@@ -84,12 +83,10 @@ const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
 // Dados iniciais
 const initialFooterData: FooterData = {
-  address: 'Av. Paulista, 1000, São Paulo - SP',
-  email: 'contato@vetorcsa.com.br',
+  address: 'Torre tokio, Metropolitan Mall - Av. Dep. Jamel Cecílio, 2690 - Jardim Goiás, Goiânia - GO, 74810-100',
+  email: 'vetorcsa@gmail.com',
   phone: '(11) 3333-4444',
   socialLinks: [
-    { platform: 'linkedin', url: 'https://linkedin.com/company/vetorcsa' },
-    { platform: 'facebook', url: 'https://facebook.com/vetorcsa' },
     { platform: 'instagram', url: 'https://instagram.com/vetorcsa' },
   ],
 };
