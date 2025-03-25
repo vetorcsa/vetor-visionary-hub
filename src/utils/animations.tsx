@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-// Animação para Tecnologia Imobiliária - Casas/prédios desenhados sem sobreposição
+// Completely redesigned animation for Real Estate Technology - Modern digital property visualization
 export const RealEstateAnimation: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -11,7 +11,7 @@ export const RealEstateAnimation: React.FC = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Ajustar o tamanho do canvas
+    // Adjust canvas size
     const resizeCanvas = () => {
       const rect = canvas.getBoundingClientRect();
       canvas.width = rect.width;
@@ -21,224 +21,348 @@ export const RealEstateAnimation: React.FC = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Criar elementos de construção - usando estilo de desenho de linha
-    const buildings = [];
-    const buildingCount = 5; // Número ainda mais reduzido para evitar sobreposições
+    // Digital city properties
+    const buildingData = [];
+    const buildingCount = 12;
     
-    // Grid definido para posicionar os edifícios sem sobreposição
-    const gridCols = 3;
-    const gridRows = 2;
-    const cellWidth = canvas.width / gridCols;
-    const cellHeight = canvas.height / gridRows;
+    // Grid layout with proper spacing
+    const cols = 4;
+    const rows = 3;
+    const cellWidth = canvas.width / cols;
+    const cellHeight = canvas.height / rows;
     
-    // Atribuir posições organizadas em grid para evitar sobreposição
+    // Create buildings in a grid pattern
     for (let i = 0; i < buildingCount; i++) {
-      const row = Math.floor(i / gridCols);
-      const col = i % gridCols;
+      const row = Math.floor(i / cols);
+      const col = i % cols;
       
-      // Cada edifício fica em uma célula de grid com margem maior
-      const margin = 20;
+      const centerX = cellWidth * (col + 0.5);
+      const centerY = cellHeight * (row + 0.5);
       
-      buildings.push({
-        x: cellWidth * col + cellWidth * 0.25 + Math.random() * (cellWidth * 0.5),
-        y: cellHeight * row + cellHeight * 0.25 + Math.random() * (cellHeight * 0.5),
-        size: 20 + Math.random() * 10,
-        color: i % 3 === 0 ? '#00B050' : (i % 3 === 1 ? '#7ED957' : '#008C41'),
-        rotation: (Math.random() - 0.5) * 0.05, // Menos rotação para melhor legibilidade
-        rotationSpeed: (Math.random() - 0.5) * 0.0002,
-        elevation: Math.random() * 5,
-        elevationDirection: Math.random() > 0.5 ? 1 : -1,
-        style: Math.floor(Math.random() * 3) // Diferentes estilos de casa
+      // Building properties
+      buildingData.push({
+        x: centerX,
+        y: centerY,
+        width: 5 + Math.random() * 15,
+        height: 15 + Math.random() * 30,
+        color: i % 3 === 0 ? '#00B050' : i % 3 === 1 ? '#7ED957' : '#008C41',
+        pulse: Math.random() * Math.PI * 2,
+        pulseSpeed: 0.02 + Math.random() * 0.01,
+        floors: 2 + Math.floor(Math.random() * 5),
+        connected: Math.random() > 0.5,
+        connectionTarget: Math.floor(Math.random() * buildingCount)
       });
     }
     
-    // Grid para efeito digital - simplificado
-    const gridCells = {
-      horizontal: [],
-      vertical: []
+    // Add digital network nodes
+    const nodes = [];
+    const nodeCount = 8;
+    
+    for (let i = 0; i < nodeCount; i++) {
+      nodes.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: 1 + Math.random() * 2,
+        speed: {
+          x: (Math.random() - 0.5) * 0.3,
+          y: (Math.random() - 0.5) * 0.3
+        },
+        connections: []
+      });
+    }
+    
+    // Create network connections
+    nodes.forEach((node, index) => {
+      // Connect each node to 1-2 others
+      const connectionCount = 1 + Math.floor(Math.random());
+      
+      for (let i = 0; i < connectionCount; i++) {
+        let targetIndex;
+        do {
+          targetIndex = Math.floor(Math.random() * nodes.length);
+        } while (targetIndex === index);
+        
+        node.connections.push(targetIndex);
+      }
+    });
+    
+    // Data packets flowing between buildings
+    const dataPackets = [];
+    
+    // Create initial data packets
+    const createPacket = () => {
+      const sourceIndex = Math.floor(Math.random() * buildingCount);
+      let targetIndex;
+      
+      do {
+        targetIndex = Math.floor(Math.random() * buildingCount);
+      } while (targetIndex === sourceIndex);
+      
+      const source = buildingData[sourceIndex];
+      const target = buildingData[targetIndex];
+      
+      dataPackets.push({
+        sourceX: source.x,
+        sourceY: source.y,
+        targetX: target.x,
+        targetY: target.y,
+        x: source.x,
+        y: source.y,
+        progress: 0,
+        speed: 0.005 + Math.random() * 0.005,
+        color: Math.random() > 0.5 ? '#00B050' : '#7ED957',
+        size: 1.5 + Math.random() * 1.5
+      });
     };
     
-    const gridDensity = 10; // Ainda menos linhas
-    
-    for (let i = 0; i <= gridDensity; i++) {
-      gridCells.horizontal.push({
-        y: (canvas.height / gridDensity) * i,
-        opacity: 0.05 + Math.random() * 0.05 // Mais suave
-      });
-      
-      gridCells.vertical.push({
-        x: (canvas.width / gridDensity) * i,
-        opacity: 0.05 + Math.random() * 0.05 // Mais suave
-      });
+    // Create initial packets
+    for (let i = 0; i < 5; i++) {
+      createPacket();
     }
     
+    // Animation variables
     let time = 0;
     
-    // Função de animação
+    // Animation loop
     const animate = () => {
       requestAnimationFrame(animate);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
       time += 0.01;
       
-      // Desenhar grid - mais suave
-      ctx.lineWidth = 0.3;
+      // Draw subtle grid background
+      ctx.strokeStyle = 'rgba(0, 176, 80, 0.05)';
+      ctx.lineWidth = 0.2;
       
-      gridCells.horizontal.forEach(line => {
+      // Horizontal grid lines
+      for (let y = 0; y < canvas.height; y += cellHeight / 2) {
         ctx.beginPath();
-        ctx.moveTo(0, line.y);
-        ctx.lineTo(canvas.width, line.y);
-        ctx.strokeStyle = `rgba(0, 176, 80, ${line.opacity})`;
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
         ctx.stroke();
+      }
+      
+      // Vertical grid lines
+      for (let x = 0; x < canvas.width; x += cellWidth / 2) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+      
+      // Update and draw nodes
+      nodes.forEach(node => {
+        // Move nodes slowly
+        node.x += node.speed.x;
+        node.y += node.speed.y;
+        
+        // Wrap around edges
+        if (node.x < 0) node.x = canvas.width;
+        if (node.x > canvas.width) node.x = 0;
+        if (node.y < 0) node.y = canvas.height;
+        if (node.y > canvas.height) node.y = 0;
+        
+        // Draw node
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0, 176, 80, 0.4)';
+        ctx.fill();
+        
+        // Draw connections
+        node.connections.forEach(targetIndex => {
+          const target = nodes[targetIndex];
+          
+          ctx.beginPath();
+          ctx.moveTo(node.x, node.y);
+          ctx.lineTo(target.x, target.y);
+          ctx.strokeStyle = 'rgba(0, 176, 80, 0.1)';
+          ctx.lineWidth = 0.3;
+          ctx.stroke();
+        });
       });
       
-      gridCells.vertical.forEach(line => {
-        ctx.beginPath();
-        ctx.moveTo(line.x, 0);
-        ctx.lineTo(line.x, canvas.height);
-        ctx.strokeStyle = `rgba(0, 176, 80, ${line.opacity})`;
-        ctx.stroke();
-      });
-      
-      // Atualizar e desenhar edifícios sem sobreposição
-      buildings.forEach((building, idx) => {
-        // Movimento muito suave em cada célula do grid
-        building.x += Math.sin(time * 0.3 + idx) * 0.05;
-        building.y += Math.cos(time * 0.4 + idx) * 0.03;
+      // Update and draw buildings
+      buildingData.forEach((building, index) => {
+        // Pulsing effect for "active" buildings
+        building.pulse += building.pulseSpeed;
+        const pulseFactor = 1 + Math.sin(building.pulse) * 0.1;
         
-        // Atualizar rotação
-        building.rotation += building.rotationSpeed;
+        // Draw building - modern digital style
+        const width = building.width * pulseFactor;
+        const height = building.height * pulseFactor;
         
-        // Atualizar elevação para efeito flutuante
-        building.elevation += 0.03 * building.elevationDirection;
-        if (building.elevation > 5 || building.elevation < 0) {
-          building.elevationDirection *= -1;
-        }
+        // Shadow for 3D effect
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(
+          building.x - width / 2 + 2,
+          building.y - height / 2 + 2,
+          width,
+          height
+        );
         
-        // Desenhar edifício com estilo de linha
-        ctx.save();
-        ctx.translate(building.x, building.y - building.elevation * 0.1);
-        ctx.rotate(building.rotation);
+        // Main building
+        ctx.fillStyle = building.color;
+        ctx.fillRect(
+          building.x - width / 2,
+          building.y - height / 2,
+          width,
+          height
+        );
         
-        ctx.strokeStyle = building.color;
-        ctx.lineWidth = 1.5;
-        ctx.lineJoin = 'round';
+        // Building windows - digital grid pattern
+        const floorHeight = height / building.floors;
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
         
-        // Diferentes estilos de edifícios usando arte em linha
-        if (building.style === 0) {
-          // Estilo 1: Prédio moderno com vários andares
-          const floors = 3 + Math.floor(Math.random() * 3);
-          const buildingWidth = building.size;
-          const buildingHeight = building.size * 1.5;
-          const floorHeight = buildingHeight / floors;
+        for (let floor = 0; floor < building.floors; floor++) {
+          // Windows on each floor
+          const windowCount = 2;
+          const windowWidth = width / (windowCount * 2);
           
-          // Contorno do prédio
-          ctx.strokeRect(-buildingWidth/2, -buildingHeight/2, buildingWidth, buildingHeight);
-          
-          // Linhas horizontais para andares
-          for (let i = 1; i < floors; i++) {
-            const y = -buildingHeight/2 + i * floorHeight;
-            ctx.beginPath();
-            ctx.moveTo(-buildingWidth/2, y);
-            ctx.lineTo(buildingWidth/2, y);
-            ctx.stroke();
-          }
-          
-          // Janelas
-          const windowsPerFloor = 2;
-          const windowWidth = buildingWidth / (windowsPerFloor * 2);
-          
-          for (let floor = 0; floor < floors; floor++) {
-            for (let w = 0; w < windowsPerFloor; w++) {
-              const windowX = -buildingWidth/2 + (w + 0.5) * buildingWidth/windowsPerFloor;
-              const windowY = -buildingHeight/2 + (floor + 0.5) * floorHeight;
-              
-              ctx.strokeRect(
-                windowX - windowWidth/2, 
-                windowY - floorHeight * 0.3, 
-                windowWidth, 
+          for (let w = 0; w < windowCount; w++) {
+            // Window position
+            const windowX = building.x - width / 2 + width * (w + 0.5) / windowCount;
+            const windowY = building.y - height / 2 + floor * floorHeight + floorHeight / 2;
+            
+            // Random window lighting effect
+            if (Math.random() > 0.7) {
+              ctx.fillRect(
+                windowX - windowWidth / 2,
+                windowY - floorHeight * 0.3,
+                windowWidth,
                 floorHeight * 0.6
               );
             }
           }
-          
-        } else if (building.style === 1) {
-          // Estilo 2: Casa com telhado
-          const houseWidth = building.size;
-          const houseHeight = building.size * 0.8;
-          
-          // Corpo da casa
-          ctx.strokeRect(-houseWidth/2, -houseHeight/2, houseWidth, houseHeight);
-          
-          // Telhado
-          ctx.beginPath();
-          ctx.moveTo(-houseWidth/2 - 3, -houseHeight/2);
-          ctx.lineTo(0, -houseHeight/2 - houseHeight/2);
-          ctx.lineTo(houseWidth/2 + 3, -houseHeight/2);
-          ctx.stroke();
-          
-          // Porta
-          ctx.beginPath();
-          const doorWidth = houseWidth * 0.3;
-          const doorHeight = houseHeight * 0.5;
-          ctx.strokeRect(-doorWidth/2, houseHeight/2 - doorHeight, doorWidth, doorHeight);
-          
-          // Janelas
-          const windowSize = houseWidth * 0.25;
-          ctx.strokeRect(-houseWidth/3, -houseHeight/4, windowSize, windowSize);
-          ctx.strokeRect(houseWidth/6, -houseHeight/4, windowSize, windowSize);
-          
-        } else {
-          // Estilo 3: Torre/arranha-céu
-          const towerWidth = building.size * 0.6;
-          const towerHeight = building.size * 2;
-          
-          // Base da torre
-          ctx.strokeRect(-towerWidth/2, -towerHeight/2, towerWidth, towerHeight);
-          
-          // Linhas horizontais de detalhes
-          const detailCount = 5;
-          for (let i = 1; i < detailCount; i++) {
-            const y = -towerHeight/2 + (towerHeight * i / detailCount);
-            ctx.beginPath();
-            ctx.moveTo(-towerWidth/2, y);
-            ctx.lineTo(towerWidth/2, y);
-            ctx.stroke();
-          }
-          
-          // Topo da torre
-          ctx.beginPath();
-          ctx.moveTo(-towerWidth/2, -towerHeight/2);
-          ctx.lineTo(0, -towerHeight/2 - towerWidth/2);
-          ctx.lineTo(towerWidth/2, -towerHeight/2);
-          ctx.stroke();
-          
-          // Antena
-          ctx.beginPath();
-          ctx.moveTo(0, -towerHeight/2 - towerWidth/2);
-          ctx.lineTo(0, -towerHeight/2 - towerWidth/2 - towerHeight * 0.2);
-          ctx.stroke();
         }
         
-        ctx.restore();
+        // Building connections - digital network
+        if (building.connected && Math.random() > 0.99) {
+          const target = buildingData[building.connectionTarget];
+          
+          // Draw data flowing between buildings
+          ctx.beginPath();
+          ctx.moveTo(building.x, building.y);
+          ctx.lineTo(target.x, target.y);
+          ctx.strokeStyle = `rgba(0, 176, 80, ${0.1 + Math.sin(time * 3) * 0.05})`;
+          ctx.lineWidth = 0.3;
+          ctx.stroke();
+          
+          // Pulse effect along the connection
+          const pulsePosition = (time * 2) % 1;
+          const pulseX = building.x + (target.x - building.x) * pulsePosition;
+          const pulseY = building.y + (target.y - building.y) * pulsePosition;
+          
+          ctx.beginPath();
+          ctx.arc(pulseX, pulseY, 1.5, 0, Math.PI * 2);
+          ctx.fillStyle = '#00B050';
+          ctx.fill();
+        }
       });
       
-      // Desenhar um hub central
-      ctx.beginPath();
-      ctx.arc(canvas.width/2, canvas.height/2, 8, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(0, 176, 80, 0.1)';
-      ctx.fill();
+      // Update and draw data packets
+      dataPackets.forEach((packet, index) => {
+        // Update packet position
+        packet.progress += packet.speed;
+        
+        if (packet.progress >= 1) {
+          // Reset packet or remove it
+          if (Math.random() > 0.3) {
+            // Create a new path
+            const sourceIndex = Math.floor(Math.random() * buildingCount);
+            let targetIndex;
+            
+            do {
+              targetIndex = Math.floor(Math.random() * buildingCount);
+            } while (targetIndex === sourceIndex);
+            
+            const source = buildingData[sourceIndex];
+            const target = buildingData[targetIndex];
+            
+            packet.sourceX = source.x;
+            packet.sourceY = source.y;
+            packet.targetX = target.x;
+            packet.targetY = target.y;
+            packet.x = source.x;
+            packet.y = source.y;
+            packet.progress = 0;
+          } else {
+            // Remove packet
+            dataPackets.splice(index, 1);
+            // Create a new one
+            if (Math.random() > 0.5) {
+              createPacket();
+            }
+          }
+        } else {
+          // Lerp between source and target with slight arc for 3D effect
+          const t = packet.progress;
+          const mt = 1 - t;
+          
+          // Add slight curve to path
+          const midX = (packet.sourceX + packet.targetX) / 2;
+          const midY = (packet.sourceY + packet.targetY) / 2 - 15 * Math.sin(Math.PI * t);
+          
+          // Quadratic bezier for position
+          packet.x = mt * mt * packet.sourceX + 2 * mt * t * midX + t * t * packet.targetX;
+          packet.y = mt * mt * packet.sourceY + 2 * mt * t * midY + t * t * packet.targetY;
+          
+          // Draw packet
+          ctx.beginPath();
+          ctx.arc(packet.x, packet.y, packet.size, 0, Math.PI * 2);
+          ctx.fillStyle = packet.color;
+          ctx.fill();
+          
+          // Draw packet trail
+          ctx.beginPath();
+          ctx.moveTo(packet.x, packet.y);
+          
+          // Calculate trail points
+          for (let i = 1; i <= 3; i++) {
+            const trailT = Math.max(0, t - i * 0.05);
+            const trailMt = 1 - trailT;
+            
+            const trailX = trailMt * trailMt * packet.sourceX + 2 * trailMt * trailT * midX + trailT * trailT * packet.targetX;
+            const trailY = trailMt * trailMt * packet.sourceY + 2 * trailMt * trailT * midY + trailT * trailT * packet.targetY;
+            
+            ctx.lineTo(trailX, trailY);
+          }
+          
+          ctx.strokeStyle = `rgba(${packet.color.slice(1, 3)}, ${packet.color.slice(3, 5)}, ${packet.color.slice(5, 7)}, 0.2)`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      });
+      
+      // Occasionally create new packets
+      if (Math.random() > 0.995 && dataPackets.length < 8) {
+        createPacket();
+      }
+      
+      // Draw central hub
+      const hubX = canvas.width / 2;
+      const hubY = canvas.height / 2;
+      const hubRadius = 6 + Math.sin(time * 2) * 1;
+      
+      // Hub glow
+      const gradient = ctx.createRadialGradient(hubX, hubY, 0, hubX, hubY, hubRadius * 3);
+      gradient.addColorStop(0, 'rgba(0, 176, 80, 0.2)');
+      gradient.addColorStop(1, 'rgba(0, 176, 80, 0)');
       
       ctx.beginPath();
-      ctx.arc(canvas.width/2, canvas.height/2, 4, 0, Math.PI * 2);
+      ctx.arc(hubX, hubY, hubRadius * 3, 0, Math.PI * 2);
+      ctx.fillStyle = gradient;
+      ctx.fill();
+      
+      // Hub core
+      ctx.beginPath();
+      ctx.arc(hubX, hubY, hubRadius, 0, Math.PI * 2);
       ctx.fillStyle = '#00B050';
       ctx.fill();
       
-      // Efeito de pulso
-      const pulseSize = 12 + Math.sin(time * 3) * 4;
+      // Hub ring
       ctx.beginPath();
-      ctx.arc(canvas.width/2, canvas.height/2, pulseSize, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(0, 176, 80, 0.2)';
+      ctx.arc(hubX, hubY, hubRadius * 1.5, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(0, 176, 80, 0.5)';
       ctx.lineWidth = 1;
       ctx.stroke();
     };
@@ -258,7 +382,7 @@ export const RealEstateAnimation: React.FC = () => {
   );
 };
 
-// Animação para Tecnologia Fiscal
+// Completely redesigned animation for Fiscal Technology - Digital document flow and analysis
 export const FiscalAnimation: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -269,7 +393,7 @@ export const FiscalAnimation: React.FC = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Ajustar o tamanho do canvas
+    // Adjust canvas size
     const resizeCanvas = () => {
       const rect = canvas.getBoundingClientRect();
       canvas.width = rect.width;
@@ -279,74 +403,313 @@ export const FiscalAnimation: React.FC = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Criar elementos de documentos
-    const documents: {
-      x: number;
-      y: number;
-      width: number;
-      height: number;
-      rotation: number;
-      color: string;
-      speed: number;
-    }[] = [];
+    // Digital documents
+    const documents = [];
+    const documentCount = 15;
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
     
-    const createDocuments = () => {
-      documents.length = 0;
-      const documentCount = 5; // Reduzido para menos sobreposição
+    // Create documents
+    for (let i = 0; i < documentCount; i++) {
+      // Document types
+      const isInvoice = Math.random() > 0.6;
+      const isForm = !isInvoice && Math.random() > 0.5;
+      const isReport = !isInvoice && !isForm;
       
-      for (let i = 0; i < documentCount; i++) {
-        documents.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          width: Math.random() * 50 + 20,
-          height: Math.random() * 30 + 40,
-          rotation: Math.random() * Math.PI * 2,
-          color: i % 3 === 0 ? '#00B050' : (i % 3 === 1 ? '#7ED957' : '#E2F2E4'),
-          speed: Math.random() * 0.5 + 0.2
-        });
-      }
-    };
+      // Document starting position - circular arrangement
+      const angle = (i / documentCount) * Math.PI * 2;
+      const radius = canvas.width * 0.3 * (0.8 + Math.random() * 0.4);
+      const x = centerX + Math.cos(angle) * radius;
+      const y = centerY + Math.sin(angle) * radius;
+      
+      documents.push({
+        x,
+        y,
+        width: 30 + Math.random() * 20,
+        height: 40 + Math.random() * 10,
+        rotation: Math.random() * Math.PI * 0.1 - Math.PI * 0.05,
+        color: isInvoice ? '#00B050' : isForm ? '#7ED957' : '#E2F4E8',
+        type: isInvoice ? 'invoice' : isForm ? 'form' : 'report',
+        processed: false,
+        processing: false,
+        processingProgress: 0,
+        processingSpeed: 0.01 + Math.random() * 0.02,
+        movingToCenter: false,
+        moveProgress: 0,
+        moveSpeed: 0.01 + Math.random() * 0.01,
+        originalX: x,
+        originalY: y,
+        pulseEffect: 0,
+        pulseSpeed: 0.02 + Math.random() * 0.02
+      });
+    }
     
-    createDocuments();
+    // Data bits - small particles moving around
+    const dataBits = [];
+    const dataBitCount = 30;
     
-    // Animar os documentos flutuando
+    for (let i = 0; i < dataBitCount; i++) {
+      dataBits.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: 0.5 + Math.random() * 1,
+        speed: {
+          x: (Math.random() - 0.5) * 0.5,
+          y: (Math.random() - 0.5) * 0.5
+        },
+        color: i % 3 === 0 ? '#00B050' : i % 3 === 1 ? '#7ED957' : '#E2F4E8',
+        opacity: 0.3 + Math.random() * 0.4
+      });
+    }
+    
+    // Animation variables
+    let time = 0;
+    
+    // Animation loop
     const animate = () => {
       requestAnimationFrame(animate);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      documents.forEach(doc => {
-        // Atualizar posição
-        doc.y += doc.speed;
-        doc.rotation += 0.01;
+      time += 0.01;
+      
+      // Update and draw data bits
+      dataBits.forEach(bit => {
+        // Move bits
+        bit.x += bit.speed.x;
+        bit.y += bit.speed.y;
         
-        // Reposicionar quando sair da tela
-        if (doc.y > canvas.height) {
-          doc.y = -doc.height;
-          doc.x = Math.random() * canvas.width;
+        // Wrap around edges
+        if (bit.x < 0) bit.x = canvas.width;
+        if (bit.x > canvas.width) bit.x = 0;
+        if (bit.y < 0) bit.y = canvas.height;
+        if (bit.y > canvas.height) bit.y = 0;
+        
+        // Draw bit
+        ctx.beginPath();
+        ctx.arc(bit.x, bit.y, bit.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${bit.color.slice(1, 3)}, ${bit.color.slice(3, 5)}, ${bit.color.slice(5, 7)}, ${bit.opacity})`;
+        ctx.fill();
+      });
+      
+      // Draw processing center
+      const processingRadius = 30 + Math.sin(time * 2) * 5;
+      
+      // Processing center glow
+      const centerGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, processingRadius * 2);
+      centerGradient.addColorStop(0, 'rgba(0, 176, 80, 0.1)');
+      centerGradient.addColorStop(1, 'rgba(0, 176, 80, 0)');
+      
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, processingRadius * 2, 0, Math.PI * 2);
+      ctx.fillStyle = centerGradient;
+      ctx.fill();
+      
+      // Processing center rings
+      for (let i = 0; i < 2; i++) {
+        const ringRadius = processingRadius * (0.7 + i * 0.3);
+        const ringProgress = (time * (0.5 - i * 0.2)) % 1;
+        
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, ringRadius, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(0, 176, 80, ${0.2 + Math.sin(time * 3) * 0.1})`;
+        ctx.lineWidth = 1 - ringProgress * 0.8;
+        ctx.stroke();
+      }
+      
+      // Update and draw documents
+      documents.forEach((doc, index) => {
+        // Update pulse effect
+        doc.pulseEffect += doc.pulseSpeed;
+        const pulseFactor = 1 + Math.sin(doc.pulseEffect) * 0.05;
+        
+        // Decide if document should move to center for processing
+        if (!doc.processed && !doc.processing && !doc.movingToCenter && Math.random() > 0.995) {
+          doc.movingToCenter = true;
+          doc.moveProgress = 0;
         }
         
-        // Desenhar documento
+        // Move document to center
+        if (doc.movingToCenter) {
+          doc.moveProgress += doc.moveSpeed;
+          
+          if (doc.moveProgress >= 1) {
+            doc.movingToCenter = false;
+            doc.processing = true;
+            doc.processingProgress = 0;
+          } else {
+            // Interpolate position
+            doc.x = doc.originalX + (centerX - doc.originalX) * doc.moveProgress;
+            doc.y = doc.originalY + (centerY - doc.originalY) * doc.moveProgress;
+            
+            // Scale down as it moves to center
+            const scale = 1 - doc.moveProgress * 0.5;
+            doc.width *= scale;
+            doc.height *= scale;
+          }
+        }
+        
+        // Process document
+        if (doc.processing) {
+          doc.processingProgress += doc.processingSpeed;
+          
+          if (doc.processingProgress >= 1) {
+            doc.processing = false;
+            doc.processed = true;
+            
+            // Move back to original position
+            doc.x = doc.originalX;
+            doc.y = doc.originalY;
+            
+            // Restore original size
+            doc.width = 30 + Math.random() * 20;
+            doc.height = 40 + Math.random() * 10;
+          } else {
+            // Spin around center during processing
+            const processingAngle = doc.processingProgress * Math.PI * 4;
+            const processingRadius = 20 - doc.processingProgress * 15; // Spiral inward
+            
+            doc.x = centerX + Math.cos(processingAngle) * processingRadius;
+            doc.y = centerY + Math.sin(processingAngle) * processingRadius;
+            
+            // Shrink as it's being processed
+            doc.width = (30 + Math.random() * 20) * (1 - doc.processingProgress * 0.8);
+            doc.height = (40 + Math.random() * 10) * (1 - doc.processingProgress * 0.8);
+          }
+        }
+        
+        // Draw document
         ctx.save();
-        ctx.translate(doc.x + doc.width / 2, doc.y + doc.height / 2);
+        ctx.translate(doc.x, doc.y);
         ctx.rotate(doc.rotation);
         
-        // Documento principal
-        ctx.fillStyle = doc.color;
-        ctx.fillRect(-doc.width / 2, -doc.height / 2, doc.width, doc.height);
+        // Document
+        const finalWidth = doc.width * pulseFactor;
+        const finalHeight = doc.height * pulseFactor;
         
-        // Linhas de texto
+        // Draw document shadow
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(-finalWidth / 2 + 2, -finalHeight / 2 + 2, finalWidth, finalHeight);
+        
+        // Main document
+        ctx.fillStyle = doc.processed ? '#E2F4E8' : doc.color;
+        ctx.fillRect(-finalWidth / 2, -finalHeight / 2, finalWidth, finalHeight);
+        
+        // Document content - lines of text
+        const lineCount = Math.floor(finalHeight / 10);
         ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-        for (let i = 0; i < 4; i++) {
+        
+        for (let i = 0; i < lineCount; i++) {
+          const lineWidth = finalWidth * (0.6 + Math.random() * 0.3);
+          
           ctx.fillRect(
-            -doc.width / 2 + 5,
-            -doc.height / 2 + 10 + i * 8,
-            doc.width - 10,
+            -finalWidth / 2 + 5,
+            -finalHeight / 2 + 8 + i * 8,
+            lineWidth,
             2
           );
         }
         
+        // Document type icon
+        if (doc.type === 'invoice') {
+          // Invoice icon - $ symbol
+          ctx.fillStyle = doc.processed ? 'rgba(0, 176, 80, 0.2)' : 'rgba(255, 255, 255, 0.2)';
+          ctx.font = `${finalHeight * 0.3}px Arial`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('$', 0, 0);
+        } else if (doc.type === 'form') {
+          // Form icon - checkbox
+          ctx.strokeStyle = doc.processed ? 'rgba(0, 176, 80, 0.2)' : 'rgba(255, 255, 255, 0.2)';
+          ctx.lineWidth = 2;
+          ctx.strokeRect(-finalHeight * 0.15, -finalHeight * 0.15, finalHeight * 0.3, finalHeight * 0.3);
+          
+          if (doc.processed) {
+            // Checkmark
+            ctx.beginPath();
+            ctx.moveTo(-finalHeight * 0.1, 0);
+            ctx.lineTo(-finalHeight * 0.05, finalHeight * 0.1);
+            ctx.lineTo(finalHeight * 0.1, -finalHeight * 0.1);
+            ctx.stroke();
+          }
+        } else if (doc.type === 'report') {
+          // Report icon - pie chart
+          ctx.beginPath();
+          ctx.arc(0, 0, finalHeight * 0.15, 0, Math.PI * 1.5);
+          ctx.lineTo(0, 0);
+          ctx.closePath();
+          ctx.fillStyle = doc.processed ? 'rgba(0, 176, 80, 0.2)' : 'rgba(255, 255, 255, 0.2)';
+          ctx.fill();
+        }
+        
+        // Processing status indicator
+        if (doc.processed) {
+          // Checkmark for processed documents
+          ctx.strokeStyle = 'rgba(0, 176, 80, 0.7)';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(finalWidth / 2 - 8, -finalHeight / 2 + 8, 6, 0, Math.PI * 2);
+          ctx.stroke();
+          
+          ctx.beginPath();
+          ctx.moveTo(finalWidth / 2 - 11, -finalHeight / 2 + 8);
+          ctx.lineTo(finalWidth / 2 - 8, -finalHeight / 2 + 11);
+          ctx.lineTo(finalWidth / 2 - 5, -finalHeight / 2 + 5);
+          ctx.stroke();
+        }
+        
         ctx.restore();
+        
+        // Draw connection to center for documents being processed or moving
+        if (doc.processing || doc.movingToCenter) {
+          ctx.beginPath();
+          ctx.moveTo(doc.x, doc.y);
+          ctx.lineTo(centerX, centerY);
+          
+          // Gradient line
+          const gradient = ctx.createLinearGradient(doc.x, doc.y, centerX, centerY);
+          gradient.addColorStop(0, `rgba(${doc.color.slice(1, 3)}, ${doc.color.slice(3, 5)}, ${doc.color.slice(5, 7)}, 0.2)`);
+          gradient.addColorStop(1, 'rgba(0, 176, 80, 0.3)');
+          
+          ctx.strokeStyle = gradient;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+          
+          // Data particles moving along the line
+          if (doc.processing) {
+            const particleCount = 3;
+            
+            for (let i = 0; i < particleCount; i++) {
+              const particleProgress = (doc.processingProgress + i / particleCount) % 1;
+              
+              const particleX = doc.x + (centerX - doc.x) * particleProgress;
+              const particleY = doc.y + (centerY - doc.y) * particleProgress;
+              
+              ctx.beginPath();
+              ctx.arc(particleX, particleY, 1.5, 0, Math.PI * 2);
+              ctx.fillStyle = i % 2 === 0 ? '#00B050' : '#7ED957';
+              ctx.fill();
+            }
+          }
+        }
       });
+      
+      // Processing center core
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 6, 0, Math.PI * 2);
+      ctx.fillStyle = '#00B050';
+      ctx.fill();
+      
+      // Add floating binary data occasionally
+      if (Math.random() > 0.95) {
+        const digit = Math.random() > 0.7 ? '1' : '0';
+        const digitX = centerX + (Math.random() - 0.5) * 80;
+        const digitY = centerY + (Math.random() - 0.5) * 80;
+        
+        ctx.fillStyle = 'rgba(0, 176, 80, 0.4)';
+        ctx.font = '10px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(digit, digitX, digitY);
+      }
     };
     
     animate();
