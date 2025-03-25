@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -71,6 +70,12 @@ const WebsiteBenefits: React.FC = () => {
     }
   };
 
+  const whatsappNumber = "62982474117";
+  const getWhatsappLink = (planType: string) => {
+    const message = encodeURIComponent(`Olá, quero um site ${planType}`);
+    return `https://wa.me/${whatsappNumber}?text=${message}`;
+  };
+
   return (
     <div className="overflow-hidden bg-black">
       {/* Hero Section */}
@@ -111,13 +116,19 @@ const WebsiteBenefits: React.FC = () => {
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button 
-                    size="lg" 
-                    className="bg-vetor-green hover:bg-vetor-darkgreen text-white gap-2 group"
+                  <a 
+                    href={getWhatsappLink("Básico")} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
                   >
-                    <span>Solicitar Orçamento</span>
-                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
+                    <Button 
+                      size="lg" 
+                      className="bg-vetor-green hover:bg-vetor-darkgreen text-white gap-2 group w-full"
+                    >
+                      <span>Solicitar Orçamento</span>
+                      <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </a>
                   <Button
                     variant="outline"
                     size="lg"
@@ -723,7 +734,7 @@ const WebsiteBenefits: React.FC = () => {
                   "SEO avançado + consultoria",
                   "Sistema de blog avançado",
                   "Área de membros/clientes",
-                  "Integrações personalizadas",
+                  "Integra��ões personalizadas",
                   "Otimização de conversão",
                   "12 meses de suporte prioritário"
                 ],
@@ -766,11 +777,18 @@ const WebsiteBenefits: React.FC = () => {
                       ))}
                     </div>
                     
-                    <Button 
-                      className={`w-full ${plan.highlighted ? 'bg-vetor-green hover:bg-vetor-green/90' : 'bg-white/10 hover:bg-white/20'} transition-colors`}
+                    <a 
+                      href={getWhatsappLink(plan.name)} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="block w-full"
                     >
-                      Solicitar Orçamento
-                    </Button>
+                      <Button 
+                        className={`w-full ${plan.highlighted ? 'bg-vetor-green hover:bg-vetor-green/90' : 'bg-white/10 hover:bg-white/20'} transition-colors`}
+                      >
+                        Solicitar Orçamento
+                      </Button>
+                    </a>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -801,21 +819,33 @@ const WebsiteBenefits: React.FC = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button 
-                size="lg" 
-                className="bg-vetor-green hover:bg-vetor-darkgreen text-white gap-2 text-lg px-8 py-6 h-auto group"
+              <a 
+                href={getWhatsappLink("Empresarial")} 
+                target="_blank" 
+                rel="noopener noreferrer"
               >
-                <span>Solicitar Orçamento</span>
-                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-vetor-green/30 text-vetor-green hover:bg-vetor-green/10 text-lg px-8 py-6 h-auto"
+                <Button 
+                  size="lg" 
+                  className="bg-vetor-green hover:bg-vetor-darkgreen text-white gap-2 text-lg px-8 py-6 h-auto group w-full sm:w-auto"
+                >
+                  <span>Solicitar Orçamento</span>
+                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </a>
+              <a 
+                href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Olá, gostaria de falar com um consultor sobre um site para minha empresa.")}`} 
+                target="_blank" 
+                rel="noopener noreferrer"
               >
-                <HeartHandshake className="mr-2 h-5 w-5" />
-                <span>Fale com um Consultor</span>
-              </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-vetor-green/30 text-vetor-green hover:bg-vetor-green/10 text-lg px-8 py-6 h-auto w-full sm:w-auto"
+                >
+                  <HeartHandshake className="mr-2 h-5 w-5" />
+                  <span>Fale com um Consultor</span>
+                </Button>
+              </a>
             </div>
           </motion.div>
         </div>
