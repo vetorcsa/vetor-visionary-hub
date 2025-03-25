@@ -1,7 +1,9 @@
+
 import React, { useState } from 'react';
 import { useAdmin } from '@/contexts/AdminContext';
-import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, MessageCircle } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { Button } from '@/components/ui/button';
 
 const Contact: React.FC = () => {
   const { footerData } = useAdmin();
@@ -116,10 +118,10 @@ const Contact: React.FC = () => {
                       Email
                     </h3>
                     <a 
-                      href={`mailto:${footerData.email}`} 
+                      href="mailto:vetorcsa@gmail.com" 
                       className="text-vetor-darkgray hover:text-vetor-green transition-colors"
                     >
-                      {footerData.email}
+                      vetorcsa@gmail.com
                     </a>
                   </div>
                 </div>
@@ -133,13 +135,46 @@ const Contact: React.FC = () => {
                       Telefone
                     </h3>
                     <a 
-                      href={`tel:${footerData.phone.replace(/\D/g, '')}`} 
+                      href="tel:62982474117" 
                       className="text-vetor-darkgray hover:text-vetor-green transition-colors"
                     >
-                      {footerData.phone}
+                      62 982474117
                     </a>
                   </div>
                 </div>
+                
+                <div className="flex items-start">
+                  <div className="w-10 h-10 bg-vetor-green bg-opacity-10 rounded-full flex items-center justify-center mr-4">
+                    <MessageCircle className="w-5 h-5 text-vetor-green" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-medium text-vetor-black mb-1">
+                      WhatsApp
+                    </h3>
+                    <a 
+                      href="https://wa.me/62982474117" 
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-vetor-darkgray hover:text-vetor-green transition-colors"
+                    >
+                      Iniciar conversa no WhatsApp
+                    </a>
+                  </div>
+                </div>
+              </div>
+              
+              {/* WhatsApp Button */}
+              <div className="mt-8">
+                <a 
+                  href="https://wa.me/62982474117" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button className="bg-green-500 hover:bg-green-600 text-white border-none w-full sm:w-auto flex items-center gap-2">
+                    <MessageCircle className="w-5 h-5" />
+                    Conversar no WhatsApp
+                  </Button>
+                </a>
               </div>
               
               {/* Map or Image */}

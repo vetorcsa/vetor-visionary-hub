@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useAdmin } from '@/contexts/AdminContext';
-import { Mail, Phone, MapPin, Instagram } from 'lucide-react';
+import { Mail, Phone, MapPin, Instagram, MessageCircle } from 'lucide-react';
 
 const Footer: React.FC = () => {
   const { footerData } = useAdmin();
@@ -51,10 +51,21 @@ const Footer: React.FC = () => {
               <li className="flex items-center">
                 <Phone className="w-5 h-5 text-vetor-green mr-2" />
                 <a 
-                  href={`tel:${footerData.phone.replace(/\D/g, '')}`} 
+                  href="tel:62982474117" 
                   className="hover:text-vetor-green transition-colors duration-200"
                 >
-                  {footerData.phone}
+                  62 982474117
+                </a>
+              </li>
+              <li className="flex items-center">
+                <MessageCircle className="w-5 h-5 text-vetor-green mr-2" />
+                <a 
+                  href="https://wa.me/62982474117" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="hover:text-vetor-green transition-colors duration-200"
+                >
+                  WhatsApp
                 </a>
               </li>
             </ul>
@@ -70,6 +81,14 @@ const Footer: React.FC = () => {
                 className="w-10 h-10 bg-vetor-darkgray rounded-full flex items-center justify-center hover:bg-vetor-green transition-colors duration-200"
               >
                 <Instagram className="w-5 h-5" />
+              </a>
+              <a 
+                href="https://wa.me/62982474117" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-vetor-darkgray rounded-full flex items-center justify-center hover:bg-vetor-green transition-colors duration-200"
+              >
+                <MessageCircle className="w-5 h-5" />
               </a>
             </div>
           </div>
