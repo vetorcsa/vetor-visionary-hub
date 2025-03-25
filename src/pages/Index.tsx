@@ -5,7 +5,12 @@ import Hero from '@/components/Home/Hero';
 import ServicesCard from '@/components/Home/ServicesCard';
 import { ChevronRight, ArrowRight, Building2, FileBarChart, Globe, MonitorSmartphone } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { FiscalAnimation, LogisticsAnimation, CustomTechAnimation, RealEstateAnimation } from '@/components/Home/SectorAnimations';
+import { 
+  RealEstateAnimation, 
+  FiscalAnimation, 
+  LogisticsAnimation, 
+  CustomTechAnimation 
+} from '@/components/Home/SectorAnimations';
 import { Badge } from '@/components/ui/badge';
 
 const Index: React.FC = () => {
@@ -91,7 +96,7 @@ const Index: React.FC = () => {
               </div>
             </div>
             
-            {/* Tecnologia em Logística - Redesigned */}
+            {/* Tecnologia em Logística */}
             <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group">
               <div className="h-56 relative bg-black overflow-hidden">
                 <LogisticsAnimation />
@@ -111,7 +116,7 @@ const Index: React.FC = () => {
               </div>
             </div>
             
-            {/* Soluções Tecnológicas - Redesigned */}
+            {/* Soluções Tecnológicas */}
             <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group">
               <div className="h-56 relative bg-black overflow-hidden">
                 <CustomTechAnimation />
