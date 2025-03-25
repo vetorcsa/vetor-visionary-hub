@@ -158,7 +158,7 @@ const About: React.FC = () => {
                       Endereço
                     </h4>
                     <p className="text-gray-300">
-                      {footerData.address}
+                      Torre Tóquio, Metropolitan Mall - Av. Dep. Jamel Cecílio, 2690 - Jardim Goiás, Goiânia - GO, 74810-100
                     </p>
                   </div>
                 </div>
