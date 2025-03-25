@@ -142,7 +142,7 @@ const Index: React.FC = () => {
                   <Link to="/sobre" className="text-vetor-green hover:text-vetor-lightgreen flex items-center gap-2 font-medium group-hover:translate-x-2 transition-transform duration-300 text-lg">
                     Saiba mais <ChevronRight className="w-5 h-5" />
                   </Link>
-                  <Link to="/contato">
+                  <Link to="/crie-seu-site">
                     <Button className="bg-vetor-green hover:bg-vetor-darkgreen text-white border-none">
                       Crie seu site
                     </Button>

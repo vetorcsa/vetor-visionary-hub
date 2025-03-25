@@ -13,6 +13,7 @@ import NotFound from "./pages/NotFound";
 import Navbar from "./components/Layout/Navbar";
 import Footer from "./components/Layout/Footer";
 import TaxRecovery from "./pages/TaxRecovery";
+import WebsiteBenefits from "./pages/WebsiteBenefits";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => (
                 <Route path="/contato" element={<Contact />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/recuperacao-tributaria" element={<TaxRecovery />} />
+                <Route path="/crie-seu-site" element={<WebsiteBenefits />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
