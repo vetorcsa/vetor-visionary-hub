@@ -11,8 +11,8 @@ import {
   Shield, BarChart, Search, Zap, ArrowRight, Check,
   Palette, LayoutGrid, Users, ClipboardCheck, MousePointer,
   Headphones, MessageSquare, HeartHandshake, Lightbulb,
-  Building, FileText, Shopping, CreditCard, TruckFast, 
-  Percent, FileImage, EarthIcon
+  Building, FileText, ShoppingCart, CreditCard, Truck, 
+  Percent, FileImage, Globe2, Star
 } from 'lucide-react';
 
 const WebsiteBenefits: React.FC = () => {
@@ -380,7 +380,7 @@ const WebsiteBenefits: React.FC = () => {
               >
                 {[
                   {
-                    icon: <Shopping className="w-6 h-6 text-vetor-green" />,
+                    icon: <ShoppingCart className="w-6 h-6 text-vetor-green" />,
                     title: "Catálogo de Produtos",
                     description: "Exibição organizada e atrativa dos seus produtos com categorias e filtros."
                   },
@@ -390,7 +390,7 @@ const WebsiteBenefits: React.FC = () => {
                     description: "Integração com as principais formas de pagamento do mercado."
                   },
                   {
-                    icon: <TruckFast className="w-6 h-6 text-vetor-green" />,
+                    icon: <Truck className="w-6 h-6 text-vetor-green" />,
                     title: "Cálculo de Frete",
                     description: "Integração com serviços de entrega e cálculo automático de frete."
                   },
@@ -468,7 +468,7 @@ const WebsiteBenefits: React.FC = () => {
                     description: "Exibição de trabalhos, projetos ou portfólio com visual impactante."
                   },
                   {
-                    icon: <EarthIcon className="w-6 h-6 text-vetor-green" />,
+                    icon: <Globe2 className="w-6 h-6 text-vetor-green" />,
                     title: "Múltiplos Idiomas",
                     description: "Possibilidade de oferecer seu conteúdo em diferentes idiomas para alcance global."
                   }
