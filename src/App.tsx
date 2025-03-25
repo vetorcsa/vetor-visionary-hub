@@ -8,6 +8,7 @@ import { AdminProvider } from "@/contexts/AdminContext";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Admin from "./pages/Admin";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import Navbar from "./components/Layout/Navbar";
 import Footer from "./components/Layout/Footer";
@@ -27,6 +28,7 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/sobre" element={<About />} />
+                <Route path="/contato" element={<Contact />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

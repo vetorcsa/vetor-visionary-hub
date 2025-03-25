@@ -12,6 +12,7 @@ import {
   CustomTechAnimation 
 } from '@/components/Home/SectorAnimations';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 const Index: React.FC = () => {
   const { services } = useAdmin();
@@ -128,11 +129,18 @@ const Index: React.FC = () => {
               <div className="p-8">
                 <h3 className="text-2xl font-bold text-vetor-green mb-4">Soluções Tecnológicas</h3>
                 <p className="text-white/80 mb-6 text-lg">
-                  Desenvolvimento de software personalizado, consultoria em TI e implementação de infraestrutura tecnológica para diversos setores.
+                  Desenvolvimento de software personalizado, consultoria em TI, implementação de infraestrutura tecnológica para diversos setores e crie seu site.
                 </p>
-                <Link to="/sobre" className="text-vetor-green hover:text-vetor-lightgreen flex items-center gap-2 font-medium group-hover:translate-x-2 transition-transform duration-300 text-lg">
-                  Saiba mais <ChevronRight className="w-5 h-5" />
-                </Link>
+                <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
+                  <Link to="/sobre" className="text-vetor-green hover:text-vetor-lightgreen flex items-center gap-2 font-medium group-hover:translate-x-2 transition-transform duration-300 text-lg">
+                    Saiba mais <ChevronRight className="w-5 h-5" />
+                  </Link>
+                  <Link to="/contato">
+                    <Button className="bg-vetor-green hover:bg-vetor-darkgreen text-white border-none">
+                      Crie seu site
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
