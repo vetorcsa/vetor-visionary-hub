@@ -131,7 +131,7 @@ const Hero: React.FC = () => {
   }, []);
   
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-white to-gray-50">
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
       <canvas 
         ref={canvasRef} 
         className="absolute inset-0 w-full h-full"
@@ -144,11 +144,11 @@ const Hero: React.FC = () => {
             <span className="text-vetor-green font-medium text-sm">Inovação em Tecnologia</span>
           </div>
           
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-vetor-black animate-fade-in">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white animate-fade-in">
             Impulsionando Negócios com Soluções Tecnológicas Inovadoras
           </h1>
           
-          <p className="text-lg md:text-xl text-vetor-darkgray mb-8 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+          <p className="text-lg md:text-xl text-gray-300 mb-8 animate-fade-in" style={{ animationDelay: '0.2s' }}>
             Transformamos desafios em oportunidades através de soluções tecnológicas personalizadas para imobiliárias, gestão fiscal e logística.
           </p>
           
