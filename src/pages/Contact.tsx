@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAdmin } from '@/contexts/AdminContext';
 import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react';
@@ -103,7 +102,7 @@ const Contact: React.FC = () => {
                       Endereço
                     </h3>
                     <p className="text-vetor-darkgray">
-                      {footerData.address}
+                      Torre Tóquio, Metropolitan Mall - Av. Dep. Jamel Cecílio, 2690 - Jardim Goiás, Goiânia - GO, 74810-100
                     </p>
                   </div>
                 </div>

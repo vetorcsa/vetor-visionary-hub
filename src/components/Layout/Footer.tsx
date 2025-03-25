@@ -37,7 +37,7 @@ const Footer: React.FC = () => {
             <ul className="space-y-3">
               <li className="flex items-start">
                 <MapPin className="w-5 h-5 text-vetor-green mr-2 mt-0.5" />
-                <span>{footerData.address}</span>
+                <span>Torre Tóquio, Metropolitan Mall - Av. Dep. Jamel Cecílio, 2690 - Jardim Goiás, Goiânia - GO, 74810-100</span>
               </li>
               <li className="flex items-center">
                 <Mail className="w-5 h-5 text-vetor-green mr-2" />
