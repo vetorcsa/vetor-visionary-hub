@@ -91,9 +91,16 @@ const Index: React.FC = () => {
                 <p className="text-white/80 mb-6 text-lg">
                   Sistemas inteligentes para gestão fiscal e tributária que garantem conformidade com a legislação, reduzem custos e otimizam a carga tributária da sua empresa.
                 </p>
-                <Link to="/sobre" className="text-vetor-green hover:text-vetor-lightgreen flex items-center gap-2 font-medium group-hover:translate-x-2 transition-transform duration-300 text-lg">
-                  Saiba mais <ChevronRight className="w-5 h-5" />
-                </Link>
+                <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
+                  <Link to="/sobre" className="text-vetor-green hover:text-vetor-lightgreen flex items-center gap-2 font-medium group-hover:translate-x-2 transition-transform duration-300 text-lg">
+                    Saiba mais <ChevronRight className="w-5 h-5" />
+                  </Link>
+                  <Link to="/recuperacao-tributaria">
+                    <Button className="bg-vetor-green hover:bg-vetor-darkgreen text-white border-none">
+                      Recuperação Tributária
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </div>
             
