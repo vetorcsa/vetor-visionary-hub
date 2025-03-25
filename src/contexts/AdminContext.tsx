@@ -1,3 +1,4 @@
+
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
 // Tipos para os dados editáveis
@@ -83,7 +84,7 @@ const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
 // Dados iniciais
 const initialFooterData: FooterData = {
-  address: 'Torre tokio, Metropolitan Mall - Av. Dep. Jamel Cecílio, 2690 - Jardim Goiás, Goiânia - GO, 74810-100',
+  address: 'Torre Tóquio, Metropolitan Mall - Av. Dep. Jamel Cecílio, 2690 - Jardim Goiás, Goiânia - GO, 74810-100',
   email: 'vetorcsa@gmail.com',
   phone: '(11) 3333-4444',
   socialLinks: [
