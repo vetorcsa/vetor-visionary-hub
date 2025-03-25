@@ -4,6 +4,7 @@ import { useAdmin } from '@/contexts/AdminContext';
 import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, MessageCircle } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 const Contact: React.FC = () => {
   const { footerData } = useAdmin();
@@ -63,15 +64,16 @@ const Contact: React.FC = () => {
   };
   
   return (
-    <div className="page-transition pt-20">
+    <div className="page-transition pt-20 bg-black text-white">
       {/* Hero Section */}
-      <div className="bg-gradient-to-b from-white to-gray-50 py-20">
+      <div className="bg-gradient-to-b from-vetor-black to-black py-20">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-vetor-black mb-6 animate-fade-in">
+            <Badge className="bg-vetor-green/20 text-vetor-green hover:bg-vetor-green/30 mb-6">Contato</Badge>
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 animate-fade-in">
               Entre em Contato
             </h1>
-            <p className="text-lg text-vetor-darkgray mb-8 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+            <p className="text-lg text-gray-300 mb-8 animate-fade-in" style={{ animationDelay: '0.1s' }}>
               Estamos prontos para ajudar seu negócio a crescer com nossas soluções tecnológicas. Entre em contato e vamos conversar!
             </p>
           </div>
@@ -79,47 +81,47 @@ const Contact: React.FC = () => {
       </div>
       
       {/* Contact Info and Form Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-vetor-black/80">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Info */}
-            <div className="lg:pr-8">
+            <div className="lg:pr-8 bg-black/40 backdrop-blur-sm p-8 rounded-xl border border-vetor-green/20">
               <div className="inline-block mb-4 px-3 py-1 bg-vetor-green bg-opacity-10 rounded-full">
                 <span className="text-vetor-green font-medium text-sm">Entre em Contato</span>
               </div>
-              <h2 className="text-3xl font-bold text-vetor-black mb-6">
+              <h2 className="text-3xl font-bold text-white mb-6">
                 Vamos Conversar
               </h2>
-              <p className="text-vetor-darkgray mb-8">
+              <p className="text-gray-300 mb-8">
                 Estamos ansiosos para ouvir sobre seu projeto e como podemos ajudar. Sinta-se à vontade para entrar em contato conosco através dos canais abaixo ou usando o formulário de contato.
               </p>
               
               <div className="space-y-6">
                 <div className="flex items-start">
-                  <div className="w-10 h-10 bg-vetor-green bg-opacity-10 rounded-full flex items-center justify-center mr-4">
-                    <MapPin className="w-5 h-5 text-vetor-green" />
+                  <div className="w-12 h-12 bg-vetor-green bg-opacity-10 rounded-full flex items-center justify-center mr-4">
+                    <MapPin className="w-6 h-6 text-vetor-green" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-medium text-vetor-black mb-1">
+                    <h3 className="text-lg font-medium text-white mb-1">
                       Endereço
                     </h3>
-                    <p className="text-vetor-darkgray">
+                    <p className="text-gray-300">
                       Torre Tóquio, Metropolitan Mall - Av. Dep. Jamel Cecílio, 2690 - Jardim Goiás, Goiânia - GO, 74810-100
                     </p>
                   </div>
                 </div>
                 
                 <div className="flex items-start">
-                  <div className="w-10 h-10 bg-vetor-green bg-opacity-10 rounded-full flex items-center justify-center mr-4">
-                    <Mail className="w-5 h-5 text-vetor-green" />
+                  <div className="w-12 h-12 bg-vetor-green bg-opacity-10 rounded-full flex items-center justify-center mr-4">
+                    <Mail className="w-6 h-6 text-vetor-green" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-medium text-vetor-black mb-1">
+                    <h3 className="text-lg font-medium text-white mb-1">
                       Email
                     </h3>
                     <a 
                       href="mailto:vetorcsa@gmail.com" 
-                      className="text-vetor-darkgray hover:text-vetor-green transition-colors"
+                      className="text-gray-300 hover:text-vetor-green transition-colors"
                     >
                       vetorcsa@gmail.com
                     </a>
@@ -127,16 +129,16 @@ const Contact: React.FC = () => {
                 </div>
                 
                 <div className="flex items-start">
-                  <div className="w-10 h-10 bg-vetor-green bg-opacity-10 rounded-full flex items-center justify-center mr-4">
-                    <Phone className="w-5 h-5 text-vetor-green" />
+                  <div className="w-12 h-12 bg-vetor-green bg-opacity-10 rounded-full flex items-center justify-center mr-4">
+                    <Phone className="w-6 h-6 text-vetor-green" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-medium text-vetor-black mb-1">
+                    <h3 className="text-lg font-medium text-white mb-1">
                       Telefone
                     </h3>
                     <a 
                       href="tel:62982474117" 
-                      className="text-vetor-darkgray hover:text-vetor-green transition-colors"
+                      className="text-gray-300 hover:text-vetor-green transition-colors"
                     >
                       62 982474117
                     </a>
@@ -144,18 +146,18 @@ const Contact: React.FC = () => {
                 </div>
                 
                 <div className="flex items-start">
-                  <div className="w-10 h-10 bg-vetor-green bg-opacity-10 rounded-full flex items-center justify-center mr-4">
-                    <MessageCircle className="w-5 h-5 text-vetor-green" />
+                  <div className="w-12 h-12 bg-vetor-green bg-opacity-10 rounded-full flex items-center justify-center mr-4">
+                    <MessageCircle className="w-6 h-6 text-vetor-green" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-medium text-vetor-black mb-1">
+                    <h3 className="text-lg font-medium text-white mb-1">
                       WhatsApp
                     </h3>
                     <a 
                       href="https://wa.me/62982474117" 
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-vetor-darkgray hover:text-vetor-green transition-colors"
+                      className="text-gray-300 hover:text-vetor-green transition-colors"
                     >
                       Iniciar conversa no WhatsApp
                     </a>
@@ -176,27 +178,18 @@ const Contact: React.FC = () => {
                   </Button>
                 </a>
               </div>
-              
-              {/* Map or Image */}
-              <div className="mt-12 bg-gray-100 rounded-xl overflow-hidden h-64">
-                <img 
-                  src="/placeholder.svg" 
-                  alt="Mapa localização"
-                  className="w-full h-full object-cover"
-                />
-              </div>
             </div>
             
             {/* Contact Form */}
-            <div className="bg-gray-50 rounded-xl p-8 animate-slide-in-right">
-              <h3 className="text-2xl font-bold text-vetor-black mb-6">
+            <div className="bg-black/40 backdrop-blur-sm rounded-xl border border-vetor-green/20 p-8 animate-slide-in-right">
+              <h3 className="text-2xl font-bold text-white mb-6">
                 Envie uma Mensagem
               </h3>
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-vetor-darkgray mb-1">
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">
                       Nome Completo
                     </label>
                     <input 
@@ -206,13 +199,13 @@ const Contact: React.FC = () => {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-vetor-green"
+                      className="w-full px-4 py-2 bg-black/60 border border-vetor-green/30 rounded-md focus:outline-none focus:ring-2 focus:ring-vetor-green text-white"
                       placeholder="Seu nome"
                     />
                   </div>
                   
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-vetor-darkgray mb-1">
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
                       Email
                     </label>
                     <input 
@@ -222,7 +215,7 @@ const Contact: React.FC = () => {
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-vetor-green"
+                      className="w-full px-4 py-2 bg-black/60 border border-vetor-green/30 rounded-md focus:outline-none focus:ring-2 focus:ring-vetor-green text-white"
                       placeholder="seu.email@exemplo.com"
                     />
                   </div>
@@ -230,7 +223,7 @@ const Contact: React.FC = () => {
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-vetor-darkgray mb-1">
+                    <label htmlFor="phone" className="block text-sm font-medium text-gray-300 mb-1">
                       Telefone
                     </label>
                     <input 
@@ -239,13 +232,13 @@ const Contact: React.FC = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-vetor-green"
+                      className="w-full px-4 py-2 bg-black/60 border border-vetor-green/30 rounded-md focus:outline-none focus:ring-2 focus:ring-vetor-green text-white"
                       placeholder="(00) 00000-0000"
                     />
                   </div>
                   
                   <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-vetor-darkgray mb-1">
+                    <label htmlFor="subject" className="block text-sm font-medium text-gray-300 mb-1">
                       Assunto
                     </label>
                     <select 
@@ -254,7 +247,7 @@ const Contact: React.FC = () => {
                       value={formData.subject}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-vetor-green"
+                      className="w-full px-4 py-2 bg-black/60 border border-vetor-green/30 rounded-md focus:outline-none focus:ring-2 focus:ring-vetor-green text-white"
                     >
                       <option value="">Selecione</option>
                       <option value="Imobiliário">Tecnologia Imobiliária</option>
@@ -267,7 +260,7 @@ const Contact: React.FC = () => {
                 </div>
                 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-vetor-darkgray mb-1">
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1">
                     Mensagem
                   </label>
                   <textarea 
@@ -277,7 +270,7 @@ const Contact: React.FC = () => {
                     onChange={handleChange}
                     required
                     rows={5}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-vetor-green resize-none"
+                    className="w-full px-4 py-2 bg-black/60 border border-vetor-green/30 rounded-md focus:outline-none focus:ring-2 focus:ring-vetor-green text-white resize-none"
                     placeholder="Descreva seu projeto ou necessidade..."
                   ></textarea>
                 </div>
@@ -287,11 +280,11 @@ const Contact: React.FC = () => {
                   disabled={formStatus === 'submitting'}
                   className={`w-full py-3 px-6 rounded-md font-medium flex items-center justify-center gap-2 transition-all duration-300 ${
                     formStatus === 'submitting' 
-                      ? 'bg-gray-400 text-white cursor-not-allowed' 
+                      ? 'bg-gray-600 text-white cursor-not-allowed' 
                       : formStatus === 'success'
-                      ? 'bg-green-500 text-white'
+                      ? 'bg-green-600 text-white'
                       : formStatus === 'error'
-                      ? 'bg-red-500 text-white'
+                      ? 'bg-red-600 text-white'
                       : 'bg-vetor-green text-white hover:bg-vetor-darkgreen'
                   }`}
                 >
