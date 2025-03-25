@@ -26,282 +26,385 @@ const RealEstateAnimation: React.FC = () => {
 
     const rect = canvas.getBoundingClientRect();
     
-    // Create cityscape elements
+    // City buildings configuration
+    const gridSize = 8; // City grid size
     const buildings = [];
-    const buildingCount = 40; // More buildings for a more dense cityscape
     
-    // Generate buildings with different sizes and colors
-    for (let i = 0; i < buildingCount; i++) {
-      const width = 5 + Math.random() * 15;
-      const height = 20 + Math.random() * 100;
-      const x = Math.random() * rect.width;
-      
-      // Windows configuration for each building
-      const windowRows = Math.floor(height / 10);
-      const windowCols = Math.floor(width / 5);
-      const windows = [];
-      
-      // Create windows with animation states
-      for (let row = 0; row < windowRows; row++) {
-        for (let col = 0; col < windowCols; col++) {
-          windows.push({
-            row,
-            col,
-            state: Math.random() > 0.5, // Some windows start on, some off
-            nextToggle: Math.random() * 10000, // Random initial toggle time
-            toggleInterval: 2000 + Math.random() * 8000, // Random interval between toggles
-            lastUpdate: 0
-          });
-        }
+    // Create city grid of buildings
+    for (let row = 0; row < gridSize; row++) {
+      for (let col = 0; col < gridSize; col++) {
+        // Add some randomness to building positions for more natural look
+        const offsetX = (Math.random() - 0.5) * 5;
+        const offsetY = (Math.random() - 0.5) * 5;
+        
+        // Building properties
+        const buildingSize = 15 + Math.random() * 20;
+        const buildingHeight = 10 + Math.random() * 50;
+        const buildingType = Math.floor(Math.random() * 3);
+        
+        // Determine building position
+        const x = rect.width * 0.3 + (col * rect.width * 0.5 / gridSize) + offsetX;
+        const y = rect.height * 0.3 + (row * rect.height * 0.5 / gridSize) + offsetY;
+        
+        buildings.push({
+          x,
+          y,
+          size: buildingSize,
+          height: buildingHeight,
+          type: buildingType,
+          color: Math.random() > 0.7 ? '#00B050' : '#006830',
+          glowIntensity: 0.1 + Math.random() * 0.3,
+          pulse: Math.random() * Math.PI * 2,
+          pulseSpeed: 0.02 + Math.random() * 0.03
+        });
       }
+    }
+    
+    // Roads configuration
+    const roads = [];
+    const mainRoadCount = 3;
+    
+    // Create main horizontal roads
+    for (let i = 1; i < mainRoadCount; i++) {
+      roads.push({
+        startX: 0,
+        startY: rect.height * (i / mainRoadCount),
+        endX: rect.width,
+        endY: rect.height * (i / mainRoadCount),
+        width: 4,
+        type: 'main'
+      });
+    }
+    
+    // Create main vertical roads
+    for (let i = 1; i < mainRoadCount; i++) {
+      roads.push({
+        startX: rect.width * (i / mainRoadCount),
+        startY: 0,
+        endX: rect.width * (i / mainRoadCount),
+        endY: rect.height,
+        width: 4,
+        type: 'main'
+      });
+    }
+    
+    // Create secondary roads
+    for (let i = 0; i < 5; i++) {
+      // Random vertical secondary roads
+      const x = rect.width * (0.2 + Math.random() * 0.6);
+      roads.push({
+        startX: x,
+        startY: 0,
+        endX: x,
+        endY: rect.height,
+        width: 2,
+        type: 'secondary'
+      });
       
-      // Different shades of green for buildings
-      const greenValue = 80 + Math.floor(Math.random() * 120);
-      buildings.push({
-        x,
-        width,
-        height,
-        windows,
-        y: rect.height - height / 2, // Position buildings at the bottom
-        color: `rgba(0, ${greenValue}, ${Math.floor(greenValue/3)}, ${0.6 + Math.random() * 0.4})`
+      // Random horizontal secondary roads
+      const y = rect.height * (0.2 + Math.random() * 0.6);
+      roads.push({
+        startX: 0,
+        startY: y,
+        endX: rect.width,
+        endY: y,
+        width: 2,
+        type: 'secondary'
       });
     }
     
-    // Sort buildings by height for proper rendering
-    buildings.sort((a, b) => (a.height < b.height) ? 1 : -1);
+    // Moving vehicles
+    const vehicles = [];
+    const vehicleCount = 15;
     
-    // Create stars for the night sky
-    const stars = [];
-    const starCount = 100;
-    
-    for (let i = 0; i < starCount; i++) {
-      stars.push({
-        x: Math.random() * rect.width,
-        y: Math.random() * (rect.height * 0.5), // Stars only in the top half
-        size: 0.5 + Math.random() * 1.5,
-        twinkle: Math.random() * Math.PI * 2, // Phase for twinkling animation
-        twinkleSpeed: 0.02 + Math.random() * 0.04
-      });
-    }
-    
-    // Add moon
-    const moon = {
-      x: rect.width * 0.8,
-      y: rect.height * 0.2,
-      radius: 20,
-      glow: 40
-    };
-    
-    // Add floating clouds
-    const clouds = [];
-    const cloudCount = 5;
-    
-    for (let i = 0; i < cloudCount; i++) {
-      clouds.push({
-        x: Math.random() * rect.width,
-        y: rect.height * 0.1 + Math.random() * (rect.height * 0.2),
-        width: 40 + Math.random() * 100,
-        height: 20 + Math.random() * 30,
-        speed: 0.1 + Math.random() * 0.2,
-        opacity: 0.1 + Math.random() * 0.2
-      });
-    }
-    
-    // Animation timer
-    let lastTime = 0;
-    
-    const animate = (currentTime) => {
-      const deltaTime = currentTime - lastTime;
-      lastTime = currentTime;
+    for (let i = 0; i < vehicleCount; i++) {
+      // Choose a random road to place the vehicle on
+      const roadIndex = Math.floor(Math.random() * roads.length);
+      const road = roads[roadIndex];
       
+      // Determine if vehicle moves horizontally or vertically
+      const isHorizontal = road.startX !== road.endX;
+      
+      vehicles.push({
+        x: isHorizontal ? 0 : road.startX,
+        y: isHorizontal ? road.startY : 0,
+        width: 4,
+        height: 2,
+        speed: 0.5 + Math.random() * 1,
+        color: Math.random() > 0.5 ? '#00B050' : '#7ED957',
+        roadIndex,
+        isHorizontal
+      });
+    }
+    
+    // Animation properties
+    let angle = 0;
+    let scale = 1;
+    let translateX = 0;
+    let translateY = 0;
+    
+    // Create subtle camera movement
+    const animate = (time) => {
       ctx.clearRect(0, 0, rect.width, rect.height);
       
-      // Draw night sky with gradient
-      const skyGradient = ctx.createLinearGradient(0, 0, 0, rect.height);
-      skyGradient.addColorStop(0, 'rgba(10, 20, 40, 1)'); // Dark blue night sky
-      skyGradient.addColorStop(0.6, 'rgba(20, 40, 60, 1)'); // Lighter blue near horizon
-      skyGradient.addColorStop(1, 'rgba(0, 40, 30, 1)'); // Green-tinted horizon
+      // Update camera angle and position for subtle movement
+      angle += 0.001;
+      translateX = Math.sin(angle * 0.5) * 10;
+      translateY = Math.cos(angle * 0.7) * 10;
       
-      ctx.fillStyle = skyGradient;
-      ctx.fillRect(0, 0, rect.width, rect.height);
+      // Apply camera transformation
+      ctx.save();
+      ctx.translate(rect.width / 2, rect.height / 2);
+      ctx.translate(translateX, translateY);
+      ctx.rotate(angle * 0.1);
+      ctx.scale(scale, scale);
+      ctx.translate(-rect.width / 2, -rect.height / 2);
       
-      // Draw stars with twinkling effect
-      for (const star of stars) {
-        star.twinkle += star.twinkleSpeed;
-        const twinkle = Math.sin(star.twinkle) * 0.5 + 0.5; // 0-1 value for twinkling
-        
+      // Draw grid background
+      ctx.strokeStyle = 'rgba(0, 176, 80, 0.05)';
+      ctx.lineWidth = 0.5;
+      
+      // Draw grid lines
+      for (let x = 0; x < rect.width; x += 20) {
         ctx.beginPath();
-        ctx.arc(star.x, star.y, star.size * (0.7 + twinkle * 0.3), 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${0.3 + twinkle * 0.7})`;
-        ctx.fill();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, rect.height);
+        ctx.stroke();
       }
       
-      // Draw moon with glow
-      const moonGlow = ctx.createRadialGradient(
-        moon.x, moon.y, moon.radius * 0.8,
-        moon.x, moon.y, moon.radius + moon.glow
-      );
-      moonGlow.addColorStop(0, 'rgba(255, 255, 240, 0.8)');
-      moonGlow.addColorStop(0.5, 'rgba(255, 255, 240, 0.2)');
-      moonGlow.addColorStop(1, 'rgba(255, 255, 240, 0)');
-      
-      ctx.beginPath();
-      ctx.arc(moon.x, moon.y, moon.radius + moon.glow, 0, Math.PI * 2);
-      ctx.fillStyle = moonGlow;
-      ctx.fill();
-      
-      ctx.beginPath();
-      ctx.arc(moon.x, moon.y, moon.radius, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255, 255, 240, 1)';
-      ctx.fill();
-      
-      // Draw moving clouds
-      for (const cloud of clouds) {
-        cloud.x += cloud.speed;
-        if (cloud.x > rect.width + cloud.width) {
-          cloud.x = -cloud.width;
-        }
-        
-        // Draw cloud as a collection of circles
-        const cloudGradient = ctx.createRadialGradient(
-          cloud.x, cloud.y, 0,
-          cloud.x, cloud.y, cloud.width / 2
-        );
-        cloudGradient.addColorStop(0, `rgba(200, 255, 240, ${cloud.opacity})`);
-        cloudGradient.addColorStop(1, `rgba(200, 255, 240, 0)`);
-        
-        for (let i = 0; i < 5; i++) {
-          const offsetX = (i - 2) * cloud.width / 5;
-          const offsetY = Math.sin(i * 1.5) * cloud.height / 4;
-          const size = cloud.height * (0.7 + Math.sin(i) * 0.3);
-          
-          ctx.beginPath();
-          ctx.arc(cloud.x + offsetX, cloud.y + offsetY, size, 0, Math.PI * 2);
-          ctx.fillStyle = cloudGradient;
-          ctx.fill();
-        }
-      }
-      
-      // City background glow
-      const cityGlow = ctx.createLinearGradient(0, rect.height * 0.5, 0, rect.height);
-      cityGlow.addColorStop(0, 'rgba(0, 100, 50, 0)');
-      cityGlow.addColorStop(1, 'rgba(0, 100, 50, 0.2)');
-      ctx.fillStyle = cityGlow;
-      ctx.fillRect(0, rect.height * 0.5, rect.width, rect.height * 0.5);
-      
-      // Draw distant mountains/hills
-      ctx.beginPath();
-      ctx.moveTo(0, rect.height * 0.7);
-      
-      // Create wavy mountain ridges
-      for (let x = 0; x <= rect.width; x += rect.width / 20) {
-        const y = rect.height * (0.7 - Math.sin(x * 0.01) * 0.05 - Math.cos(x * 0.03) * 0.03);
-        ctx.lineTo(x, y);
-      }
-      
-      ctx.lineTo(rect.width, rect.height);
-      ctx.lineTo(0, rect.height);
-      ctx.closePath();
-      
-      const mountainGradient = ctx.createLinearGradient(0, rect.height * 0.65, 0, rect.height);
-      mountainGradient.addColorStop(0, 'rgba(0, 60, 30, 0.9)');
-      mountainGradient.addColorStop(1, 'rgba(0, 40, 20, 0.7)');
-      ctx.fillStyle = mountainGradient;
-      ctx.fill();
-      
-      // Draw buildings
-      for (const building of buildings) {
-        // Create a gradient for the building
-        const buildingGradient = ctx.createLinearGradient(
-          building.x - building.width, 
-          0, 
-          building.x + building.width, 
-          0
-        );
-        buildingGradient.addColorStop(0, building.color);
-        buildingGradient.addColorStop(1, `rgba(0, ${100 + Math.floor(Math.random() * 50)}, ${30 + Math.floor(Math.random() * 30)}, 0.8)`);
-        
-        // Draw building main shape
-        ctx.fillStyle = buildingGradient;
-        ctx.fillRect(
-          building.x - building.width/2, 
-          building.y - building.height, 
-          building.width, 
-          building.height
-        );
-        
-        // Update and draw windows
-        for (const window of building.windows) {
-          window.lastUpdate += deltaTime;
-          
-          // Check if it's time to toggle the window state
-          if (window.lastUpdate > window.nextToggle) {
-            window.state = !window.state;
-            window.lastUpdate = 0;
-            window.nextToggle = 2000 + Math.random() * 8000; // New random interval
-          }
-          
-          // Calculate window position
-          const windowX = building.x - building.width/2 + window.col * (building.width / Math.max(1, building.windows.length / window.row));
-          const windowY = building.y - building.height + window.row * 10;
-          const windowWidth = building.width / Math.max(2, building.windows.length / window.row) - 1;
-          const windowHeight = 8;
-          
-          // Draw window - lit or unlit
-          if (window.state) {
-            // Window is lit
-            ctx.fillStyle = `rgba(255, 255, 100, ${0.7 + Math.random() * 0.3})`;
-            
-            // Add a glow effect
-            const glow = ctx.createRadialGradient(
-              windowX + windowWidth/2, 
-              windowY + windowHeight/2, 
-              0,
-              windowX + windowWidth/2, 
-              windowY + windowHeight/2, 
-              windowWidth
-            );
-            glow.addColorStop(0, 'rgba(255, 255, 100, 0.3)');
-            glow.addColorStop(1, 'rgba(255, 255, 100, 0)');
-            
-            ctx.beginPath();
-            ctx.arc(windowX + windowWidth/2, windowY + windowHeight/2, windowWidth, 0, Math.PI * 2);
-            ctx.fillStyle = glow;
-            ctx.fill();
-          } else {
-            // Window is dark
-            ctx.fillStyle = 'rgba(10, 10, 30, 0.7)';
-          }
-          
-          // Draw the actual window
-          ctx.fillRect(windowX, windowY, windowWidth, windowHeight);
-        }
-      }
-      
-      // Draw a subtle ground/water reflection effect
-      const reflectionGradient = ctx.createLinearGradient(0, rect.height * 0.9, 0, rect.height);
-      reflectionGradient.addColorStop(0, 'rgba(0, 100, 80, 0.1)');
-      reflectionGradient.addColorStop(1, 'rgba(0, 30, 50, 0.05)');
-      ctx.fillStyle = reflectionGradient;
-      ctx.fillRect(0, rect.height * 0.9, rect.width, rect.height * 0.1);
-      
-      // Add some animated reflection lines
-      ctx.strokeStyle = 'rgba(0, 255, 150, 0.05)';
-      ctx.lineWidth = 1;
-      
-      for (let i = 0; i < 10; i++) {
-        const y = rect.height * 0.9 + i * (rect.height * 0.1 / 10);
-        const amplitude = 5 * (1 - i / 10); // Larger waves at the top, smaller at bottom
-        
+      for (let y = 0; y < rect.height; y += 20) {
         ctx.beginPath();
         ctx.moveTo(0, y);
+        ctx.lineTo(rect.width, y);
+        ctx.stroke();
+      }
+      
+      // Draw roads
+      roads.forEach(road => {
+        ctx.beginPath();
+        ctx.moveTo(road.startX, road.startY);
+        ctx.lineTo(road.endX, road.endY);
+        ctx.strokeStyle = road.type === 'main' 
+          ? 'rgba(0, 176, 80, 0.3)' 
+          : 'rgba(0, 176, 80, 0.15)';
+        ctx.lineWidth = road.width;
+        ctx.stroke();
+      });
+      
+      // Update and draw vehicles
+      vehicles.forEach(vehicle => {
+        const road = roads[vehicle.roadIndex];
         
-        for (let x = 0; x < rect.width; x += 10) {
-          const offset = Math.sin(x * 0.01 + currentTime * 0.001) * amplitude;
-          ctx.lineTo(x, y + offset);
+        if (vehicle.isHorizontal) {
+          // Update horizontal vehicle position
+          vehicle.x += vehicle.speed;
+          
+          // Reset vehicle position when it goes off-screen
+          if (vehicle.x > rect.width) {
+            vehicle.x = 0;
+          }
+          
+          // Draw horizontal vehicle
+          ctx.fillStyle = vehicle.color;
+          ctx.fillRect(
+            vehicle.x, 
+            road.startY - vehicle.height / 2, 
+            vehicle.width, 
+            vehicle.height
+          );
+        } else {
+          // Update vertical vehicle position
+          vehicle.y += vehicle.speed;
+          
+          // Reset vehicle position when it goes off-screen
+          if (vehicle.y > rect.height) {
+            vehicle.y = 0;
+          }
+          
+          // Draw vertical vehicle
+          ctx.fillStyle = vehicle.color;
+          ctx.fillRect(
+            road.startX - vehicle.height / 2, 
+            vehicle.y, 
+            vehicle.height, 
+            vehicle.width
+          );
+        }
+      });
+      
+      // Draw buildings - sort by Y position for pseudo-3D effect
+      buildings.sort((a, b) => a.y - b.y);
+      
+      buildings.forEach(building => {
+        // Update building pulse
+        building.pulse += building.pulseSpeed;
+        const pulse = Math.sin(building.pulse) * 0.5 + 0.5;
+        const glow = building.glowIntensity * pulse;
+        
+        // Draw building shadow
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+        ctx.beginPath();
+        ctx.ellipse(
+          building.x, 
+          building.y + building.size / 4, 
+          building.size / 2, 
+          building.size / 4, 
+          0, 0, Math.PI * 2
+        );
+        ctx.fill();
+        
+        // Draw building based on its type
+        ctx.fillStyle = building.color;
+        
+        if (building.type === 0) {
+          // Square building
+          ctx.fillRect(
+            building.x - building.size / 2, 
+            building.y - building.size / 2, 
+            building.size, 
+            building.size
+          );
+          
+          // Windows
+          const windowSize = building.size / 5;
+          const windowCount = Math.floor(building.size / windowSize);
+          
+          ctx.fillStyle = `rgba(255, 255, 200, ${0.1 + glow})`;
+          
+          for (let wx = 0; wx < windowCount; wx++) {
+            for (let wy = 0; wy < windowCount; wy++) {
+              if (Math.random() > 0.3) {
+                ctx.fillRect(
+                  building.x - building.size / 2 + wx * windowSize + 1, 
+                  building.y - building.size / 2 + wy * windowSize + 1, 
+                  windowSize - 2, 
+                  windowSize - 2
+                );
+              }
+            }
+          }
+        } else if (building.type === 1) {
+          // Circular building
+          ctx.beginPath();
+          ctx.arc(
+            building.x, 
+            building.y, 
+            building.size / 2, 
+            0, Math.PI * 2
+          );
+          ctx.fill();
+          
+          // Windows
+          ctx.fillStyle = `rgba(255, 255, 200, ${0.1 + glow})`;
+          
+          for (let w = 0; w < 8; w++) {
+            const wx = Math.cos(w * Math.PI / 4) * building.size / 3;
+            const wy = Math.sin(w * Math.PI / 4) * building.size / 3;
+            
+            ctx.beginPath();
+            ctx.arc(
+              building.x + wx, 
+              building.y + wy, 
+              building.size / 10, 
+              0, Math.PI * 2
+            );
+            ctx.fill();
+          }
+        } else {
+          // Triangular building
+          ctx.beginPath();
+          ctx.moveTo(building.x, building.y - building.size / 2);
+          ctx.lineTo(building.x + building.size / 2, building.y + building.size / 2);
+          ctx.lineTo(building.x - building.size / 2, building.y + building.size / 2);
+          ctx.closePath();
+          ctx.fill();
+          
+          // Windows
+          ctx.fillStyle = `rgba(255, 255, 200, ${0.1 + glow})`;
+          
+          const windowSize = building.size / 6;
+          
+          for (let wy = 0; wy < 2; wy++) {
+            const width = building.size - (wy * building.size / 2);
+            const windowCount = Math.floor(width / windowSize);
+            
+            for (let wx = 0; wx < windowCount; wx++) {
+              if (Math.random() > 0.3) {
+                ctx.fillRect(
+                  building.x - width / 2 + wx * windowSize + 1, 
+                  building.y + wy * building.size / 3, 
+                  windowSize - 2, 
+                  windowSize - 2
+                );
+              }
+            }
+          }
         }
         
-        ctx.stroke();
+        // Draw building glow
+        const gradient = ctx.createRadialGradient(
+          building.x, building.y, 0,
+          building.x, building.y, building.size
+        );
+        gradient.addColorStop(0, `rgba(0, 176, 80, ${glow})`);
+        gradient.addColorStop(1, 'rgba(0, 176, 80, 0)');
+        
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(building.x, building.y, building.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      
+      // Draw digital connections between buildings
+      ctx.strokeStyle = 'rgba(0, 176, 80, 0.1)';
+      ctx.lineWidth = 0.5;
+      
+      for (let i = 0; i < buildings.length; i++) {
+        for (let j = i + 1; j < buildings.length; j++) {
+          if (Math.random() > 0.995) {
+            const a = buildings[i];
+            const b = buildings[j];
+            
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+            
+            // Draw moving data packet
+            const progress = Math.random();
+            const packetX = a.x + (b.x - a.x) * progress;
+            const packetY = a.y + (b.y - a.y) * progress;
+            
+            ctx.beginPath();
+            ctx.arc(packetX, packetY, 2, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(0, 176, 80, 0.8)';
+            ctx.fill();
+          }
+        }
+      }
+      
+      // End camera transformation
+      ctx.restore();
+      
+      // Add subtle fog overlay
+      const fogGradient = ctx.createRadialGradient(
+        rect.width / 2, rect.height / 2, 0,
+        rect.width / 2, rect.height / 2, rect.width / 2
+      );
+      fogGradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
+      fogGradient.addColorStop(1, 'rgba(0, 0, 0, 0.2)');
+      
+      ctx.fillStyle = fogGradient;
+      ctx.fillRect(0, 0, rect.width, rect.height);
+      
+      // Add digital overlay
+      if (Math.random() > 0.98) {
+        const x = Math.random() * rect.width;
+        const y = Math.random() * rect.height;
+        
+        ctx.fillStyle = 'rgba(0, 176, 80, 0.8)';
+        ctx.font = '8px monospace';
+        ctx.fillText(Math.random() > 0.5 ? '1' : '0', x, y);
       }
       
       requestAnimationFrame(animate);
@@ -309,7 +412,7 @@ const RealEstateAnimation: React.FC = () => {
     
     const animationFrame = requestAnimationFrame(animate);
     
-    // Cleanup
+    // Cleanup function
     return () => {
       window.removeEventListener('resize', resizeCanvas);
       cancelAnimationFrame(animationFrame);
