@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -10,7 +9,8 @@ import {
   Code, Smartphone, Globe, Rocket, LineChart, 
   Shield, BarChart, Search, Zap, ArrowRight, Check,
   Palette, LayoutGrid, Users, ClipboardCheck, MousePointer,
-  Headphones, MessageSquare, HeartHandshake, Lightbulb
+  Headphones, MessageSquare, HeartHandshake, Lightbulb,
+  Building, FileText
 } from 'lucide-react';
 
 const WebsiteBenefits: React.FC = () => {
