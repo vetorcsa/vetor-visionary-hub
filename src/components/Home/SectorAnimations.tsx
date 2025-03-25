@@ -1,8 +1,7 @@
-
 import React, { useEffect, useRef } from 'react';
 import { Truck, Home, FileText } from 'lucide-react';
 
-// Animation for Logistics Technology - Minimalist trucks on a path
+// Animation for Logistics Technology - with globe and connected points
 export const LogisticsAnimation: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -13,88 +12,7 @@ export const LogisticsAnimation: React.FC = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Store all elements in a ref to keep them available through rerenders
-    let trucks = [];
-    let pathPoints = [];
-    
-    // Initialize all elements for the animation
-    const initializeElements = () => {
-      const rect = canvas.getBoundingClientRect();
-      
-      // Create minimalist trucks
-      trucks = [];
-      const truckCount = 4; // Reduced number of trucks
-      
-      for (let i = 0; i < truckCount; i++) {
-        trucks.push({
-          x: Math.random() * rect.width,
-          y: Math.random() * rect.height,
-          width: 24 + Math.random() * 8,
-          height: 14 + Math.random() * 4,
-          speed: 0.4 + Math.random() * 0.4, // More consistent speed
-          angle: Math.random() * Math.PI * 2,
-          color: i % 2 === 0 ? '#00B050' : '#7ED957',
-          turnRate: (Math.random() - 0.5) * 0.02,
-          visible: true // Make sure all trucks are visible
-        });
-      }
-      
-      // Create path points for truck routes
-      const gridSize = 4;
-      pathPoints = [];
-      
-      for (let i = 0; i <= gridSize; i++) {
-        for (let j = 0; j <= gridSize; j++) {
-          pathPoints.push({
-            x: (rect.width / gridSize) * i,
-            y: (rect.height / gridSize) * j,
-            radius: 3 + Math.random() * 2,
-            connections: []
-          });
-        }
-      }
-      
-      // Create connections between path points (grid with some diagonals)
-      pathPoints.forEach((point, index) => {
-        // Connect to right point (if not last in row)
-        if ((index + 1) % (gridSize + 1) !== 0 && index + 1 < pathPoints.length) {
-          point.connections.push(index + 1);
-        }
-        
-        // Connect to bottom point
-        if (index + gridSize + 1 < pathPoints.length) {
-          point.connections.push(index + gridSize + 1);
-          
-          // Some diagonal connections
-          if (Math.random() > 0.5 && (index + 1) % (gridSize + 1) !== 0) {
-            point.connections.push(index + gridSize + 2);
-          }
-        }
-      });
-      
-      // Assign trucks to paths with safety checks
-      trucks.forEach(truck => {
-        truck.currentPoint = Math.floor(Math.random() * pathPoints.length);
-        
-        // Make sure the current point exists
-        if (pathPoints[truck.currentPoint]) {
-          // Make sure the target point is connected and exists
-          const possibleTargets = pathPoints[truck.currentPoint].connections;
-          if (possibleTargets && possibleTargets.length > 0) {
-            truck.targetPoint = possibleTargets[Math.floor(Math.random() * possibleTargets.length)];
-          } else {
-            // Fallback if no connections
-            truck.targetPoint = truck.currentPoint;
-          }
-        } else {
-          // Fallback if current point doesn't exist
-          truck.currentPoint = 0;
-          truck.targetPoint = 0;
-        }
-      });
-    };
-
-    // Resize canvas - with initializeElements defined before it's called
+    // Resize canvas
     const resizeCanvas = () => {
       const rect = canvas.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
@@ -103,149 +21,240 @@ export const LogisticsAnimation: React.FC = () => {
       canvas.height = rect.height * dpr;
       
       ctx.scale(dpr, dpr);
-      
-      // Regenerate elements after resize
-      initializeElements();
     };
 
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
     
+    const rect = canvas.getBoundingClientRect();
+
+    // Define the globe radius and center
+    const globeRadius = Math.min(rect.width, rect.height) * 0.35;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    // Create connection points around the globe
+    const connectionPoints = [];
+    const connectionCount = 14;
+    
+    // Generate connection points distributed across the globe
+    for (let i = 0; i < connectionCount; i++) {
+      // Use spherical coordinates to place points around the globe
+      const phi = Math.acos(-1 + (2 * i) / connectionCount);
+      const theta = Math.sqrt(connectionCount * Math.PI) * phi;
+      
+      // Convert to cartesian coordinates
+      const x = centerX + globeRadius * Math.cos(theta) * Math.sin(phi);
+      const y = centerY + globeRadius * Math.sin(theta) * Math.sin(phi);
+      
+      // Add depth effect - points further back are more transparent
+      const depthFactor = Math.sin(phi) * Math.cos(theta);
+      const opacity = 0.3 + (depthFactor + 1) * 0.35;
+      
+      connectionPoints.push({
+        x,
+        y,
+        size: 2 + Math.random() * 3,
+        opacity,
+        connections: [],
+        active: Math.random() > 0.3 // Some points start active
+      });
+    }
+    
+    // Create connections between points
+    connectionPoints.forEach((point, index) => {
+      // Connect each point to 2-3 others
+      const connectionCount = 2 + Math.floor(Math.random() * 2);
+      
+      for (let i = 0; i < connectionCount; i++) {
+        // Choose a random point to connect to
+        let targetIndex;
+        do {
+          targetIndex = Math.floor(Math.random() * connectionPoints.length);
+        } while (targetIndex === index || point.connections.includes(targetIndex));
+        
+        point.connections.push(targetIndex);
+      }
+    });
+    
+    // Create moving packages/data points between connection points
+    const packages = [];
+    const packageCount = 6;
+    
+    for (let i = 0; i < packageCount; i++) {
+      // Choose random start and end points
+      const startPointIndex = Math.floor(Math.random() * connectionPoints.length);
+      let endPointIndex;
+      
+      do {
+        endPointIndex = Math.floor(Math.random() * connectionPoints.length);
+      } while (endPointIndex === startPointIndex);
+      
+      const startPoint = connectionPoints[startPointIndex];
+      const endPoint = connectionPoints[endPointIndex];
+      
+      packages.push({
+        startPointIndex,
+        endPointIndex,
+        x: startPoint.x,
+        y: startPoint.y,
+        progress: 0,
+        speed: 0.002 + Math.random() * 0.003,
+        color: i % 2 === 0 ? '#00B050' : '#7ED957',
+        size: 4 + Math.random() * 3
+      });
+    }
+    
+    let rotationAngle = 0;
+    let time = 0;
+    
     // Animation function
     const animate = () => {
-      const animationId = requestAnimationFrame(animate);
-      if (!canvas.isConnected) {
-        cancelAnimationFrame(animationId);
-        return;
-      }
-      
-      const rect = canvas.getBoundingClientRect();
+      requestAnimationFrame(animate);
       ctx.clearRect(0, 0, rect.width, rect.height);
       
-      // Draw path connections with safety checks
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgba(0, 176, 80, 0.15)';
+      time += 0.01;
+      rotationAngle += 0.002; // Slow rotation of the globe
       
-      pathPoints.forEach((point, index) => {
-        if (point && point.connections) {
+      // Draw globe outline with green grid
+      ctx.strokeStyle = 'rgba(0, 176, 80, 0.2)';
+      ctx.lineWidth = 1;
+      
+      // Draw longitude lines
+      for (let i = 0; i < 8; i++) {
+        const angle = (i / 8) * Math.PI * 2 + rotationAngle;
+        
+        ctx.beginPath();
+        ctx.ellipse(
+          centerX, 
+          centerY, 
+          globeRadius * Math.abs(Math.cos(angle)), 
+          globeRadius, 
+          0, 
+          0, 
+          Math.PI * 2
+        );
+        ctx.stroke();
+      }
+      
+      // Draw latitude lines
+      for (let i = 1; i < 5; i++) {
+        const radius = globeRadius * (i / 5);
+        
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      
+      // Update connection points
+      connectionPoints.forEach((point, index) => {
+        // Random activation of points
+        if (Math.random() > 0.995) {
+          point.active = !point.active;
+        }
+        
+        // Draw connections
+        if (point.active) {
           point.connections.forEach(targetIndex => {
-            const targetPoint = pathPoints[targetIndex];
+            const targetPoint = connectionPoints[targetIndex];
             
-            if (targetPoint) {
+            if (targetPoint.active) {
+              // Draw connection line
               ctx.beginPath();
               ctx.moveTo(point.x, point.y);
               ctx.lineTo(targetPoint.x, targetPoint.y);
+              ctx.strokeStyle = `rgba(0, 176, 80, ${(point.opacity + targetPoint.opacity) * 0.25})`;
+              ctx.lineWidth = 0.8;
               ctx.stroke();
             }
           });
         }
-      });
-      
-      // Draw path points with safety checks
-      pathPoints.forEach(point => {
-        if (point) {
-          ctx.beginPath();
-          ctx.arc(point.x, point.y, point.radius, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(0, 176, 80, 0.2)';
-          ctx.fill();
-        }
-      });
-      
-      // Update and draw trucks with safety checks
-      trucks.forEach(truck => {
-        if (!truck) return;
         
-        const currentPoint = pathPoints[truck.currentPoint];
-        const targetPoint = pathPoints[truck.targetPoint];
-        
-        // Only proceed if both points exist
-        if (currentPoint && targetPoint) {
-          // Calculate direction to target
-          const dx = targetPoint.x - truck.x;
-          const dy = targetPoint.y - truck.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          
-          // Adjust truck angle to face target with smooth turning
-          const targetAngle = Math.atan2(dy, dx);
-          const angleDiff = targetAngle - truck.angle;
-          
-          // Normalize angle difference
-          const normalizedDiff = Math.atan2(Math.sin(angleDiff), Math.cos(angleDiff));
-          truck.angle += normalizedDiff * 0.05; // Smoother turning
-          
-          // Move truck
-          if (distance < truck.speed) {
-            // Reached the target point, select a new target
-            truck.currentPoint = truck.targetPoint;
-            
-            // Choose next target point with safety check
-            if (currentPoint.connections && currentPoint.connections.length > 0) {
-              truck.targetPoint = currentPoint.connections[Math.floor(Math.random() * currentPoint.connections.length)];
-            }
-          } else {
-            // Move toward target
-            truck.x += Math.cos(truck.angle) * truck.speed;
-            truck.y += Math.sin(truck.angle) * truck.speed;
-          }
-          
-          // Draw truck (improved minimalist style)
-          ctx.save();
-          ctx.translate(truck.x, truck.y);
-          ctx.rotate(truck.angle);
-          
-          // Draw truck body
-          ctx.fillStyle = truck.color;
-          ctx.fillRect(-truck.width/2, -truck.height/2, truck.width, truck.height);
-          
-          // Draw truck cab
-          ctx.fillStyle = 'rgba(0, 50, 30, 0.7)';
-          ctx.fillRect(-truck.width/2, -truck.height/2, truck.width * 0.3, truck.height);
-          
-          // Draw wheels (improved)
-          ctx.fillStyle = '#333';
-          // Front wheels
-          ctx.fillRect(-truck.width/3, -truck.height/2 - 2, 5, 3);
-          ctx.fillRect(-truck.width/3, truck.height/2 - 1, 5, 3);
-          // Back wheels
-          ctx.fillRect(truck.width/4, -truck.height/2 - 2, 5, 3);
-          ctx.fillRect(truck.width/4, truck.height/2 - 1, 5, 3);
-          
-          // Draw headlights
-          ctx.fillStyle = 'rgba(255, 255, 200, 0.8)';
-          ctx.fillRect(-truck.width/2 + 1, -truck.height/4, 2, 2);
-          ctx.fillRect(-truck.width/2 + 1, truck.height/4 - 2, 2, 2);
-          
-          ctx.restore();
-        }
+        // Draw point
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, point.size, 0, Math.PI * 2);
+        ctx.fillStyle = point.active 
+          ? `rgba(0, 176, 80, ${point.opacity})` 
+          : `rgba(0, 176, 80, ${point.opacity * 0.3})`;
+        ctx.fill();
       });
       
-      // Draw a compass or legend in the corner
-      ctx.save();
-      ctx.translate(rect.width - 40, rect.height - 40);
+      // Update and draw packages
+      packages.forEach(pkg => {
+        // Update position
+        pkg.progress += pkg.speed;
+        
+        // Reset when reaching end point
+        if (pkg.progress >= 1) {
+          pkg.progress = 0;
+          pkg.startPointIndex = pkg.endPointIndex;
+          
+          // Choose a new end point
+          do {
+            pkg.endPointIndex = Math.floor(Math.random() * connectionPoints.length);
+          } while (pkg.endPointIndex === pkg.startPointIndex);
+          
+          // Activate both points
+          connectionPoints[pkg.startPointIndex].active = true;
+          connectionPoints[pkg.endPointIndex].active = true;
+        }
+        
+        const startPoint = connectionPoints[pkg.startPointIndex];
+        const endPoint = connectionPoints[pkg.endPointIndex];
+        
+        // Calculate current position (with slight arc for 3D effect)
+        const dx = endPoint.x - startPoint.x;
+        const dy = endPoint.y - startPoint.y;
+        
+        // Add a slight arc to the path
+        const midX = (startPoint.x + endPoint.x) / 2;
+        const midY = (startPoint.y + endPoint.y) / 2;
+        const arcHeight = Math.sqrt(dx * dx + dy * dy) * 0.2;
+        
+        // Use quadratic bezier curve for position
+        const t = pkg.progress;
+        const mt = 1 - t;
+        
+        pkg.x = mt * mt * startPoint.x + 2 * mt * t * midX + t * t * endPoint.x;
+        pkg.y = mt * mt * startPoint.y + 2 * mt * t * (midY - arcHeight * Math.sin(t * Math.PI)) + t * t * endPoint.y;
+        
+        // Draw package/data packet
+        ctx.beginPath();
+        ctx.arc(pkg.x, pkg.y, pkg.size, 0, Math.PI * 2);
+        ctx.fillStyle = pkg.color;
+        ctx.fill();
+        
+        // Draw package trail
+        ctx.beginPath();
+        ctx.moveTo(pkg.x, pkg.y);
+        
+        // Calculate trail points
+        for (let i = 1; i <= 5; i++) {
+          const trailT = Math.max(0, t - i * 0.04);
+          const trailMt = 1 - trailT;
+          
+          const trailX = trailMt * trailMt * startPoint.x + 2 * trailMt * trailT * midX + trailT * trailT * endPoint.x;
+          const trailY = trailMt * trailMt * startPoint.y + 2 * trailMt * trailT * (midY - arcHeight * Math.sin(trailT * Math.PI)) + trailT * trailT * endPoint.y;
+          
+          ctx.lineTo(trailX, trailY);
+        }
+        
+        ctx.strokeStyle = `rgba(${pkg.color.slice(1, 3)}, ${pkg.color.slice(3, 5)}, ${pkg.color.slice(5, 7)}, 0.2)`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      });
       
-      // Draw compass circle
+      // Draw globe center glow
+      const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, globeRadius * 0.2);
+      gradient.addColorStop(0, 'rgba(0, 176, 80, 0.3)');
+      gradient.addColorStop(1, 'rgba(0, 176, 80, 0)');
+      
       ctx.beginPath();
-      ctx.arc(0, 0, 15, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(0, 176, 80, 0.1)';
+      ctx.arc(centerX, centerY, globeRadius * 0.2, 0, Math.PI * 2);
+      ctx.fillStyle = gradient;
       ctx.fill();
-      ctx.strokeStyle = 'rgba(0, 176, 80, 0.3)';
-      ctx.lineWidth = 1;
-      ctx.stroke();
-      
-      // Draw N-S-E-W markers
-      ctx.fillStyle = 'rgba(0, 176, 80, 0.6)';
-      ctx.font = '8px Arial';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('N', 0, -8);
-      ctx.fillText('S', 0, 8);
-      ctx.fillText('E', 8, 0);
-      ctx.fillText('W', -8, 0);
-      
-      ctx.restore();
     };
     
-    // Start the animation
     animate();
     
     return () => {
