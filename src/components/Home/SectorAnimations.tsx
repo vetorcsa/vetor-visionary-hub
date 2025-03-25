@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import { Truck, Home, FileText } from 'lucide-react';
 
@@ -108,6 +109,23 @@ export const LogisticsAnimation: React.FC = () => {
         }
       });
     };
+
+    // Resize canvas - Now with initializeElements defined before it's called
+    const resizeCanvas = () => {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      
+      ctx.scale(dpr, dpr);
+      
+      // Regenerate elements after resize
+      initializeElements();
+    };
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
     
     // Animation function
     const animate = () => {
