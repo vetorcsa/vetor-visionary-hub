@@ -28,253 +28,621 @@ const RealEstateAnimation: React.FC = () => {
     
     // Building models - more sophisticated and varied designs
     const buildings = [];
-    const buildingCount = 10;
+    const buildingCount = 12;
     
-    // Define building styles - more modern, elegant designs
+    // Define building styles - more elegant and futuristic designs
     const buildingStyles = [
-      // Luxury Skyscraper
+      // Ultra-Modern Skyscraper
       (x: number, y: number, scale: number, ctx: CanvasRenderingContext2D) => {
         const width = 45 * scale;
-        const height = 120 * scale;
+        const height = 160 * scale;
         
-        // Main tower
-        const gradient = ctx.createLinearGradient(x - width/2, y - height, x + width/2, y);
-        gradient.addColorStop(0, 'rgba(0, 176, 80, 0.15)');
-        gradient.addColorStop(1, 'rgba(0, 176, 80, 0.25)');
-        
-        ctx.fillStyle = gradient;
-        ctx.fillRect(x - width/2, y - height, width, height);
-        
-        // Building crown
-        ctx.beginPath();
-        ctx.moveTo(x - width/2, y - height);
-        ctx.lineTo(x - width/4, y - height - 20 * scale);
-        ctx.lineTo(x + width/4, y - height - 20 * scale);
-        ctx.lineTo(x + width/2, y - height);
-        ctx.closePath();
-        ctx.fillStyle = 'rgba(0, 176, 80, 0.3)';
-        ctx.fill();
-        
-        // Glass windows pattern
-        for (let floor = 0; floor < 15; floor++) {
-          const floorY = y - 10 * scale - floor * 8 * scale;
-          for (let window = 0; window < 4; window++) {
-            const windowX = x - width/2 + 5 * scale + window * 10 * scale;
-            ctx.fillStyle = 'rgba(0, 176, 80, 0.4)';
-            ctx.fillRect(windowX, floorY, 6 * scale, 5 * scale);
-          }
-        }
-      },
-      
-      // Modern Office Tower
-      (x: number, y: number, scale: number, ctx: CanvasRenderingContext2D) => {
-        const width = 40 * scale;
-        const height = 100 * scale;
-        
-        // Main structure - glass-like appearance
-        const gradient = ctx.createLinearGradient(x - width/2, y - height, x + width/2, y);
-        gradient.addColorStop(0, 'rgba(0, 176, 80, 0.05)');
-        gradient.addColorStop(0.5, 'rgba(0, 176, 80, 0.15)');
-        gradient.addColorStop(1, 'rgba(0, 176, 80, 0.2)');
-        
-        ctx.fillStyle = gradient;
-        ctx.fillRect(x - width/2, y - height, width, height);
-        
-        // Glass panel grid
-        ctx.strokeStyle = 'rgba(0, 176, 80, 0.3)';
-        ctx.lineWidth = 1 * scale;
-        
-        // Horizontal lines
-        for (let i = 0; i <= 12; i++) {
-          ctx.beginPath();
-          ctx.moveTo(x - width/2, y - height + i * (height/12));
-          ctx.lineTo(x + width/2, y - height + i * (height/12));
-          ctx.stroke();
-        }
-        
-        // Vertical lines
-        for (let i = 0; i <= 5; i++) {
-          ctx.beginPath();
-          ctx.moveTo(x - width/2 + i * (width/5), y - height);
-          ctx.lineTo(x - width/2 + i * (width/5), y);
-          ctx.stroke();
-        }
-        
-        // Roof detail
-        ctx.fillStyle = 'rgba(0, 176, 80, 0.25)';
-        ctx.fillRect(x - width/4, y - height - 10 * scale, width/2, 10 * scale);
-      },
-      
-      // Futuristic Twisted Tower
-      (x: number, y: number, scale: number, ctx: CanvasRenderingContext2D) => {
-        const width = 35 * scale;
-        const baseHeight = 90 * scale;
-        
-        // Create twisted effect with multiple sections
-        for (let i = 0; i < 15; i++) {
-          const sectionHeight = baseHeight / 15;
-          const offset = Math.sin(i * 0.4) * 10 * scale;
-          const sectionY = y - sectionHeight * (i + 1);
+        // Main tower - twisted design
+        for (let i = 0; i < 20; i++) {
+          const sectionHeight = height / 20;
+          const offset = Math.sin(i * 0.3) * width * 0.15;
+          const sectionY = y - height + i * sectionHeight;
           
-          // Main section
-          const gradient = ctx.createLinearGradient(
-            x - width/2 + offset, sectionY, 
-            x + width/2 + offset, sectionY + sectionHeight
-          );
-          gradient.addColorStop(0, 'rgba(0, 176, 80, 0.1)');
-          gradient.addColorStop(1, 'rgba(0, 176, 80, 0.2)');
+          // Gradient for each section
+          const gradient = ctx.createLinearGradient(x - width/2 + offset, sectionY, x + width/2 + offset, sectionY + sectionHeight);
+          gradient.addColorStop(0, 'rgba(0, 176, 80, 0.15)');
+          gradient.addColorStop(1, 'rgba(0, 176, 80, 0.25)');
           
           ctx.fillStyle = gradient;
           ctx.fillRect(x - width/2 + offset, sectionY, width, sectionHeight);
           
-          // Windows (alternating pattern)
-          if (i % 2 === 0) {
-            for (let w = 0; w < 3; w++) {
-              ctx.fillStyle = 'rgba(0, 176, 80, 0.4)';
+          // Glass windows with glowing effect
+          for (let w = 0; w < 6; w++) {
+            if ((i + w) % 2 === 0) {
+              ctx.fillStyle = `rgba(0, 220, 100, ${0.2 + Math.random() * 0.3})`;
               ctx.fillRect(
-                x - width/2 + 5 * scale + offset + w * 10 * scale, 
+                x - width/2 + 5 * scale + offset + w * 7 * scale, 
                 sectionY + 2 * scale, 
-                5 * scale, 
-                sectionHeight - 4 * scale
-              );
-            }
-          } else {
-            for (let w = 0; w < 2; w++) {
-              ctx.fillStyle = 'rgba(0, 176, 80, 0.4)';
-              ctx.fillRect(
-                x - width/2 + 10 * scale + offset + w * 15 * scale, 
-                sectionY + 2 * scale, 
-                5 * scale, 
+                4 * scale, 
                 sectionHeight - 4 * scale
               );
             }
           }
         }
         
-        // Top crown
+        // Spectacular crown with multiple layers
         ctx.beginPath();
-        ctx.moveTo(x - 15 * scale, y - baseHeight);
-        ctx.lineTo(x, y - baseHeight - 25 * scale);
-        ctx.lineTo(x + 15 * scale, y - baseHeight);
+        ctx.moveTo(x - width/2, y - height);
+        ctx.lineTo(x - width/4, y - height - 15 * scale);
+        ctx.lineTo(x, y - height - 30 * scale);
+        ctx.lineTo(x + width/4, y - height - 15 * scale);
+        ctx.lineTo(x + width/2, y - height);
         ctx.closePath();
-        ctx.fillStyle = 'rgba(0, 176, 80, 0.3)';
+        const crownGradient = ctx.createLinearGradient(x, y - height - 30 * scale, x, y - height);
+        crownGradient.addColorStop(0, 'rgba(0, 255, 150, 0.5)');
+        crownGradient.addColorStop(1, 'rgba(0, 176, 80, 0.2)');
+        ctx.fillStyle = crownGradient;
+        ctx.fill();
+        
+        // Antenna
+        ctx.beginPath();
+        ctx.moveTo(x, y - height - 30 * scale);
+        ctx.lineTo(x, y - height - 45 * scale);
+        ctx.lineWidth = 1 * scale;
+        ctx.strokeStyle = 'rgba(0, 176, 80, 0.8)';
+        ctx.stroke();
+        
+        // Antenna sphere
+        ctx.beginPath();
+        ctx.arc(x, y - height - 45 * scale, 2 * scale, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0, 250, 150, 0.9)';
         ctx.fill();
       },
       
-      // Premium Residential Tower
+      // Luxury Residential Complex
       (x: number, y: number, scale: number, ctx: CanvasRenderingContext2D) => {
-        const width = 50 * scale;
-        const height = 80 * scale;
+        const baseWidth = 90 * scale;
+        const baseHeight = 40 * scale;
+        const towerWidth = 50 * scale;
+        const towerHeight = 120 * scale;
         
-        // Main structure with gradient
-        const gradient = ctx.createLinearGradient(x - width/2, y - height, x + width/2, y);
-        gradient.addColorStop(0, 'rgba(0, 176, 80, 0.05)');
-        gradient.addColorStop(1, 'rgba(0, 176, 80, 0.25)');
+        // Base structure - luxury podium
+        const baseGradient = ctx.createLinearGradient(x - baseWidth/2, y - baseHeight, x + baseWidth/2, y);
+        baseGradient.addColorStop(0, 'rgba(0, 176, 80, 0.1)');
+        baseGradient.addColorStop(1, 'rgba(0, 176, 80, 0.2)');
+        ctx.fillStyle = baseGradient;
+        ctx.fillRect(x - baseWidth/2, y - baseHeight, baseWidth, baseHeight);
         
-        ctx.fillStyle = gradient;
-        ctx.fillRect(x - width/2, y - height, width, height);
+        // Swimming pool on podium
+        ctx.fillStyle = 'rgba(0, 200, 255, 0.3)';
+        ctx.fillRect(x - baseWidth/2 + 10 * scale, y - baseHeight - 2 * scale, 25 * scale, 15 * scale);
         
-        // Balconies
-        for (let floor = 1; floor < 10; floor++) {
-          const floorY = y - height + floor * 8 * scale;
-          
-          // Left balcony
-          ctx.fillStyle = 'rgba(0, 176, 80, 0.2)';
-          ctx.fillRect(x - width/2 - 8 * scale, floorY, 8 * scale, 6 * scale);
-          
-          // Right balcony
-          ctx.fillRect(x + width/2, floorY, 8 * scale, 6 * scale);
-          
-          // Railing
-          ctx.strokeStyle = 'rgba(0, 176, 80, 0.4)';
-          ctx.lineWidth = 1 * scale;
-          
-          // Left railing
-          ctx.beginPath();
-          ctx.moveTo(x - width/2 - 8 * scale, floorY);
-          ctx.lineTo(x - width/2, floorY);
-          ctx.stroke();
-          
-          // Right railing
-          ctx.beginPath();
-          ctx.moveTo(x + width/2, floorY);
-          ctx.lineTo(x + width/2 + 8 * scale, floorY);
-          ctx.stroke();
+        // Main tower
+        const towerGradient = ctx.createLinearGradient(x - towerWidth/2, y - baseHeight - towerHeight, x + towerWidth/2, y - baseHeight);
+        towerGradient.addColorStop(0, 'rgba(0, 176, 80, 0.15)');
+        towerGradient.addColorStop(1, 'rgba(0, 176, 80, 0.25)');
+        ctx.fillStyle = towerGradient;
+        ctx.fillRect(x - towerWidth/2, y - baseHeight - towerHeight, towerWidth, towerHeight);
+        
+        // Balconies - staggered pattern
+        for (let floor = 0; floor < 15; floor++) {
+          if (floor % 2 === 0) {
+            // Left balconies
+            ctx.fillStyle = 'rgba(0, 176, 80, 0.3)';
+            ctx.fillRect(
+              x - towerWidth/2 - 8 * scale, 
+              y - baseHeight - towerHeight + 10 * scale + floor * 8 * scale, 
+              8 * scale, 
+              4 * scale
+            );
+          } else {
+            // Right balconies
+            ctx.fillStyle = 'rgba(0, 176, 80, 0.3)';
+            ctx.fillRect(
+              x + towerWidth/2, 
+              y - baseHeight - towerHeight + 10 * scale + floor * 8 * scale, 
+              8 * scale, 
+              4 * scale
+            );
+          }
         }
         
+        // Penthouse
+        ctx.fillStyle = 'rgba(0, 176, 80, 0.4)';
+        ctx.fillRect(
+          x - towerWidth/2 + 5 * scale, 
+          y - baseHeight - towerHeight - A5 * scale, 
+          towerWidth - 10 * scale, 
+          15 * scale
+        );
+        
         // Windows
-        for (let floor = 0; floor < 10; floor++) {
-          const floorY = y - height + floor * 8 * scale;
+        for (let floor = 0; floor < 15; floor++) {
           for (let window = 0; window < 5; window++) {
-            const windowX = x - width/2 + 5 * scale + window * 10 * scale;
-            ctx.fillStyle = 'rgba(0, 176, 80, 0.3)';
-            ctx.fillRect(windowX, floorY + 1 * scale, 6 * scale, 5 * scale);
+            ctx.fillStyle = `rgba(0, 230, 130, ${0.2 + Math.random() * 0.2})`;
+            ctx.fillRect(
+              x - towerWidth/2 + 5 * scale + window * 9 * scale, 
+              y - baseHeight - towerHeight + 10 * scale + floor * 8 * scale, 
+              5 * scale, 
+              4 * scale
+            );
           }
+        }
+        
+        // Rooftop garden
+        for (let i = 0; i < 5; i++) {
+          ctx.beginPath();
+          ctx.arc(
+            x - towerWidth/4 + i * towerWidth/5, 
+            y - baseHeight - towerHeight - 10 * scale,
+            3 * scale,
+            0,
+            Math.PI * 2
+          );
+          ctx.fillStyle = 'rgba(0, 220, 100, 0.6)';
+          ctx.fill();
         }
       },
       
-      // Sustainable Green Building
+      // Futuristic Business Center
+      (x: number, y: number, scale: number, ctx: CanvasRenderingContext2D) => {
+        const width = 70 * scale;
+        const height = 130 * scale;
+        
+        // Base foundation with LED lighting
+        ctx.fillStyle = 'rgba(0, 176, 80, 0.3)';
+        ctx.fillRect(x - width/2 - 5 * scale, y - 5 * scale, width + 10 * scale, 5 * scale);
+        
+        // Main structure - three connected towers
+        const towerWidth = width / 3 - 5 * scale;
+        
+        // Left tower
+        const leftTowerHeight = height * 0.8;
+        const leftTowerGradient = ctx.createLinearGradient(x - width/2, y - leftTowerHeight, x - width/2 + towerWidth, y);
+        leftTowerGradient.addColorStop(0, 'rgba(0, 176, 80, 0.1)');
+        leftTowerGradient.addColorStop(1, 'rgba(0, 176, 80, 0.2)');
+        ctx.fillStyle = leftTowerGradient;
+        ctx.fillRect(x - width/2, y - leftTowerHeight, towerWidth, leftTowerHeight);
+        
+        // Center tower (tallest)
+        const centerTowerGradient = ctx.createLinearGradient(x - towerWidth/2, y - height, x + towerWidth/2, y);
+        centerTowerGradient.addColorStop(0, 'rgba(0, 176, 80, 0.2)');
+        centerTowerGradient.addColorStop(1, 'rgba(0, 176, 80, 0.3)');
+        ctx.fillStyle = centerTowerGradient;
+        ctx.fillRect(x - towerWidth/2, y - height, towerWidth, height);
+        
+        // Right tower
+        const rightTowerHeight = height * 0.9;
+        const rightTowerGradient = ctx.createLinearGradient(x + width/2 - towerWidth, y - rightTowerHeight, x + width/2, y);
+        rightTowerGradient.addColorStop(0, 'rgba(0, 176, 80, 0.15)');
+        rightTowerGradient.addColorStop(1, 'rgba(0, 176, 80, 0.25)');
+        ctx.fillStyle = rightTowerGradient;
+        ctx.fillRect(x + width/2 - towerWidth, y - rightTowerHeight, towerWidth, rightTowerHeight);
+        
+        // Connecting sky bridges
+        for (let i = 1; i < 5; i++) {
+          const bridgeY = y - height * 0.2 * i;
+          
+          // Left to center bridge
+          ctx.fillStyle = 'rgba(0, 176, 80, 0.3)';
+          if (bridgeY > y - leftTowerHeight) {
+            ctx.fillRect(
+              x - width/2 + towerWidth, 
+              bridgeY,
+              x - towerWidth/2 - (x - width/2 + towerWidth),
+              3 * scale
+            );
+          }
+          
+          // Center to right bridge
+          if (bridgeY > y - rightTowerHeight) {
+            ctx.fillStyle = 'rgba(0, 176, 80, 0.3)';
+            ctx.fillRect(
+              x + towerWidth/2, 
+              bridgeY,
+              x + width/2 - towerWidth - (x + towerWidth/2),
+              3 * scale
+            );
+          }
+        }
+        
+        // Glass windows pattern
+        for (let tower = 0; tower < 3; tower++) {
+          const towerX = x - width/2 + tower * (width/3);
+          const towerMaxHeight = tower === 0 ? leftTowerHeight : tower === 1 ? height : rightTowerHeight;
+          
+          for (let floor = 0; floor < towerMaxHeight / (8 * scale); floor++) {
+            for (let window = 0; window < 3; window++) {
+              ctx.fillStyle = `rgba(0, 255, 150, ${0.1 + Math.random() * 0.3})`;
+              ctx.fillRect(
+                towerX + 3 * scale + window * 5 * scale,
+                y - towerMaxHeight + 5 * scale + floor * 8 * scale,
+                3 * scale,
+                4 * scale
+              );
+            }
+          }
+        }
+        
+        // Roof features
+        // Center tower crown
+        ctx.beginPath();
+        ctx.moveTo(x - towerWidth/2, y - height);
+        ctx.lineTo(x, y - height - 15 * scale);
+        ctx.lineTo(x + towerWidth/2, y - height);
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(0, 200, 100, 0.4)';
+        ctx.fill();
+        
+        // Antennas on side towers
+        ctx.beginPath();
+        ctx.moveTo(x - width/2 + towerWidth/2, y - leftTowerHeight);
+        ctx.lineTo(x - width/2 + towerWidth/2, y - leftTowerHeight - 10 * scale);
+        ctx.strokeStyle = 'rgba(0, 176, 80, 0.6)';
+        ctx.lineWidth = 1 * scale;
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.moveTo(x + width/2 - towerWidth/2, y - rightTowerHeight);
+        ctx.lineTo(x + width/2 - towerWidth/2, y - rightTowerHeight - 10 * scale);
+        ctx.stroke();
+      },
+      
+      // Green Ecological Tower
       (x: number, y: number, scale: number, ctx: CanvasRenderingContext2D) => {
         const width = 60 * scale;
-        const height = 70 * scale;
+        const height = 120 * scale;
         
-        // Main structure
-        const gradient = ctx.createLinearGradient(x - width/2, y - height, x + width/2, y);
+        // Main structure with slight tapers
+        const baseWidth = width;
+        const topWidth = width * 0.8;
+        
+        // Draw as trapezoid
+        ctx.beginPath();
+        ctx.moveTo(x - baseWidth/2, y);
+        ctx.lineTo(x - topWidth/2, y - height);
+        ctx.lineTo(x + topWidth/2, y - height);
+        ctx.lineTo(x + baseWidth/2, y);
+        ctx.closePath();
+        
+        const gradient = ctx.createLinearGradient(x, y - height, x, y);
         gradient.addColorStop(0, 'rgba(0, 176, 80, 0.15)');
         gradient.addColorStop(1, 'rgba(0, 176, 80, 0.25)');
-        
         ctx.fillStyle = gradient;
-        ctx.fillRect(x - width/2, y - height, width, height);
+        ctx.fill();
         
-        // Terraced gardens
-        for (let i = 0; i < 5; i++) {
-          const terraceSizeX = width - i * 10 * scale;
-          const terraceY = y - height + i * 15 * scale;
+        // Terraced gardens - more elaborate with varying plants
+        const terraceLevels = 8;
+        for (let i = 0; i < terraceLevels; i++) {
+          const terraceY = y - height * (i + 1) / (terraceLevels + 1);
+          const terraceWidth = baseWidth - (baseWidth - topWidth) * (i + 1) / (terraceLevels + 1);
           
-          ctx.fillStyle = 'rgba(0, 176, 80, 0.3)';
-          ctx.fillRect(x - terraceSizeX/2, terraceY, terraceSizeX, 3 * scale);
+          // Terrace base
+          ctx.fillStyle = 'rgba(0, 176, 80, 0.4)';
+          ctx.fillRect(
+            x - terraceWidth/2 - 5 * scale, 
+            terraceY,
+            terraceWidth + 10 * scale,
+            5 * scale
+          );
           
-          // Plant details on each terrace
-          for (let p = 0; p < terraceSizeX / (8 * scale); p++) {
+          // Plants on each terrace - varying sizes and types
+          for (let p = 0; p < terraceWidth / (8 * scale); p++) {
+            const plantSize = (1 + Math.random()) * 3 * scale;
+            const plantType = Math.floor(Math.random() * 3);
+            
+            if (plantType === 0) {
+              // Round bush
+              ctx.beginPath();
+              ctx.arc(
+                x - terraceWidth/2 + 5 * scale + p * 8 * scale,
+                terraceY - plantSize - 2 * scale,
+                plantSize,
+                0,
+                Math.PI * 2
+              );
+              ctx.fillStyle = `rgba(0, ${180 + Math.floor(Math.random() * 70)}, 80, ${0.5 + Math.random() * 0.3})`;
+              ctx.fill();
+            } else if (plantType === 1) {
+              // Triangular tree
+              ctx.beginPath();
+              ctx.moveTo(x - terraceWidth/2 + 5 * scale + p * 8 * scale, terraceY - 2 * scale);
+              ctx.lineTo(x - terraceWidth/2 + 5 * scale + p * 8 * scale - plantSize, terraceY - 2 * scale);
+              ctx.lineTo(x - terraceWidth/2 + 5 * scale + p * 8 * scale, terraceY - plantSize * 2 - 2 * scale);
+              ctx.lineTo(x - terraceWidth/2 + 5 * scale + p * 8 * scale + plantSize, terraceY - 2 * scale);
+              ctx.closePath();
+              ctx.fillStyle = `rgba(0, ${160 + Math.floor(Math.random() * 80)}, 60, ${0.5 + Math.random() * 0.3})`;
+              ctx.fill();
+            } else {
+              // Tall slim plant
+              ctx.beginPath();
+              ctx.rect(
+                x - terraceWidth/2 + 5 * scale + p * 8 * scale - scale/2,
+                terraceY - plantSize * 2 - 2 * scale,
+                scale,
+                plantSize * 2
+              );
+              ctx.fillStyle = `rgba(0, ${200 + Math.floor(Math.random() * 50)}, 100, ${0.6 + Math.random() * 0.3})`;
+              ctx.fill();
+            }
+          }
+        }
+        
+        // Vertical garden stripes
+        for (let i = 0; i < 4; i++) {
+          const stripeX = x - width/2 + (i + 1) * width/5;
+          
+          ctx.beginPath();
+          ctx.moveTo(stripeX, y);
+          // Calculate x position at the top based on taper
+          const topStripeX = x - topWidth/2 + (i + 1) * topWidth/5;
+          ctx.lineTo(topStripeX, y - height);
+          ctx.lineWidth = 3 * scale;
+          ctx.strokeStyle = 'rgba(0, 200, 100, 0.4)';
+          ctx.stroke();
+          
+          // Add small plants along the stripe
+          for (let p = 0; p < height / (20 * scale); p++) {
+            const plantY = y - 15 * scale - p * 20 * scale;
+            // Calculate x position based on height (for tapered building)
+            const plantHeightRatio = (y - plantY) / height;
+            const plantX = x - baseWidth/2 + (baseWidth - (baseWidth - topWidth) * plantHeightRatio) * (i + 1)/5;
+            
             ctx.beginPath();
             ctx.arc(
-              x - terraceSizeX/2 + 5 * scale + p * 8 * scale,
-              terraceY - 3 * scale,
+              plantX,
+              plantY,
               2 * scale,
               0,
               Math.PI * 2
             );
-            ctx.fillStyle = 'rgba(0, 176, 80, 0.5)';
+            ctx.fillStyle = 'rgba(0, 230, 100, 0.6)';
             ctx.fill();
           }
         }
         
-        // Glass panels
-        for (let i = 0; i < 8; i++) {
-          for (let j = 0; j < 6; j++) {
-            if ((i + j) % 2 === 0) {
-              ctx.fillStyle = 'rgba(0, 176, 80, 0.2)';
-            } else {
-              ctx.fillStyle = 'rgba(0, 176, 80, 0.3)';
-            }
-            
+        // Solar panels on roof
+        for (let i = 0; i < 3; i++) {
+          for (let j = 0; j < 2; j++) {
+            ctx.fillStyle = 'rgba(0, 150, 255, 0.3)';
             ctx.fillRect(
-              x - width/2 + i * (width/8),
-              y - height + 5 * scale + j * 10 * scale,
-              width/8,
-              10 * scale
+              x - topWidth/2 + 3 * scale + i * 10 * scale,
+              y - height - 2 * scale + j * 5 * scale,
+              8 * scale,
+              4 * scale
             );
           }
+        }
+      },
+      
+      // Crystalline Diamond Tower
+      (x: number, y: number, scale: number, ctx: CanvasRenderingContext2D) => {
+        const width = 50 * scale;
+        const height = 140 * scale;
+        
+        // Base structure
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x - width/2, y - height * 0.3);
+        ctx.lineTo(x - width/3, y - height);
+        ctx.lineTo(x + width/3, y - height);
+        ctx.lineTo(x + width/2, y - height * 0.3);
+        ctx.closePath();
+        
+        // Crystal-like gradient
+        const gradient = ctx.createLinearGradient(x, y - height, x, y);
+        gradient.addColorStop(0, 'rgba(0, 255, 150, 0.2)');
+        gradient.addColorStop(0.5, 'rgba(0, 176, 80, 0.05)');
+        gradient.addColorStop(1, 'rgba(0, 176, 80, 0.2)');
+        ctx.fillStyle = gradient;
+        ctx.fill();
+        
+        // Crystalline facets - reflective surfaces
+        for (let i = 0; i < 8; i++) {
+          const startY = y - height * i/8;
+          const endY = y - height * (i+1)/8;
+          const startWidthRatio = i <= 2 ? i/3 : i >= 5 ? (8-i)/3 : 1;
+          const endWidthRatio = (i+1) <= 2 ? (i+1)/3 : (i+1) >= 5 ? (8-(i+1))/3 : 1;
+          
+          const startWidth = width * startWidthRatio;
+          const endWidth = width * endWidthRatio;
+          
+          ctx.beginPath();
+          ctx.moveTo(x - startWidth/2, startY);
+          ctx.lineTo(x - endWidth/2, endY);
+          ctx.lineTo(x + endWidth/2, endY);
+          ctx.lineTo(x + startWidth/2, startY);
+          ctx.closePath();
+          
+          const facetGradient = ctx.createLinearGradient(x - startWidth/2, startY, x + startWidth/2, startY);
+          facetGradient.addColorStop(0, `rgba(0, ${150 + Math.floor(Math.random() * 100)}, ${80 + Math.floor(Math.random() * 50)}, ${0.1 + Math.random() * 0.2})`);
+          facetGradient.addColorStop(0.5, `rgba(0, ${200 + Math.floor(Math.random() * 55)}, ${100 + Math.floor(Math.random() * 50)}, ${0.2 + Math.random() * 0.2})`);
+          facetGradient.addColorStop(1, `rgba(0, ${150 + Math.floor(Math.random() * 100)}, ${80 + Math.floor(Math.random() * 50)}, ${0.1 + Math.random() * 0.2})`);
+          ctx.fillStyle = facetGradient;
+          ctx.fill();
+        }
+        
+        // Glowing edges
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x - width/2, y - height * 0.3);
+        ctx.lineTo(x - width/3, y - height);
+        ctx.lineTo(x + width/3, y - height);
+        ctx.lineTo(x + width/2, y - height * 0.3);
+        ctx.closePath();
+        ctx.strokeStyle = 'rgba(0, 255, 150, 0.4)';
+        ctx.lineWidth = 1 * scale;
+        ctx.stroke();
+        
+        // Reflection highlights
+        for (let i = 0; i < 5; i++) {
+          const highlightY = y - height * (0.2 + i * 0.15);
+          const highlightWidth = width * 0.15;
+          
+          ctx.beginPath();
+          ctx.moveTo(x, highlightY);
+          ctx.lineTo(x + highlightWidth, highlightY - height * 0.05);
+          ctx.lineWidth = 2 * scale;
+          ctx.strokeStyle = 'rgba(0, 255, 150, 0.3)';
+          ctx.stroke();
+        }
+        
+        // Spire at top
+        ctx.beginPath();
+        ctx.moveTo(x - width/12, y - height);
+        ctx.lineTo(x, y - height - 20 * scale);
+        ctx.lineTo(x + width/12, y - height);
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(0, 255, 180, 0.4)';
+        ctx.fill();
+        
+        // Lighting beacon
+        ctx.beginPath();
+        ctx.arc(x, y - height - 20 * scale, 3 * scale, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0, 255, 150, 0.8)';
+        ctx.fill();
+        
+        // Glow effect around beacon
+        const beaconGlow = ctx.createRadialGradient(x, y - height - 20 * scale, 0, x, y - height - 20 * scale, 15 * scale);
+        beaconGlow.addColorStop(0, 'rgba(0, 255, 150, 0.4)');
+        beaconGlow.addColorStop(1, 'rgba(0, 255, 150, 0)');
+        
+        ctx.beginPath();
+        ctx.arc(x, y - height - 20 * scale, 15 * scale, 0, Math.PI * 2);
+        ctx.fillStyle = beaconGlow;
+        ctx.fill();
+      },
+      
+      // Mixed-Use Curved Tower
+      (x: number, y: number, scale: number, ctx: CanvasRenderingContext2D) => {
+        const width = 55 * scale;
+        const height = 150 * scale;
+        
+        // Curved structure - S-shape
+        ctx.beginPath();
+        
+        // Base point
+        ctx.moveTo(x - width/2, y);
+        
+        // Complex S-curve using bezier curves
+        // First curve section (bottom)
+        ctx.bezierCurveTo(
+          x - width/2 - 10 * scale, y - height * 0.3, // control point 1
+          x, y - height * 0.3, // control point 2
+          x, y - height * 0.4 // end point
+        );
+        
+        // Middle curve section
+        ctx.bezierCurveTo(
+          x, y - height * 0.5, // control point 1
+          x + width/2 + 10 * scale, y - height * 0.6, // control point 2
+          x + width/3, y - height * 0.7 // end point
+        );
+        
+        // Top curve section
+        ctx.bezierCurveTo(
+          x + width/5, y - height * 0.8, // control point 1
+          x - width/3, y - height * 0.9, // control point 2
+          x, y - height // end point
+        );
+        
+        // Complete the shape
+        ctx.lineTo(x - width/6, y - height);
+        ctx.lineTo(x - width/4, y - height * 0.7);
+        ctx.lineTo(x - width/3, y - height * 0.4);
+        ctx.lineTo(x - width/2, y);
+        
+        // Gradient fill
+        const gradient = ctx.createLinearGradient(x - width/2, y, x + width/2, y - height);
+        gradient.addColorStop(0, 'rgba(0, 176, 80, 0.15)');
+        gradient.addColorStop(0.5, 'rgba(0, 200, 100, 0.2)');
+        gradient.addColorStop(1, 'rgba(0, 255, 150, 0.3)');
+        ctx.fillStyle = gradient;
+        ctx.fill();
+        
+        // Glass effects along the curve
+        const steps = 20;
+        for (let i = 0; i < steps; i++) {
+          // Calculate t parameter along the Bezier curve
+          const t = i / steps;
+          
+          // Simplified curve point calculation - just for demonstration
+          // In a real Bezier calculation, we'd use the actual formula
+          
+          let pointX, pointY;
+          if (t < 0.4) {
+            // Bottom section of the S
+            const localT = t / 0.4;
+            pointX = x - width/2 + (width/2 + 10 * scale) * localT;
+            pointY = y - height * 0.4 * localT;
+          } else if (t < 0.7) {
+            // Middle section
+            const localT = (t - 0.4) / 0.3;
+            pointX = x + (width/3 - x) * localT;
+            pointY = y - height * 0.4 - height * 0.3 * localT;
+          } else {
+            // Top section
+            const localT = (t - 0.7) / 0.3;
+            pointX = x + width/3 - (width/3) * localT;
+            pointY = y - height * 0.7 - height * 0.3 * localT;
+          }
+          
+          // Draw window/glass elements
+          ctx.beginPath();
+          ctx.arc(pointX, pointY, 2 * scale, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(0, ${200 + Math.floor(Math.random() * 55)}, ${120 + Math.floor(Math.random() * 30)}, ${0.2 + Math.random() * 0.3})`;
+          ctx.fill();
+          
+          // Some windows are rectangles
+          if (i % 3 === 0) {
+            ctx.fillRect(
+              pointX - 3 * scale, 
+              pointY - 1.5 * scale,
+              6 * scale,
+              3 * scale
+            );
+          }
+        }
+        
+        // Decorative roof feature
+        ctx.beginPath();
+        ctx.arc(x, y - height, 5 * scale, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0, 220, 120, 0.5)';
+        ctx.fill();
+        
+        // Decorative lights along the curve
+        for (let i = 0; i < 10; i++) {
+          const t = i / 10;
+          let pointX, pointY;
+          
+          if (t < 0.4) {
+            const localT = t / 0.4;
+            pointX = x - width/2 + (width/2 + 10 * scale) * localT;
+            pointY = y - height * 0.4 * localT;
+          } else if (t < 0.7) {
+            const localT = (t - 0.4) / 0.3;
+            pointX = x + (width/3 - x) * localT;
+            pointY = y - height * 0.4 - height * 0.3 * localT;
+          } else {
+            const localT = (t - 0.7) / 0.3;
+            pointX = x + width/3 - (width/3) * localT;
+            pointY = y - height * 0.7 - height * 0.3 * localT;
+          }
+          
+          // Glow effect
+          const lightGlow = ctx.createRadialGradient(pointX, pointY, 0, pointX, pointY, 5 * scale);
+          lightGlow.addColorStop(0, 'rgba(0, 255, 150, 0.6)');
+          lightGlow.addColorStop(1, 'rgba(0, 255, 150, 0)');
+          
+          ctx.beginPath();
+          ctx.arc(pointX, pointY, 5 * scale, 0, Math.PI * 2);
+          ctx.fillStyle = lightGlow;
+          ctx.fill();
         }
       }
     ];
     
     // Create buildings with varied styles and positions
     for (let i = 0; i < buildingCount; i++) {
-      const scale = 0.6 + Math.random() * 0.4;
+      const scale = 0.5 + Math.random() * 0.5;
       buildings.push({
         x: Math.random() * rect.width,
-        y: rect.height * 0.9,
+        y: rect.height + Math.random() * 10,
         scale: scale,
         styleIndex: Math.floor(Math.random() * buildingStyles.length),
         hoverEffect: 0,
@@ -304,7 +672,7 @@ const RealEstateAnimation: React.FC = () => {
     
     // Floating data elements - metrics, measurements, property data
     const floatingElements = [];
-    const elementCount = 25;
+    const elementCount = 30;
     
     for (let i = 0; i < elementCount; i++) {
       floatingElements.push({
@@ -331,7 +699,7 @@ const RealEstateAnimation: React.FC = () => {
       });
     }
     // Add some random connections for more interesting network
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 8; i++) {
       const start = Math.floor(Math.random() * buildings.length);
       let end = Math.floor(Math.random() * buildings.length);
       while (end === start) end = Math.floor(Math.random() * buildings.length);
@@ -423,6 +791,14 @@ const RealEstateAnimation: React.FC = () => {
       groundGradient.addColorStop(1, 'rgba(0, 30, 20, 0.1)');
       ctx.fillStyle = groundGradient;
       ctx.fillRect(0, landscape.groundLine, rect.width, rect.height - landscape.groundLine);
+      
+      // Move buildings upward from below
+      buildings.forEach(building => {
+        // Make buildings rise from below to their final position
+        if (building.y > landscape.groundLine - 10) {
+          building.y -= 0.5; // Adjust speed as needed
+        }
+      });
       
       // Draw connection lines between buildings
       connections.forEach((connection, index) => {
@@ -523,7 +899,7 @@ const RealEstateAnimation: React.FC = () => {
         // Draw glow effect
         const glowRadius = 60 * building.scale;
         const glowGradient = ctx.createRadialGradient(0, -40 * building.scale, 0, 0, -40 * building.scale, glowRadius);
-        glowGradient.addColorStop(0, `rgba(0, 176, 80, ${0.1 * pulse})`);
+        glowGradient.addColorStop(0, `rgba(0, 200, 100, ${0.1 * pulse})`);
         glowGradient.addColorStop(1, 'rgba(0, 176, 80, 0)');
         
         ctx.beginPath();
@@ -550,7 +926,7 @@ const RealEstateAnimation: React.FC = () => {
         // Draw element
         ctx.beginPath();
         ctx.arc(element.x, element.y, element.size * (0.7 + pulse * 0.3), 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 176, 80, ${element.opacity * pulse})`;
+        ctx.fillStyle = `rgba(0, 200, 100, ${element.opacity * pulse})`;
         ctx.fill();
         
         // Draw connecting lines to nearby elements
@@ -563,7 +939,7 @@ const RealEstateAnimation: React.FC = () => {
             ctx.beginPath();
             ctx.moveTo(element.x, element.y);
             ctx.lineTo(otherElement.x, otherElement.y);
-            ctx.strokeStyle = `rgba(0, 176, 80, ${0.05 * (1 - distance / 100)})`;
+            ctx.strokeStyle = `rgba(0, 200, 100, ${0.05 * (1 - distance / 100)})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
@@ -576,10 +952,10 @@ const RealEstateAnimation: React.FC = () => {
         const y = Math.random() * rect.height * 0.6;
         
         ctx.font = '10px monospace';
-        ctx.fillStyle = 'rgba(0, 176, 80, 0.3)';
+        ctx.fillStyle = 'rgba(0, 200, 100, 0.3)';
         
         // Random real estate metrics
-        const metrics = ["AREA: 120m²", "VALOR: R$850K", "APTOS: 24", "ROI: 12%", "VGV: R$12M"];
+        const metrics = ["AREA: 120m²", "VALOR: R$850K", "APTOS: 24", "ROI: 12%", "VGV: R$12M", "TIPO: COMERCIAL", "ESCRITURAS: 15"];
         ctx.fillText(metrics[Math.floor(Math.random() * metrics.length)], x, y);
       }
       

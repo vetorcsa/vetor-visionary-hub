@@ -83,14 +83,12 @@ const Navbar: React.FC = () => {
             >
               Parceiros
             </Link>
-            <Link 
-              to="/contato" 
-              className={`font-medium transition-colors duration-200 hover:text-vetor-green ${
-                isActive('/contato') ? 'text-vetor-green animated-underline after:w-full' : 'text-white animated-underline'
-              }`}
+            <a 
+              href="/sobre#contato" 
+              className="font-medium text-white hover:text-vetor-green transition-colors duration-200 animated-underline"
             >
               Contato
-            </Link>
+            </a>
             {isAdmin && (
               <div className="relative group">
                 <button 
@@ -168,15 +166,13 @@ const Navbar: React.FC = () => {
           >
             Parceiros
           </Link>
-          <Link
-            to="/contato"
-            className={`py-3 px-4 rounded-md ${
-              isActive('/contato') ? 'bg-vetor-green text-white' : 'text-white hover:bg-vetor-green/10'
-            }`}
+          <a
+            href="/sobre#contato"
+            className="py-3 px-4 rounded-md text-white hover:bg-vetor-green/10"
             onClick={closeMenu}
           >
             Contato
-          </Link>
+          </a>
           {isAdmin && (
             <>
               <Link

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useAdmin } from '@/contexts/AdminContext';
-import { Mail, Phone, MapPin, Linkedin, Facebook, Instagram } from 'lucide-react';
+import { Mail, Phone, MapPin, Instagram } from 'lucide-react';
 
 const Footer: React.FC = () => {
   const { footerData } = useAdmin();
@@ -42,10 +42,10 @@ const Footer: React.FC = () => {
               <li className="flex items-center">
                 <Mail className="w-5 h-5 text-vetor-green mr-2" />
                 <a 
-                  href={`mailto:${footerData.email}`} 
+                  href="mailto:vetorcsa@gmail.com" 
                   className="hover:text-vetor-green transition-colors duration-200"
                 >
-                  {footerData.email}
+                  vetorcsa@gmail.com
                 </a>
               </li>
               <li className="flex items-center">
@@ -63,34 +63,14 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="text-xl font-semibold mb-4">Redes Sociais</h3>
             <div className="flex space-x-4">
-              {footerData.socialLinks.map((link, index) => {
-                let Icon;
-                switch (link.platform.toLowerCase()) {
-                  case 'linkedin':
-                    Icon = Linkedin;
-                    break;
-                  case 'facebook':
-                    Icon = Facebook;
-                    break;
-                  case 'instagram':
-                    Icon = Instagram;
-                    break;
-                  default:
-                    Icon = Linkedin;
-                }
-
-                return (
-                  <a 
-                    key={index}
-                    href={link.url} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 bg-vetor-darkgray rounded-full flex items-center justify-center hover:bg-vetor-green transition-colors duration-200"
-                  >
-                    <Icon className="w-5 h-5" />
-                  </a>
-                );
-              })}
+              <a 
+                href="https://www.instagram.com/vetorcsa/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-vetor-darkgray rounded-full flex items-center justify-center hover:bg-vetor-green transition-colors duration-200"
+              >
+                <Instagram className="w-5 h-5" />
+              </a>
             </div>
           </div>
         </div>

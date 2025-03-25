@@ -30,7 +30,6 @@ const App = () => (
                 <Route path="/sobre" element={<About />} />
                 <Route path="/parceiros" element={<Partners />} />
                 <Route path="/admin" element={<Admin />} />
-                <Route path="/contato" element={<About />} /> {/* Redirect to About page */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
