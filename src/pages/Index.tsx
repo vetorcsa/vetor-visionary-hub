@@ -106,14 +106,10 @@ const Index: React.FC = () => {
               icon="monitor-smartphone"
               animationComponent="custom-tech"
               primaryAction={{
-                link: "/crie-seu-site",
-                text: "Crie seu site",
-                variant: "default"
-              }}
-              secondaryAction={{
                 link: "/sobre",
                 text: "Saiba mais"
               }}
+              hideButtons={true}
             />
           </div>
         </div>
@@ -129,23 +125,17 @@ const Index: React.FC = () => {
         
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <div className="max-w-3xl mx-auto glass-card p-12 rounded-2xl border border-vetor-green/20 backdrop-blur-sm bg-black/40 shadow-lg">
-            <Badge className="bg-vetor-green/20 text-vetor-green hover:bg-vetor-green/30 mb-6">Vamos Conversar</Badge>
+            <Badge className="bg-vetor-green/20 text-vetor-green hover:bg-vetor-green/30 mb-6">Crie seu Site</Badge>
             <h2 className="text-3xl md:text-5xl font-bold text-white mb-8 leading-tight">
               Vamos transformar seu negócio com tecnologia?
             </h2>
             <p className="text-white/80 mb-10 text-xl">
-              Entre em contato conosco para uma consulta inicial e descubra como nossas soluções tecnológicas podem impulsionar os resultados da sua empresa.
+              Tenha um site profissional para destacar seu negócio no ambiente digital e melhorar sua presença online.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link 
-                to="/contato" 
-                className="inline-flex items-center gap-3 bg-gradient-to-r from-vetor-green to-vetor-darkgreen hover:from-vetor-darkgreen hover:to-vetor-green text-white px-8 py-4 rounded-lg font-medium text-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-lg"
-              >
-                Fale Conosco <ArrowRight className="w-5 h-5" />
-              </Link>
-              <Link 
                 to="/crie-seu-site" 
-                className="inline-flex items-center gap-3 bg-transparent border border-vetor-green/50 hover:border-vetor-green text-white px-8 py-4 rounded-lg font-medium text-lg transition-all duration-300 hover:translate-y-[-2px] hover:bg-vetor-green/10"
+                className="inline-flex items-center gap-3 bg-gradient-to-r from-vetor-green to-vetor-darkgreen hover:from-vetor-darkgreen hover:to-vetor-green text-white px-8 py-4 rounded-lg font-medium text-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-lg"
               >
                 Crie seu site <Globe className="w-5 h-5" />
               </Link>

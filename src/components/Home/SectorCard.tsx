@@ -25,6 +25,7 @@ interface SectorCardProps {
     link: string;
     text: string;
   };
+  hideButtons?: boolean;
 }
 
 const SectorCard: React.FC<SectorCardProps> = ({
@@ -33,7 +34,8 @@ const SectorCard: React.FC<SectorCardProps> = ({
   icon,
   animationComponent,
   primaryAction,
-  secondaryAction
+  secondaryAction,
+  hideButtons
 }) => {
   const renderIcon = () => {
     switch (icon) {
@@ -87,25 +89,27 @@ const SectorCard: React.FC<SectorCardProps> = ({
         <p className="mb-4 text-base">{description}</p>
       </CardContent>
       
-      <CardFooter className="flex flex-wrap gap-3 pt-2">
-        {primaryAction.variant === 'default' ? (
-          <Link to={primaryAction.link}>
-            <Button className="bg-vetor-green hover:bg-vetor-darkgreen text-white border-none flex items-center gap-2">
-              {primaryAction.text} <ArrowRight className="w-4 h-4" />
-            </Button>
-          </Link>
-        ) : (
-          <Link to={primaryAction.link} className="inline-flex items-center gap-2 text-vetor-green hover:text-white bg-vetor-green/10 hover:bg-vetor-green transition-colors px-4 py-2 rounded-md">
-            <span>{primaryAction.text}</span> <ArrowRight className="w-4 h-4" />
-          </Link>
-        )}
-        
-        {secondaryAction && (
-          <Link to={secondaryAction.link} className="inline-flex items-center gap-2 text-vetor-green hover:text-white bg-vetor-green/10 hover:bg-vetor-green transition-colors px-4 py-2 rounded-md">
-            <span>{secondaryAction.text}</span> <ArrowRight className="w-4 h-4" />
-          </Link>
-        )}
-      </CardFooter>
+      {!hideButtons && (
+        <CardFooter className="flex flex-wrap gap-3 pt-2 justify-center">
+          {primaryAction.variant === 'default' ? (
+            <Link to={primaryAction.link} className="w-full">
+              <Button className="bg-vetor-green hover:bg-vetor-darkgreen text-white border-none flex items-center gap-2 w-full justify-center">
+                {primaryAction.text} <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
+          ) : (
+            <Link to={primaryAction.link} className="inline-flex items-center gap-2 text-vetor-green hover:text-white bg-vetor-green/10 hover:bg-vetor-green transition-colors px-4 py-2 rounded-md w-full justify-center">
+              <span>{primaryAction.text}</span> <ArrowRight className="w-4 h-4" />
+            </Link>
+          )}
+          
+          {secondaryAction && (
+            <Link to={secondaryAction.link} className="inline-flex items-center gap-2 text-vetor-green hover:text-white bg-vetor-green/10 hover:bg-vetor-green transition-colors px-4 py-2 rounded-md w-full justify-center">
+              <span>{secondaryAction.text}</span> <ArrowRight className="w-4 h-4" />
+            </Link>
+          )}
+        </CardFooter>
+      )}
     </Card>
   );
 };

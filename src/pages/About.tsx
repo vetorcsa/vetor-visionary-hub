@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ContactSection from '@/components/About/ContactSection';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Globe, Server, Database, Cpu } from 'lucide-react';
+import { ArrowRight, Globe, Server, Database, Cpu, Code, Layers, LineChart } from 'lucide-react';
 
 const About: React.FC = () => {
   return (
@@ -51,7 +50,7 @@ const About: React.FC = () => {
         </div>
       </section>
 
-      {/* About Section */}
+      {/* About Section - Redesigned */}
       <section className="py-20 bg-black">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -72,18 +71,52 @@ const About: React.FC = () => {
             </div>
             
             <div className="relative">
-              <div className="absolute -top-10 -left-10 w-full h-full border-2 border-vetor-green/20 rounded-xl"></div>
-              <div className="relative z-10 rounded-xl overflow-hidden border-2 border-vetor-green/50">
-                <img 
-                  src="/images/about-team.jpg" 
-                  alt="VETOR Team" 
-                  className="w-full h-auto"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80";
-                  }}
-                />
+              {/* Replaced team photo with design elements */}
+              <div className="glass-card p-10 rounded-xl border border-vetor-green/20 bg-black/60 backdrop-blur-sm shadow-lg hover:shadow-[0_0_30px_rgba(0,176,80,0.1)] transition-all duration-500">
+                <div className="grid grid-cols-2 gap-6">
+                  <div className="glass-card p-6 rounded-xl border border-vetor-green/10 bg-black/40 backdrop-blur-sm hover:border-vetor-green/30 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,176,80,0.15)] text-center group">
+                    <div className="w-16 h-16 bg-vetor-green/10 rounded-full flex items-center justify-center mb-4 mx-auto group-hover:bg-vetor-green/20 transition-all">
+                      <Code className="w-8 h-8 text-vetor-green" />
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-2">Desenvolvimento</h3>
+                    <p className="text-gray-400">Soluções personalizadas de software para necessidades específicas.</p>
+                  </div>
+                  
+                  <div className="glass-card p-6 rounded-xl border border-vetor-green/10 bg-black/40 backdrop-blur-sm hover:border-vetor-green/30 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,176,80,0.15)] text-center group">
+                    <div className="w-16 h-16 bg-vetor-green/10 rounded-full flex items-center justify-center mb-4 mx-auto group-hover:bg-vetor-green/20 transition-all">
+                      <Layers className="w-8 h-8 text-vetor-green" />
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-2">Integração</h3>
+                    <p className="text-gray-400">Sistemas que se comunicam perfeitamente entre si.</p>
+                  </div>
+                  
+                  <div className="glass-card p-6 rounded-xl border border-vetor-green/10 bg-black/40 backdrop-blur-sm hover:border-vetor-green/30 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,176,80,0.15)] text-center group">
+                    <div className="w-16 h-16 bg-vetor-green/10 rounded-full flex items-center justify-center mb-4 mx-auto group-hover:bg-vetor-green/20 transition-all">
+                      <Database className="w-8 h-8 text-vetor-green" />
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-2">Dados</h3>
+                    <p className="text-gray-400">Gestão e análise de dados para decisões estratégicas.</p>
+                  </div>
+                  
+                  <div className="glass-card p-6 rounded-xl border border-vetor-green/10 bg-black/40 backdrop-blur-sm hover:border-vetor-green/30 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,176,80,0.15)] text-center group">
+                    <div className="w-16 h-16 bg-vetor-green/10 rounded-full flex items-center justify-center mb-4 mx-auto group-hover:bg-vetor-green/20 transition-all">
+                      <LineChart className="w-8 h-8 text-vetor-green" />
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-2">Resultados</h3>
+                    <p className="text-gray-400">Soluções que impulsionam o crescimento e a eficiência.</p>
+                  </div>
+                </div>
+                
+                <div className="text-center mt-8">
+                  <div className="inline-block px-4 py-2 bg-vetor-green/10 rounded-full">
+                    <span className="text-vetor-green font-medium">+ de 5 anos de experiência</span>
+                  </div>
+                </div>
               </div>
+              
+              {/* Decorative elements */}
+              <div className="absolute -top-10 -left-10 w-40 h-40 border border-vetor-green/10 rounded-full z-0"></div>
+              <div className="absolute -bottom-10 -right-10 w-60 h-60 border border-vetor-green/10 rounded-full z-0"></div>
             </div>
           </div>
         </div>
