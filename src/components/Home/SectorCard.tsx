@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Building2, FileBarChart, Globe, MonitorSmartphone, ArrowRight } from 'lucide-react';
@@ -76,6 +77,8 @@ const SectorCard: React.FC<SectorCardProps> = ({
         return "/recuperacao-tributaria";
       case 'logistics':
         return "/planos-transportadoras";
+      case 'custom-tech':
+        return "/automacoes-processos";
       default:
         return link;
     }
