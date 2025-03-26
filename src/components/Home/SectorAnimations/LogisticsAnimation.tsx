@@ -32,7 +32,7 @@ const LogisticsAnimation: React.FC = () => {
     
     // Create connection points around the globe - fewer points for elegance
     const connectionPoints = [];
-    const connectionCount = 10;
+    const connectionCount = 12; // Slightly more connection points
     
     // Generate connection points distributed across the globe
     for (let i = 0; i < connectionCount; i++) {
@@ -43,19 +43,19 @@ const LogisticsAnimation: React.FC = () => {
       const y = centerY + globeRadius * Math.sin(theta) * Math.sin(phi);
       
       const depthFactor = Math.sin(phi) * Math.cos(theta);
-      const opacity = 0.2 + (depthFactor + 1) * 0.3;
+      const opacity = 0.3 + (depthFactor + 1) * 0.4; // More vibrant opacity
       
       connectionPoints.push({
         x,
         y,
-        size: 1.5 + Math.random() * 1.5,
+        size: 2 + Math.random() * 2, // Slightly larger points
         opacity,
         connections: [],
-        active: Math.random() > 0.4
+        active: Math.random() > 0.3 // More active points
       });
     }
     
-    // Create connections between points - fewer connections for cleaner look
+    // Create connections between points
     connectionPoints.forEach((point, index) => {
       const connectionCount = 1 + Math.floor(Math.random() * 2);
       
@@ -71,7 +71,7 @@ const LogisticsAnimation: React.FC = () => {
     
     // Create moving packages/data points between connection points
     const packages = [];
-    const packageCount = 4; // Fewer packages for elegance
+    const packageCount = 6; // More packages for more activity
     
     for (let i = 0; i < packageCount; i++) {
       const startPointIndex = Math.floor(Math.random() * connectionPoints.length);
@@ -90,9 +90,10 @@ const LogisticsAnimation: React.FC = () => {
         x: startPoint.x,
         y: startPoint.y,
         progress: 0,
-        speed: 0.002 + Math.random() * 0.002,
+        speed: 0.002 + Math.random() * 0.003, // Slightly faster speed
         color: i % 2 === 0 ? '#00B050' : '#7ED957',
-        size: 2 + Math.random() * 2
+        size: 3 + Math.random() * 3, // Slightly larger
+        rotation: Math.random() * Math.PI * 2 // Add rotation for cubes
       });
     }
     
@@ -109,8 +110,8 @@ const LogisticsAnimation: React.FC = () => {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
       ctx.fillRect(0, 0, rect.width, rect.height);
       
-      // Draw globe outline
-      ctx.strokeStyle = 'rgba(0, 176, 80, 0.15)';
+      // Draw globe outline with more vibrant color
+      ctx.strokeStyle = 'rgba(0, 176, 80, 0.25)'; // More vibrant
       ctx.lineWidth = 0.5;
       
       // Draw fewer longitude lines for cleaner look
@@ -139,13 +140,13 @@ const LogisticsAnimation: React.FC = () => {
         ctx.stroke();
       }
       
-      // Draw elegant glow around the globe
+      // Draw elegant glow around the globe - more vibrant
       const gradient = ctx.createRadialGradient(
         centerX, centerY, 0,
         centerX, centerY, globeRadius * 1.2
       );
-      gradient.addColorStop(0, 'rgba(0, 176, 80, 0.15)');
-      gradient.addColorStop(0.5, 'rgba(0, 176, 80, 0.05)');
+      gradient.addColorStop(0, 'rgba(0, 176, 80, 0.25)'); // More vibrant
+      gradient.addColorStop(0.5, 'rgba(0, 176, 80, 0.08)');
       gradient.addColorStop(1, 'rgba(0, 176, 80, 0)');
       
       ctx.fillStyle = gradient;
@@ -156,7 +157,7 @@ const LogisticsAnimation: React.FC = () => {
       // Update connection points
       connectionPoints.forEach((point, index) => {
         // Random activation of points
-        if (Math.random() > 0.998) {
+        if (Math.random() > 0.997) {
           point.active = !point.active;
         }
         
@@ -170,8 +171,8 @@ const LogisticsAnimation: React.FC = () => {
               ctx.beginPath();
               ctx.moveTo(point.x, point.y);
               ctx.lineTo(targetPoint.x, targetPoint.y);
-              ctx.strokeStyle = `rgba(0, 176, 80, ${(point.opacity + targetPoint.opacity) * 0.2})`;
-              ctx.lineWidth = 0.5;
+              ctx.strokeStyle = `rgba(0, 176, 80, ${(point.opacity + targetPoint.opacity) * 0.3})`; // More vibrant
+              ctx.lineWidth = 0.8; // Slightly thicker
               ctx.stroke();
             }
           });
@@ -181,15 +182,16 @@ const LogisticsAnimation: React.FC = () => {
         ctx.beginPath();
         ctx.arc(point.x, point.y, point.size, 0, Math.PI * 2);
         ctx.fillStyle = point.active 
-          ? `rgba(0, 176, 80, ${point.opacity})` 
-          : `rgba(0, 176, 80, ${point.opacity * 0.3})`;
+          ? `rgba(0, 176, 80, ${point.opacity * 1.2})` // More vibrant
+          : `rgba(0, 176, 80, ${point.opacity * 0.5})`;
         ctx.fill();
       });
       
-      // Update and draw packages
+      // Update and draw packages as cubes
       packages.forEach(pkg => {
         // Update position
         pkg.progress += pkg.speed;
+        pkg.rotation += 0.02; // Rotate the cube
         
         // Reset when reaching end point
         if (pkg.progress >= 1) {
@@ -221,16 +223,58 @@ const LogisticsAnimation: React.FC = () => {
         pkg.x = mt * mt * startPoint.x + 2 * mt * t * midX + t * t * endPoint.x;
         pkg.y = mt * mt * startPoint.y + 2 * mt * t * (midY - arcHeight * Math.sin(t * Math.PI)) + t * t * endPoint.y;
         
-        // Draw package/data packet
-        ctx.beginPath();
-        ctx.arc(pkg.x, pkg.y, pkg.size, 0, Math.PI * 2);
+        // Draw package as a cube
+        const cubeSize = pkg.size * 1.5;
+        
+        // Save context for rotation
+        ctx.save();
+        ctx.translate(pkg.x, pkg.y);
+        ctx.rotate(pkg.rotation);
+        
+        // Front face
         ctx.fillStyle = pkg.color;
+        ctx.fillRect(-cubeSize/2, -cubeSize/2, cubeSize, cubeSize);
+        
+        // Top face (with perspective)
+        ctx.beginPath();
+        ctx.moveTo(-cubeSize/2, -cubeSize/2);
+        ctx.lineTo(-cubeSize/2 + cubeSize/4, -cubeSize/2 - cubeSize/4);
+        ctx.lineTo(cubeSize/2 + cubeSize/4, -cubeSize/2 - cubeSize/4);
+        ctx.lineTo(cubeSize/2, -cubeSize/2);
+        ctx.closePath();
+        ctx.fillStyle = pkg.color.replace(')', ', 0.8)').replace('rgb', 'rgba');
         ctx.fill();
+        
+        // Right face (with perspective)
+        ctx.beginPath();
+        ctx.moveTo(cubeSize/2, -cubeSize/2);
+        ctx.lineTo(cubeSize/2 + cubeSize/4, -cubeSize/2 - cubeSize/4);
+        ctx.lineTo(cubeSize/2 + cubeSize/4, cubeSize/2 - cubeSize/4);
+        ctx.lineTo(cubeSize/2, cubeSize/2);
+        ctx.closePath();
+        ctx.fillStyle = pkg.color.replace(')', ', 0.6)').replace('rgb', 'rgba');
+        ctx.fill();
+        
+        // Draw outline
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.lineWidth = 0.5;
+        ctx.strokeRect(-cubeSize/2, -cubeSize/2, cubeSize, cubeSize);
+        
+        // Restore context
+        ctx.restore();
+        
+        // Add trail effect
+        if (Math.random() > 0.7) {
+          ctx.beginPath();
+          ctx.arc(pkg.x, pkg.y, 1, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(0, 176, 80, ${0.3 + Math.random() * 0.4})`;
+          ctx.fill();
+        }
       });
       
       // Draw elegant center glow
       const centerGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, globeRadius * 0.15);
-      centerGradient.addColorStop(0, 'rgba(0, 176, 80, 0.3)');
+      centerGradient.addColorStop(0, 'rgba(0, 176, 80, 0.4)'); // More vibrant
       centerGradient.addColorStop(1, 'rgba(0, 176, 80, 0)');
       
       ctx.beginPath();
@@ -238,8 +282,24 @@ const LogisticsAnimation: React.FC = () => {
       ctx.fillStyle = centerGradient;
       ctx.fill();
       
+      // Add more glowing particles
+      for (let i = 0; i < 5; i++) {
+        if (Math.random() > 0.95) {
+          const radius = Math.random() * globeRadius;
+          const angle = Math.random() * Math.PI * 2;
+          const x = centerX + Math.cos(angle) * radius;
+          const y = centerY + Math.sin(angle) * radius;
+          const size = 1 + Math.random() * 2;
+          
+          ctx.beginPath();
+          ctx.arc(x, y, size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(0, 230, 100, ${0.5 + Math.random() * 0.5})`;
+          ctx.fill();
+        }
+      }
+      
       // Draw stars for night-time effect
-      for (let i = 0; i < 50; i++) {
+      for (let i = 0; i < 70; i++) {
         if (Math.random() > 0.99) {
           const x = Math.random() * rect.width;
           const y = Math.random() * rect.height;
@@ -247,7 +307,7 @@ const LogisticsAnimation: React.FC = () => {
           
           ctx.beginPath();
           ctx.arc(x, y, size, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.2})`;
+          ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.3})`;
           ctx.fill();
         }
       }

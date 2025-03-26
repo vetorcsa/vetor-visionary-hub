@@ -43,7 +43,7 @@ const Index: React.FC = () => {
         </div>
       </section>
       
-      {/* Technology Sectors Section - Completely Redesigned */}
+      {/* Technology Sectors Section - Updated for more vivid animations */}
       <section className="py-24 bg-black">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-16">
@@ -57,16 +57,16 @@ const Index: React.FC = () => {
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            {/* Tecnologia Imobiliária - Completely Redesigned */}
-            <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group">
-              <div className="h-64 relative bg-black overflow-hidden">
+            {/* Tecnologia Imobiliária - Enhanced appearance */}
+            <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group relative">
+              <div className="h-72 relative bg-black overflow-hidden">
                 <RealEstateAnimation />
                 <div className="absolute top-6 left-6 z-10 bg-vetor-green/10 p-3 rounded-full">
                   <Building2 className="w-8 h-8 text-vetor-green" />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
               </div>
-              <div className="p-8">
+              <div className="relative z-10 p-8">
                 <h3 className="text-2xl font-bold text-vetor-green mb-4">Tecnologia Imobiliária</h3>
                 <p className="text-white/80 mb-6 text-lg">
                   Nossas soluções para o setor imobiliário automatizam processos, desde a captação de imóveis até o pós-venda, otimizando resultados e melhorando a experiência dos clientes.
@@ -77,16 +77,16 @@ const Index: React.FC = () => {
               </div>
             </div>
             
-            {/* Tecnologia Fiscal - Redesigned */}
-            <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group">
-              <div className="h-56 relative bg-black overflow-hidden">
+            {/* Tecnologia Fiscal - Enhanced appearance */}
+            <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group relative">
+              <div className="h-64 relative bg-black overflow-hidden">
                 <FiscalAnimation />
                 <div className="absolute top-6 left-6 z-10 bg-vetor-green/10 p-3 rounded-full">
                   <FileBarChart className="w-8 h-8 text-vetor-green" />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
               </div>
-              <div className="p-8">
+              <div className="relative z-10 p-8">
                 <h3 className="text-2xl font-bold text-vetor-green mb-4">Tecnologia Fiscal</h3>
                 <p className="text-white/80 mb-6 text-lg">
                   Sistemas inteligentes para gestão fiscal e tributária que garantem conformidade com a legislação, reduzem custos e otimizam a carga tributária da sua empresa.
@@ -104,16 +104,16 @@ const Index: React.FC = () => {
               </div>
             </div>
             
-            {/* Tecnologia em Logística */}
-            <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group">
-              <div className="h-56 relative bg-black overflow-hidden">
+            {/* Tecnologia em Logística - Enhanced appearance */}
+            <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group relative">
+              <div className="h-64 relative bg-black overflow-hidden">
                 <LogisticsAnimation />
                 <div className="absolute top-6 left-6 z-10 bg-vetor-green/10 p-3 rounded-full">
                   <Globe className="w-8 h-8 text-vetor-green" />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
               </div>
-              <div className="p-8">
+              <div className="relative z-10 p-8">
                 <h3 className="text-2xl font-bold text-vetor-green mb-4">Tecnologia em Logística</h3>
                 <p className="text-white/80 mb-6 text-lg">
                   Otimização de rotas, gestão de frotas e controle de entregas em tempo real para maximizar a eficiência logística e reduzir custos operacionais.
@@ -124,16 +124,16 @@ const Index: React.FC = () => {
               </div>
             </div>
             
-            {/* Soluções Tecnológicas */}
-            <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group">
-              <div className="h-56 relative bg-black overflow-hidden">
+            {/* Soluções Tecnológicas - Enhanced appearance */}
+            <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group relative">
+              <div className="h-64 relative bg-black overflow-hidden">
                 <CustomTechAnimation />
                 <div className="absolute top-6 left-6 z-10 bg-vetor-green/10 p-3 rounded-full">
                   <MonitorSmartphone className="w-8 h-8 text-vetor-green" />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
               </div>
-              <div className="p-8">
+              <div className="relative z-10 p-8">
                 <h3 className="text-2xl font-bold text-vetor-green mb-4">Soluções Tecnológicas</h3>
                 <p className="text-white/80 mb-6 text-lg">
                   Desenvolvimento de software personalizado, consultoria em TI, implementação de infraestrutura tecnológica para diversos setores e crie seu site.
