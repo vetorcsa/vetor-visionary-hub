@@ -3,11 +3,9 @@ import React from 'react';
 import { useAdmin } from '@/contexts/AdminContext';
 import Hero from '@/components/Home/Hero';
 import ServicesCard from '@/components/Home/ServicesCard';
-import SectorCard from '@/components/Home/SectorCard';
-import { ChevronRight, ArrowRight, Globe } from 'lucide-react';
+import { Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 
 const Index: React.FC = () => {
   const { services } = useAdmin();
@@ -41,76 +39,6 @@ const Index: React.FC = () => {
             {services.map((service) => (
               <ServicesCard key={service.id} serviceId={service.id} />
             ))}
-          </div>
-        </div>
-      </section>
-      
-      {/* Technology Sectors Section - Completely Redesigned */}
-      <section className="py-24 bg-black relative overflow-hidden">
-        {/* Background elements */}
-        <div className="absolute inset-0" style={{
-          backgroundImage: 'radial-gradient(rgba(0, 176, 80, 0.07) 1px, transparent 1px)',
-          backgroundSize: '30px 30px'
-        }}></div>
-        
-        <div className="container mx-auto px-4 md:px-6 relative z-10">
-          <div className="text-center mb-16">
-            <Badge className="bg-vetor-green/20 text-vetor-green hover:bg-vetor-green/30 mb-4">Setores</Badge>
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
-              Setores de Atuação
-            </h2>
-            <div className="w-16 h-1 bg-gradient-to-r from-vetor-green to-vetor-green/40 mx-auto mb-8 rounded-full"></div>
-            <p className="text-white/70 max-w-2xl mx-auto text-lg">
-              Nossa expertise em diferentes áreas garante soluções tecnológicas eficientes e personalizadas para o seu negócio.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            <SectorCard
-              title="Tecnologia Imobiliária"
-              description="Nossas soluções para o setor imobiliário automatizam processos, desde a captação de imóveis até o pós-venda, otimizando resultados e melhorando a experiência do cliente."
-              icon="building"
-              animationComponent="real-estate"
-              primaryAction={{
-                link: "/sobre",
-                text: "Saiba mais"
-              }}
-            />
-            
-            <SectorCard
-              title="Tecnologia Fiscal"
-              description="Sistemas inteligentes para gestão fiscal e tributária que garantem conformidade com a legislação, reduzem custos e maximizam o aproveitamento de créditos tributários."
-              icon="file-text"
-              animationComponent="fiscal"
-              primaryAction={{
-                link: "/recuperacao-tributaria",
-                text: "Recuperação Tributária",
-                variant: "default"
-              }}
-            />
-            
-            <SectorCard
-              title="Tecnologia em Logística"
-              description="Otimização de rotas, gestão de frotas e controle de entregas em tempo real para maximizar a eficiência logística e reduzir custos operacionais."
-              icon="globe"
-              animationComponent="logistics"
-              primaryAction={{
-                link: "/sobre",
-                text: "Saiba mais"
-              }}
-            />
-            
-            <SectorCard
-              title="Soluções Tecnológicas"
-              description="Desenvolvimento de software personalizado, consultoria em TI e implementação de infraestrutura tecnológica para impulsionar a transformação digital do seu negócio."
-              icon="monitor-smartphone"
-              animationComponent="custom-tech"
-              primaryAction={{
-                link: "/sobre",
-                text: "Saiba mais"
-              }}
-              hideButtons={true}
-            />
           </div>
         </div>
       </section>

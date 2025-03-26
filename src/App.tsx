@@ -14,6 +14,9 @@ import Navbar from "./components/Layout/Navbar";
 import Footer from "./components/Layout/Footer";
 import TaxRecovery from "./pages/TaxRecovery";
 import WebsiteBenefits from "./pages/WebsiteBenefits";
+import ErpSolutions from "./pages/ErpSolutions";
+import TransportationPlans from "./pages/TransportationPlans";
+import RealEstatePlans from "./pages/RealEstatePlans";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +37,9 @@ const App = () => (
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/recuperacao-tributaria" element={<TaxRecovery />} />
                 <Route path="/crie-seu-site" element={<WebsiteBenefits />} />
+                <Route path="/solucoes-erp" element={<ErpSolutions />} />
+                <Route path="/planos-transportadoras" element={<TransportationPlans />} />
+                <Route path="/planos-imobiliarias" element={<RealEstatePlans />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
