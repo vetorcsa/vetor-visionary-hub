@@ -1,42 +1,73 @@
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Cpu, ArrowRight, Code, Clock, BarChart, Bot, ExternalLink } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
-import { motion } from 'framer-motion';
+import BenefitCard from '@/components/ProcessAutomation/BenefitCard';
+import PricingCard from '@/components/ProcessAutomation/PricingCard';
 
 const ProcessAutomation: React.FC = () => {
-  const handleWhatsAppContact = (plan: string) => {
+  const handleWhatsAppContact = useCallback((plan: string) => {
     const message = encodeURIComponent(`Olá! Estou interessado no plano de ${plan} de automação de processos. Poderia me fornecer mais informações?`);
     window.open(`https://wa.me/+5500000000000?text=${message}`, '_blank');
-  };
+  }, []);
 
-  const handleDemoRequest = () => {
+  const handleDemoRequest = useCallback(() => {
     const message = encodeURIComponent("Quero ver automações na prática");
     window.open(`https://wa.me/+5500000000000?text=${message}`, '_blank');
-  };
+  }, []);
 
-  const containerAnimation = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
+  // Pre-define benefit cards content
+  const benefitCards = React.useMemo(() => [
+    {
+      icon: Clock,
+      title: "Economia de Tempo",
+      description: "Automatize tarefas repetitivas que consomem horas de trabalho manual, liberando sua equipe para atividades estratégicas."
+    },
+    {
+      icon: BarChart,
+      title: "Redução de Erros",
+      description: "Elimine erros humanos em processos críticos. Automações executam tarefas com precisão e consistência."
+    },
+    {
+      icon: Bot,
+      title: "Escalabilidade",
+      description: "Processe volumes maiores de dados e tarefas sem necessidade de aumento proporcional da equipe."
+    },
+    {
+      icon: Cpu,
+      title: "Integração Flexível",
+      description: "Conecte sistemas diferentes que não conversam entre si, unificando dados de múltiplas fontes."
+    },
+    {
+      icon: Code,
+      title: "Soluções Customizadas",
+      description: "Desenvolva automações específicas para seus processos únicos, sem depender de soluções genéricas."
+    },
+    {
+      icon: ExternalLink,
+      title: "ROI Rápido",
+      description: "Obtenha retorno sobre o investimento em poucos meses com a redução de custos operacionais e aumento de produtividade."
     }
-  };
+  ], []);
 
-  const itemAnimation = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5
-      }
-    }
-  };
+  // Pre-define pricing cards content
+  const basicPlanFeatures = React.useMemo(() => [
+    { text: "Automatização de uma tarefa repetitiva" },
+    { text: "Tratamento de dados simples" },
+    { text: "Geração de relatórios básicos" },
+    { text: "Documentação do projeto" },
+    { text: "30 dias de suporte" }
+  ], []);
+
+  const advancedPlanFeatures = React.useMemo(() => [
+    { text: "Automatização de fluxos complexos" },
+    { text: "Integração com múltiplos sistemas" },
+    { text: "Dashboard interativo de resultados" },
+    { text: "Interface personalizada" },
+    { text: "Treinamento para equipe" },
+    { text: "90 dias de suporte técnico" }
+  ], []);
 
   return (
     <div className="page-transition">
@@ -119,73 +150,16 @@ while True:
             </p>
           </div>
 
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            variants={containerAnimation}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <motion.div variants={itemAnimation} className="glass-card p-8 rounded-xl hover-card">
-              <div className="bg-vetor-green/10 p-4 rounded-lg inline-block mb-4">
-                <Clock className="h-8 w-8 text-vetor-green" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-4">Economia de Tempo</h3>
-              <p className="text-white/70">
-                Automatize tarefas repetitivas que consomem horas de trabalho manual, liberando sua equipe para atividades estratégicas.
-              </p>
-            </motion.div>
-
-            <motion.div variants={itemAnimation} className="glass-card p-8 rounded-xl hover-card">
-              <div className="bg-vetor-green/10 p-4 rounded-lg inline-block mb-4">
-                <BarChart className="h-8 w-8 text-vetor-green" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-4">Redução de Erros</h3>
-              <p className="text-white/70">
-                Elimine erros humanos em processos críticos. Automações executam tarefas com precisão e consistência.
-              </p>
-            </motion.div>
-
-            <motion.div variants={itemAnimation} className="glass-card p-8 rounded-xl hover-card">
-              <div className="bg-vetor-green/10 p-4 rounded-lg inline-block mb-4">
-                <Bot className="h-8 w-8 text-vetor-green" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-4">Escalabilidade</h3>
-              <p className="text-white/70">
-                Processe volumes maiores de dados e tarefas sem necessidade de aumento proporcional da equipe.
-              </p>
-            </motion.div>
-
-            <motion.div variants={itemAnimation} className="glass-card p-8 rounded-xl hover-card">
-              <div className="bg-vetor-green/10 p-4 rounded-lg inline-block mb-4">
-                <Cpu className="h-8 w-8 text-vetor-green" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-4">Integração Flexível</h3>
-              <p className="text-white/70">
-                Conecte sistemas diferentes que não conversam entre si, unificando dados de múltiplas fontes.
-              </p>
-            </motion.div>
-
-            <motion.div variants={itemAnimation} className="glass-card p-8 rounded-xl hover-card">
-              <div className="bg-vetor-green/10 p-4 rounded-lg inline-block mb-4">
-                <Code className="h-8 w-8 text-vetor-green" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-4">Soluções Customizadas</h3>
-              <p className="text-white/70">
-                Desenvolva automações específicas para seus processos únicos, sem depender de soluções genéricas.
-              </p>
-            </motion.div>
-
-            <motion.div variants={itemAnimation} className="glass-card p-8 rounded-xl hover-card">
-              <div className="bg-vetor-green/10 p-4 rounded-lg inline-block mb-4">
-                <ExternalLink className="h-8 w-8 text-vetor-green" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-4">ROI Rápido</h3>
-              <p className="text-white/70">
-                Obtenha retorno sobre o investimento em poucos meses com a redução de custos operacionais e aumento de produtividade.
-              </p>
-            </motion.div>
-          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {benefitCards.map((card, index) => (
+              <BenefitCard 
+                key={index}
+                icon={card.icon}
+                title={card.title}
+                description={card.description}
+              />
+            ))}
+          </div>
         </div>
       </section>
 
@@ -209,134 +183,20 @@ while True:
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto gap-8">
-            <Card variant="dark" className="relative overflow-hidden border-vetor-green/20 hover:border-vetor-green/50 transition-all duration-300">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-vetor-green/10 rounded-bl-full"></div>
-              <CardHeader>
-                <CardTitle variant="dark" className="text-2xl">Automação Básica</CardTitle>
-                <p className="text-3xl font-bold text-white mt-4">R$ 3.000<span className="text-lg text-white/60">/projeto</span></p>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <ul className="space-y-3">
-                  <li className="flex items-start">
-                    <div className="rounded-full bg-vetor-green/20 p-1 mr-3 mt-1">
-                      <svg className="h-3 w-3 text-vetor-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                    </div>
-                    <span className="text-white/80">Automatização de uma tarefa repetitiva</span>
-                  </li>
-                  <li className="flex items-start">
-                    <div className="rounded-full bg-vetor-green/20 p-1 mr-3 mt-1">
-                      <svg className="h-3 w-3 text-vetor-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                    </div>
-                    <span className="text-white/80">Tratamento de dados simples</span>
-                  </li>
-                  <li className="flex items-start">
-                    <div className="rounded-full bg-vetor-green/20 p-1 mr-3 mt-1">
-                      <svg className="h-3 w-3 text-vetor-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                    </div>
-                    <span className="text-white/80">Geração de relatórios básicos</span>
-                  </li>
-                  <li className="flex items-start">
-                    <div className="rounded-full bg-vetor-green/20 p-1 mr-3 mt-1">
-                      <svg className="h-3 w-3 text-vetor-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                    </div>
-                    <span className="text-white/80">Documentação do projeto</span>
-                  </li>
-                  <li className="flex items-start">
-                    <div className="rounded-full bg-vetor-green/20 p-1 mr-3 mt-1">
-                      <svg className="h-3 w-3 text-vetor-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                    </div>
-                    <span className="text-white/80">30 dias de suporte</span>
-                  </li>
-                </ul>
-              </CardContent>
-              <CardFooter>
-                <Button 
-                  onClick={() => handleWhatsAppContact('Básico')}
-                  className="w-full bg-gradient-to-r from-vetor-green to-vetor-darkgreen hover:from-vetor-darkgreen hover:to-vetor-green text-white"
-                >
-                  Contratar via WhatsApp
-                </Button>
-              </CardFooter>
-            </Card>
+            <PricingCard
+              title="Automação Básica"
+              price="3.000"
+              features={basicPlanFeatures}
+              onContact={() => handleWhatsAppContact('Básico')}
+            />
             
-            <Card variant="dark" className="relative overflow-hidden border-vetor-green/20 hover:border-vetor-green/50 transition-all duration-300">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-vetor-green/10 rounded-bl-full"></div>
-              <CardHeader>
-                <Badge className="bg-vetor-green/20 text-vetor-green hover:bg-vetor-green/30 mb-1 self-start">Recomendado</Badge>
-                <CardTitle variant="dark" className="text-2xl">Automação Avançada</CardTitle>
-                <p className="text-3xl font-bold text-white mt-4">R$ 10.000<span className="text-lg text-white/60">/projeto</span></p>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <ul className="space-y-3">
-                  <li className="flex items-start">
-                    <div className="rounded-full bg-vetor-green/20 p-1 mr-3 mt-1">
-                      <svg className="h-3 w-3 text-vetor-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                    </div>
-                    <span className="text-white/80">Automatização de fluxos complexos</span>
-                  </li>
-                  <li className="flex items-start">
-                    <div className="rounded-full bg-vetor-green/20 p-1 mr-3 mt-1">
-                      <svg className="h-3 w-3 text-vetor-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                    </div>
-                    <span className="text-white/80">Integração com múltiplos sistemas</span>
-                  </li>
-                  <li className="flex items-start">
-                    <div className="rounded-full bg-vetor-green/20 p-1 mr-3 mt-1">
-                      <svg className="h-3 w-3 text-vetor-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                    </div>
-                    <span className="text-white/80">Dashboard interativo de resultados</span>
-                  </li>
-                  <li className="flex items-start">
-                    <div className="rounded-full bg-vetor-green/20 p-1 mr-3 mt-1">
-                      <svg className="h-3 w-3 text-vetor-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                    </div>
-                    <span className="text-white/80">Interface personalizada</span>
-                  </li>
-                  <li className="flex items-start">
-                    <div className="rounded-full bg-vetor-green/20 p-1 mr-3 mt-1">
-                      <svg className="h-3 w-3 text-vetor-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                    </div>
-                    <span className="text-white/80">Treinamento para equipe</span>
-                  </li>
-                  <li className="flex items-start">
-                    <div className="rounded-full bg-vetor-green/20 p-1 mr-3 mt-1">
-                      <svg className="h-3 w-3 text-vetor-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                    </div>
-                    <span className="text-white/80">90 dias de suporte técnico</span>
-                  </li>
-                </ul>
-              </CardContent>
-              <CardFooter>
-                <Button 
-                  onClick={() => handleWhatsAppContact('Avançado')}
-                  className="w-full bg-gradient-to-r from-vetor-green to-vetor-darkgreen hover:from-vetor-darkgreen hover:to-vetor-green text-white"
-                >
-                  Contratar via WhatsApp
-                </Button>
-              </CardFooter>
-            </Card>
+            <PricingCard
+              title="Automação Avançada"
+              price="10.000"
+              features={advancedPlanFeatures}
+              recommended={true}
+              onContact={() => handleWhatsAppContact('Avançado')}
+            />
           </div>
         </div>
       </section>
@@ -344,4 +204,4 @@ while True:
   );
 };
 
-export default ProcessAutomation;
+export default React.memo(ProcessAutomation);
