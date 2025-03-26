@@ -1,6 +1,16 @@
-
 import React, { useEffect, useRef } from 'react';
 import { Building2 } from 'lucide-react';
+
+// Define proper TypeScript interfaces for our objects
+interface Building {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  pulseOffset: number;
+  pulseSpeed: number;
+  draw: (ctx: CanvasRenderingContext2D, pulse: number) => void;
+}
 
 const RealEstateAnimation: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -31,13 +41,15 @@ const RealEstateAnimation: React.FC = () => {
     const cityHorizon = rect.height * 0.55;
     
     // Create modern building designs with variety
-    const buildings = [];
+    const buildings: Building[] = [];
     const buildingCount = 12; // Fewer, more detailed buildings
     const buildingTypes = [
       // Modern skyscraper
-      (x, y, width, height) => {
+      (x: number, y: number, width: number, height: number): Building => {
         return {
           x, y, width, height,
+          pulseOffset: 0,
+          pulseSpeed: 0,
           draw: (ctx, pulse) => {
             // Building body
             ctx.fillStyle = `rgba(0, 176, 80, ${0.2 + pulse * 0.1})`;
@@ -94,9 +106,11 @@ const RealEstateAnimation: React.FC = () => {
       },
       
       // Modern residential building
-      (x, y, width, height) => {
+      (x: number, y: number, width: number, height: number): Building => {
         return {
           x, y, width, height,
+          pulseOffset: 0,
+          pulseSpeed: 0,
           draw: (ctx, pulse) => {
             // Building base
             ctx.fillStyle = `rgba(0, 176, 80, ${0.15 + pulse * 0.05})`;
@@ -183,9 +197,11 @@ const RealEstateAnimation: React.FC = () => {
       },
       
       // Luxury villa/house
-      (x, y, width, height) => {
+      (x: number, y: number, width: number, height: number): Building => {
         return {
           x, y, width, height,
+          pulseOffset: 0,
+          pulseSpeed: 0,
           draw: (ctx, pulse) => {
             const houseHeight = height * 0.6; // Smaller than skyscrapers
             
@@ -246,9 +262,11 @@ const RealEstateAnimation: React.FC = () => {
       },
       
       // Smart building with IoT visualization
-      (x, y, width, height) => {
+      (x: number, y: number, width: number, height: number): Building => {
         return {
           x, y, width, height,
+          pulseOffset: 0,
+          pulseSpeed: 0,
           draw: (ctx, pulse) => {
             // Building shape
             ctx.fillStyle = `rgba(0, 176, 80, ${0.15 + pulse * 0.08})`;
@@ -316,9 +334,11 @@ const RealEstateAnimation: React.FC = () => {
       },
       
       // Modern office tower
-      (x, y, width, height) => {
+      (x: number, y: number, width: number, height: number): Building => {
         return {
           x, y, width, height,
+          pulseOffset: 0,
+          pulseSpeed: 0,
           draw: (ctx, pulse) => {
             // Building body
             ctx.fillStyle = `rgba(0, 176, 80, ${0.2 + pulse * 0.05})`;
