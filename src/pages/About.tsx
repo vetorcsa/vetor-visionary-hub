@@ -1,8 +1,9 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ContactSection from '@/components/About/ContactSection';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Globe } from 'lucide-react';
+import { ArrowRight, Globe, Server, Database, Cpu } from 'lucide-react';
 
 const About: React.FC = () => {
   return (
@@ -161,6 +162,80 @@ const About: React.FC = () => {
         </div>
       </section>
       
+      {/* Our Solutions Section */}
+      <section className="py-20 bg-black relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-[30%] left-[15%] w-[25rem] h-[25rem] rounded-full bg-vetor-green/5 blur-3xl animate-pulse-slow"></div>
+          <div className="absolute bottom-[30%] right-[15%] w-[20rem] h-[20rem] rounded-full bg-vetor-green/3 blur-3xl animate-pulse-slow" style={{ animationDelay: '1.5s' }}></div>
+        </div>
+        
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+              Nossas Soluções
+            </h2>
+            <div className="w-16 h-1 bg-vetor-green mx-auto mb-8"></div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Website Development */}
+            <div className="glass-card p-8 rounded-xl border border-vetor-green/20 backdrop-blur-sm hover:border-vetor-green/40 transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,176,80,0.2)]">
+              <div className="w-16 h-16 bg-vetor-green/10 rounded-full flex items-center justify-center mb-6 mx-auto">
+                <Globe className="h-8 w-8 text-vetor-green" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4 text-center">Desenvolvimento de Sites</h3>
+              <p className="text-gray-400 text-center mb-6">
+                Sites modernos, responsivos e otimizados para SEO que destacam seu negócio no ambiente digital e melhoram sua presença online.
+              </p>
+              <div className="flex justify-center">
+                <Link to="/crie-seu-site">
+                  <Button className="bg-vetor-green hover:bg-vetor-darkgreen text-white flex items-center gap-2">
+                    <Globe className="w-4 h-4" />
+                    Crie seu site
+                  </Button>
+                </Link>
+              </div>
+            </div>
+            
+            {/* Automation */}
+            <div className="glass-card p-8 rounded-xl border border-vetor-green/20 backdrop-blur-sm hover:border-vetor-green/40 transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,176,80,0.2)]">
+              <div className="w-16 h-16 bg-vetor-green/10 rounded-full flex items-center justify-center mb-6 mx-auto">
+                <Cpu className="h-8 w-8 text-vetor-green" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4 text-center">Automação de Processos</h3>
+              <p className="text-gray-400 text-center mb-6">
+                Soluções de automação que reduzem tarefas manuais, aumentam a eficiência operacional e minimizam erros nos processos críticos da sua empresa.
+              </p>
+              <div className="flex justify-center">
+                <Link to="/contato">
+                  <Button className="bg-vetor-green hover:bg-vetor-darkgreen text-white">
+                    Saiba mais
+                  </Button>
+                </Link>
+              </div>
+            </div>
+            
+            {/* ERP Solutions */}
+            <div className="glass-card p-8 rounded-xl border border-vetor-green/20 backdrop-blur-sm hover:border-vetor-green/40 transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,176,80,0.2)]">
+              <div className="w-16 h-16 bg-vetor-green/10 rounded-full flex items-center justify-center mb-6 mx-auto">
+                <Database className="h-8 w-8 text-vetor-green" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4 text-center">Soluções ERP</h3>
+              <p className="text-gray-400 text-center mb-6">
+                Sistemas de gestão empresarial integrados que unificam dados, otimizam processos e fornecem informações em tempo real para tomada de decisões estratégicas.
+              </p>
+              <div className="flex justify-center">
+                <Link to="/contato">
+                  <Button className="bg-vetor-green hover:bg-vetor-darkgreen text-white">
+                    Saiba mais
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
       {/* Create Your Site CTA Section */}
       <section className="py-20 bg-black relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
@@ -185,6 +260,38 @@ const About: React.FC = () => {
                   <Button className="bg-vetor-green hover:bg-vetor-darkgreen text-white flex items-center gap-2 px-6 py-6 text-lg h-auto">
                     <Globe className="w-5 h-5" />
                     Crie seu site agora
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Tax Recovery CTA Section */}
+      <section className="py-20 bg-vetor-black relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-[20%] right-[10%] w-[30rem] h-[30rem] rounded-full bg-vetor-green/5 blur-3xl animate-pulse-slow"></div>
+          <div className="absolute bottom-[20%] left-[10%] w-[25rem] h-[25rem] rounded-full bg-vetor-green/3 blur-3xl animate-pulse-slow" style={{ animationDelay: '1.5s' }}></div>
+        </div>
+        
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <div className="max-w-4xl mx-auto glass-card p-10 rounded-2xl border border-vetor-green/20 backdrop-blur-sm shadow-lg">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="flex-1">
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                  Economia com Recuperação Tributária
+                </h2>
+                <p className="text-white/70 mb-6">
+                  Nossos especialistas identificam oportunidades para recuperar tributos pagos indevidamente e reduzir a carga tributária da sua empresa.
+                </p>
+              </div>
+              
+              <div>
+                <Link to="/recuperacao-tributaria">
+                  <Button className="bg-vetor-green hover:bg-vetor-darkgreen text-white flex items-center gap-2 px-6 py-6 text-lg h-auto">
+                    <Server className="w-5 h-5" />
+                    Recuperação Tributária
                   </Button>
                 </Link>
               </div>

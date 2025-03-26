@@ -71,7 +71,7 @@ const Index: React.FC = () => {
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            {/* Tecnologia Imobiliária - Reduced height, closer text to animation */}
+            {/* Tecnologia Imobiliária */}
             <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-[0_0_30px_rgba(0,176,80,0.2)] group relative h-[360px]">
               <div className="h-[180px] relative bg-black overflow-hidden">
                 <RealEstateAnimation />
@@ -86,12 +86,12 @@ const Index: React.FC = () => {
                   Nossas soluções para o setor imobiliário automatizam processos, desde a captação de imóveis até o pós-venda, otimizando resultados e melhorando a experiência dos clientes.
                 </p>
                 <Link to="/sobre" className="text-vetor-green hover:text-vetor-lightgreen flex items-center gap-2 font-medium group-hover:translate-x-2 transition-transform duration-300">
-                  Saiba mais <ChevronRight className="w-5 h-5" />
+                  <span className="text-vetor-green">Saiba mais</span> <ChevronRight className="w-5 h-5 text-vetor-green" />
                 </Link>
               </div>
             </div>
             
-            {/* Tecnologia Fiscal - Reduced height, consistent with other cards */}
+            {/* Tecnologia Fiscal */}
             <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-[0_0_30px_rgba(0,176,80,0.2)] group relative h-[360px]">
               <div className="h-[180px] relative bg-black overflow-hidden">
                 <FiscalAnimation />
@@ -106,9 +106,6 @@ const Index: React.FC = () => {
                   Sistemas inteligentes para gestão fiscal e tributária que garantem conformidade com a legislação, reduzem custos e otimizam a carga tributária da sua empresa.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
-                  <Link to="/sobre" className="text-vetor-green hover:text-vetor-lightgreen flex items-center gap-2 font-medium group-hover:translate-x-2 transition-transform duration-300">
-                    Saiba mais <ChevronRight className="w-5 h-5" />
-                  </Link>
                   <Link to="/recuperacao-tributaria">
                     <Button className="bg-vetor-green hover:bg-vetor-darkgreen text-white border-none">
                       Recuperação Tributária
@@ -118,7 +115,7 @@ const Index: React.FC = () => {
               </div>
             </div>
             
-            {/* Tecnologia em Logística - Consistent height */}
+            {/* Tecnologia em Logística */}
             <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-[0_0_30px_rgba(0,176,80,0.2)] group relative h-[360px]">
               <div className="h-[180px] relative bg-black overflow-hidden">
                 <LogisticsAnimation />
@@ -133,12 +130,12 @@ const Index: React.FC = () => {
                   Otimização de rotas, gestão de frotas e controle de entregas em tempo real para maximizar a eficiência logística e reduzir custos operacionais.
                 </p>
                 <Link to="/sobre" className="text-vetor-green hover:text-vetor-lightgreen flex items-center gap-2 font-medium group-hover:translate-x-2 transition-transform duration-300">
-                  Saiba mais <ChevronRight className="w-5 h-5" />
+                  <span className="text-vetor-green">Saiba mais</span> <ChevronRight className="w-5 h-5 text-vetor-green" />
                 </Link>
               </div>
             </div>
             
-            {/* Soluções Tecnológicas - Consistent height */}
+            {/* Soluções Tecnológicas */}
             <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-[0_0_30px_rgba(0,176,80,0.2)] group relative h-[360px]">
               <div className="h-[180px] relative bg-black overflow-hidden">
                 <CustomTechAnimation />
@@ -154,7 +151,7 @@ const Index: React.FC = () => {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
                   <Link to="/sobre" className="text-vetor-green hover:text-vetor-lightgreen flex items-center gap-2 font-medium group-hover:translate-x-2 transition-transform duration-300">
-                    Saiba mais <ChevronRight className="w-5 h-5" />
+                    <span className="text-vetor-green">Saiba mais</span> <ChevronRight className="w-5 h-5 text-vetor-green" />
                   </Link>
                   <Link to="/crie-seu-site">
                     <Button className="bg-vetor-green hover:bg-vetor-darkgreen text-white border-none">
