@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Building2, Truck, ArrowRight } from 'lucide-react';
+import { Building2, Truck, ArrowRight, CheckCircle, Zap, BarChart3, Globe } from 'lucide-react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -22,6 +22,110 @@ const ErpSolutions: React.FC = () => {
           <p className="text-white/70 max-w-2xl mx-auto text-lg">
             Nossas soluções ERP personalizadas para diferentes setores otimizam processos e aumentam a produtividade do seu negócio.
           </p>
+        </div>
+
+        {/* Highlighted Features */}
+        <div className="max-w-5xl mx-auto mb-20">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-black/40 border border-vetor-green/20 p-8 rounded-lg backdrop-blur-sm text-center">
+              <Zap className="w-12 h-12 text-vetor-green mx-auto mb-4" />
+              <h3 className="text-vetor-green text-xl font-semibold mb-3">Aumento de Produtividade</h3>
+              <p className="text-white/70">
+                Automatize processos manuais e reduza erros, liberando sua equipe para tarefas estratégicas.
+              </p>
+            </div>
+            
+            <div className="bg-black/40 border border-vetor-green/20 p-8 rounded-lg backdrop-blur-sm text-center">
+              <BarChart3 className="w-12 h-12 text-vetor-green mx-auto mb-4" />
+              <h3 className="text-vetor-green text-xl font-semibold mb-3">Dados em Tempo Real</h3>
+              <p className="text-white/70">
+                Tome decisões baseadas em dados atualizados e relatórios personalizados para seu negócio.
+              </p>
+            </div>
+            
+            <div className="bg-black/40 border border-vetor-green/20 p-8 rounded-lg backdrop-blur-sm text-center">
+              <Globe className="w-12 h-12 text-vetor-green mx-auto mb-4" />
+              <h3 className="text-vetor-green text-xl font-semibold mb-3">Acesso Remoto</h3>
+              <p className="text-white/70">
+                Gerencie seu negócio de qualquer lugar com acesso seguro via web e aplicativo móvel.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Automations Section */}
+        <div className="max-w-6xl mx-auto mb-20">
+          <div className="text-center mb-12">
+            <Badge className="bg-vetor-green/20 text-vetor-green hover:bg-vetor-green/30 mb-4">
+              Automações Inteligentes
+            </Badge>
+            <h2 className="text-2xl md:text-4xl font-bold text-white mb-6 leading-tight">
+              ERP + Automação Python
+            </h2>
+            <p className="text-white/70 max-w-2xl mx-auto text-lg">
+              Potencialize seu sistema ERP com automações personalizadas em Python, integrando todas as suas operações.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <div className="bg-black/40 border border-vetor-green/20 rounded-lg p-8">
+              <h3 className="text-vetor-green text-2xl font-semibold mb-4">Automatizações Exclusivas</h3>
+              <ul className="space-y-4">
+                <li className="flex items-start">
+                  <CheckCircle className="w-6 h-6 text-vetor-green mr-3 flex-shrink-0 mt-0.5" />
+                  <span className="text-white/80">Integração com sistemas fiscais e contábeis</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="w-6 h-6 text-vetor-green mr-3 flex-shrink-0 mt-0.5" />
+                  <span className="text-white/80">Geração automática de relatórios e documentos</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="w-6 h-6 text-vetor-green mr-3 flex-shrink-0 mt-0.5" />
+                  <span className="text-white/80">Sincronização com plataformas de e-commerce</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="w-6 h-6 text-vetor-green mr-3 flex-shrink-0 mt-0.5" />
+                  <span className="text-white/80">Processamento de dados em lote durante a noite</span>
+                </li>
+              </ul>
+              <div className="mt-6">
+                <Link to="/automacoes-processos">
+                  <Button className="bg-vetor-green hover:bg-vetor-darkgreen text-white border-none flex items-center gap-2">
+                    Conheça nossas automações <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </Link>
+              </div>
+            </div>
+            
+            <div className="bg-black/40 border border-vetor-green/20 rounded-lg p-8">
+              <h3 className="text-vetor-green text-2xl font-semibold mb-4">Benefícios da Integração</h3>
+              <ul className="space-y-4">
+                <li className="flex items-start">
+                  <CheckCircle className="w-6 h-6 text-vetor-green mr-3 flex-shrink-0 mt-0.5" />
+                  <span className="text-white/80">Redução de até 70% em tarefas manuais repetitivas</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="w-6 h-6 text-vetor-green mr-3 flex-shrink-0 mt-0.5" />
+                  <span className="text-white/80">Eliminação de erros humanos em processos críticos</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="w-6 h-6 text-vetor-green mr-3 flex-shrink-0 mt-0.5" />
+                  <span className="text-white/80">Integração com sistemas legados e APIs externas</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="w-6 h-6 text-vetor-green mr-3 flex-shrink-0 mt-0.5" />
+                  <span className="text-white/80">Processamento inteligente de documentos e dados</span>
+                </li>
+              </ul>
+              <div className="mt-6">
+                <Link to="/crie-seu-site">
+                  <Button className="bg-vetor-green hover:bg-vetor-darkgreen text-white border-none flex items-center gap-2">
+                    Crie seu site integrado <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* ERP Solutions */}

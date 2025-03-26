@@ -3,7 +3,7 @@ import React from 'react';
 import { useAdmin } from '@/contexts/AdminContext';
 import Hero from '@/components/Home/Hero';
 import ServicesCard from '@/components/Home/ServicesCard';
-import { Globe } from 'lucide-react';
+import { Globe, Laptop, Database, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 
@@ -43,7 +43,75 @@ const Index: React.FC = () => {
         </div>
       </section>
       
-      {/* CTA Section */}
+      {/* ERP Products Section */}
+      <section className="py-32 bg-gradient-to-b from-black to-vetor-black relative overflow-hidden">
+        {/* Enhanced background elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-[10%] right-[10%] w-[40%] h-[40%] rounded-full bg-vetor-green/5 blur-3xl"></div>
+          <div className="absolute bottom-[10%] left-[10%] w-[30%] h-[30%] rounded-full bg-vetor-green/5 blur-3xl"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <div className="max-w-3xl mx-auto glass-card p-12 rounded-2xl border border-vetor-green/20 backdrop-blur-sm bg-black/40 shadow-lg">
+            <Badge className="bg-vetor-green/20 text-vetor-green hover:bg-vetor-green/30 mb-6">Sistemas ERP</Badge>
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-8 leading-tight">
+              Sistemas ERP Personalizados
+            </h2>
+            <p className="text-white/80 mb-10 text-xl">
+              Otimize seus processos de negócio com sistemas ERP personalizados para imobiliárias e transportadoras.
+            </p>
+            <div className="flex flex-wrap gap-4 justify-center">
+              <Link 
+                to="/solucoes-erp" 
+                className="inline-flex items-center gap-3 bg-gradient-to-r from-vetor-green to-vetor-darkgreen hover:from-vetor-darkgreen hover:to-vetor-green text-white px-8 py-4 rounded-lg font-medium text-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-lg"
+              >
+                Ver produtos ERP <Database className="w-5 h-5" />
+              </Link>
+            </div>
+          </div>
+        </div>
+        
+        {/* Background decorative elements */}
+        <div className="absolute -bottom-10 -left-10 w-40 h-40 border border-vetor-green/10 rounded-full"></div>
+        <div className="absolute top-20 -right-20 w-60 h-60 border border-vetor-green/5 rounded-full"></div>
+        <div className="absolute bottom-40 right-10 w-20 h-20 border border-vetor-green/20 rounded-full"></div>
+      </section>
+      
+      {/* Website Creation Section */}
+      <section className="py-32 bg-gradient-to-b from-black to-vetor-black relative overflow-hidden">
+        {/* Enhanced background elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-[15%] left-[10%] w-[40%] h-[40%] rounded-full bg-vetor-green/5 blur-3xl"></div>
+          <div className="absolute bottom-[15%] right-[10%] w-[30%] h-[30%] rounded-full bg-vetor-green/5 blur-3xl"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <div className="max-w-3xl mx-auto glass-card p-12 rounded-2xl border border-vetor-green/20 backdrop-blur-sm bg-black/40 shadow-lg">
+            <Badge className="bg-vetor-green/20 text-vetor-green hover:bg-vetor-green/30 mb-6">Websites</Badge>
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-8 leading-tight">
+              Crie seu site profissional
+            </h2>
+            <p className="text-white/80 mb-10 text-xl">
+              Desenvolva sua presença online com um site moderno, responsivo e otimizado para buscadores.
+            </p>
+            <div className="flex flex-wrap gap-4 justify-center">
+              <Link 
+                to="/crie-seu-site" 
+                className="inline-flex items-center gap-3 bg-gradient-to-r from-vetor-green to-vetor-darkgreen hover:from-vetor-darkgreen hover:to-vetor-green text-white px-8 py-4 rounded-lg font-medium text-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-lg"
+              >
+                Criar meu site <Laptop className="w-5 h-5" />
+              </Link>
+            </div>
+          </div>
+        </div>
+        
+        {/* Background decorative elements */}
+        <div className="absolute -bottom-10 -right-10 w-40 h-40 border border-vetor-green/10 rounded-full"></div>
+        <div className="absolute top-20 -left-20 w-60 h-60 border border-vetor-green/5 rounded-full"></div>
+        <div className="absolute bottom-40 left-10 w-20 h-20 border border-vetor-green/20 rounded-full"></div>
+      </section>
+      
+      {/* Python Automation Section */}
       <section className="py-32 bg-gradient-to-b from-black to-vetor-black relative overflow-hidden">
         {/* Enhanced background elements */}
         <div className="absolute inset-0 overflow-hidden">
