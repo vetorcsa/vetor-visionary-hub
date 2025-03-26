@@ -53,19 +53,19 @@ const Index: React.FC = () => {
         
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <div className="max-w-3xl mx-auto glass-card p-12 rounded-2xl border border-vetor-green/20 backdrop-blur-sm bg-black/40 shadow-lg">
-            <Badge className="bg-vetor-green/20 text-vetor-green hover:bg-vetor-green/30 mb-6">Crie seu Site</Badge>
+            <Badge className="bg-vetor-green/20 text-vetor-green hover:bg-vetor-green/30 mb-6">Automação</Badge>
             <h2 className="text-3xl md:text-5xl font-bold text-white mb-8 leading-tight">
-              Vamos transformar seu negócio com tecnologia?
+              Automatize processos com Python
             </h2>
             <p className="text-white/80 mb-10 text-xl">
-              Tenha um site profissional para destacar seu negócio no ambiente digital e melhorar sua presença online.
+              Transforme tarefas repetitivas em processos automatizados e eficientes, aumentando a produtividade da sua empresa.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link 
-                to="/crie-seu-site" 
+                to="/automacoes-processos" 
                 className="inline-flex items-center gap-3 bg-gradient-to-r from-vetor-green to-vetor-darkgreen hover:from-vetor-darkgreen hover:to-vetor-green text-white px-8 py-4 rounded-lg font-medium text-lg transition-all duration-300 hover:translate-y-[-2px] hover:shadow-lg"
               >
-                Crie seu site <Globe className="w-5 h-5" />
+                Ver automações <Globe className="w-5 h-5" />
               </Link>
             </div>
           </div>

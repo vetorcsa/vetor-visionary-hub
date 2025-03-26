@@ -17,6 +17,7 @@ import WebsiteBenefits from "./pages/WebsiteBenefits";
 import ErpSolutions from "./pages/ErpSolutions";
 import TransportationPlans from "./pages/TransportationPlans";
 import RealEstatePlans from "./pages/RealEstatePlans";
+import ProcessAutomation from "./pages/ProcessAutomation";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +41,7 @@ const App = () => (
                 <Route path="/solucoes-erp" element={<ErpSolutions />} />
                 <Route path="/planos-transportadoras" element={<TransportationPlans />} />
                 <Route path="/planos-imobiliarias" element={<RealEstatePlans />} />
+                <Route path="/automacoes-processos" element={<ProcessAutomation />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
