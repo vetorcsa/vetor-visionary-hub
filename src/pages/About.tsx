@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
 import ContactSection from '@/components/About/ContactSection';
@@ -7,8 +6,6 @@ import { Building, UserCheck, Lightbulb, Code, LineChart, ChevronRight, Database
 import { motion } from 'framer-motion';
 
 const About: React.FC = () => {
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-
   return (
     <div className="page-transition">
       {/* Hero Section */}
@@ -43,32 +40,11 @@ const About: React.FC = () => {
             <div className="lg:w-1/2 relative">
               <div className="relative rounded-xl overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-tr from-vetor-green/20 via-vetor-green/10 to-transparent opacity-70 z-10 pointer-events-none"></div>
-                
-                {isVideoPlaying ? (
-                  <iframe 
-                    className="w-full aspect-video rounded-xl"
-                    src="https://www.youtube.com/embed/your-video-id?autoplay=1" 
-                    title="Vetor Tecnologia" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowFullScreen
-                  ></iframe>
-                ) : (
-                  <div className="relative">
-                    <img 
-                      src="https://placehold.co/800x450/001400/00B050/png?text=Vetor+Tecnologia&font=montserrat" 
-                      alt="Vetor Tecnologia" 
-                      className="w-full rounded-xl"
-                    />
-                    <button 
-                      onClick={() => setIsVideoPlaying(true)} 
-                      className="absolute inset-0 flex items-center justify-center z-20"
-                    >
-                      <div className="w-20 h-20 bg-vetor-green rounded-full flex items-center justify-center">
-                        <div className="w-0 h-0 border-y-[10px] border-y-transparent border-l-[18px] border-l-white ml-2"></div>
-                      </div>
-                    </button>
-                  </div>
-                )}
+                <img 
+                  src="https://placehold.co/800x450/001400/00B050/png?text=Vetor+Tecnologia&font=montserrat" 
+                  alt="Vetor Tecnologia" 
+                  className="w-full rounded-xl"
+                />
               </div>
             </div>
           </div>

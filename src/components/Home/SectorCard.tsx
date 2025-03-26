@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Building2, FileBarChart, Globe, MonitorSmartphone, ArrowRight } from 'lucide-react';
@@ -67,6 +66,21 @@ const SectorCard: React.FC<SectorCardProps> = ({
     }
   };
 
+  const getSectorLink = (link: string, animationType: string): string => {
+    if (link !== "#") return link;
+    
+    switch (animationType) {
+      case 'real-estate':
+        return "/planos-imobiliarias";
+      case 'fiscal':
+        return "/recuperacao-tributaria";
+      case 'logistics':
+        return "/planos-transportadoras";
+      default:
+        return link;
+    }
+  };
+
   return (
     <Card variant="dark" className="h-full overflow-hidden transition-all duration-500 hover:shadow-[0_0_30px_rgba(0,176,80,0.2)] group">
       <div className="relative h-56 overflow-hidden">
@@ -92,13 +106,13 @@ const SectorCard: React.FC<SectorCardProps> = ({
       {!hideButtons && (
         <CardFooter className="flex flex-wrap gap-3 pt-2 justify-center">
           {primaryAction.variant === 'default' ? (
-            <Link to={primaryAction.link} className="w-full">
+            <Link to={getSectorLink(primaryAction.link, animationComponent)} className="w-full">
               <Button className="bg-vetor-green hover:bg-vetor-darkgreen text-white border-none flex items-center gap-2 w-full justify-center">
                 {primaryAction.text} <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
           ) : (
-            <Link to={primaryAction.link} className="inline-flex items-center gap-2 text-vetor-green hover:text-white bg-vetor-green/10 hover:bg-vetor-green transition-colors px-4 py-2 rounded-md w-full justify-center">
+            <Link to={getSectorLink(primaryAction.link, animationComponent)} className="inline-flex items-center gap-2 text-vetor-green hover:text-white bg-vetor-green/10 hover:bg-vetor-green transition-colors px-4 py-2 rounded-md w-full justify-center">
               <span>{primaryAction.text}</span> <ArrowRight className="w-4 h-4" />
             </Link>
           )}
