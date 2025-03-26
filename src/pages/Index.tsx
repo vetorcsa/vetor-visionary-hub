@@ -45,11 +45,11 @@ const Index: React.FC = () => {
         </div>
       </section>
       
-      {/* Technology Sectors Section - Improved card design */}
+      {/* Technology Sectors Section - Completely Redesigned */}
       <section className="py-24 bg-black relative overflow-hidden">
-        {/* Subtle grid background */}
+        {/* Background elements */}
         <div className="absolute inset-0" style={{
-          backgroundImage: 'radial-gradient(rgba(0, 176, 80, 0.05) 1px, transparent 1px)',
+          backgroundImage: 'radial-gradient(rgba(0, 176, 80, 0.07) 1px, transparent 1px)',
           backgroundSize: '30px 30px'
         }}></div>
         
@@ -65,43 +65,51 @@ const Index: React.FC = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             <SectorCard
               title="Tecnologia Imobiliária"
-              description="Nossas soluções para o setor imobiliário automatizam processos, desde a captação de imóveis até o pós-venda, otimizando resultados."
+              description="Nossas soluções para o setor imobiliário automatizam processos, desde a captação de imóveis até o pós-venda, otimizando resultados e melhorando a experiência do cliente."
               icon="building"
               animationComponent="real-estate"
-              actionLink="/sobre"
-              actionText="Saiba mais"
+              primaryAction={{
+                link: "/sobre",
+                text: "Saiba mais"
+              }}
             />
             
             <SectorCard
               title="Tecnologia Fiscal"
-              description="Sistemas inteligentes para gestão fiscal e tributária que garantem conformidade com a legislação, reduzem custos."
+              description="Sistemas inteligentes para gestão fiscal e tributária que garantem conformidade com a legislação, reduzem custos e maximizam o aproveitamento de créditos tributários."
               icon="file-text"
               animationComponent="fiscal"
-              actionLink="/recuperacao-tributaria"
-              actionText="Recuperação Tributária"
-              buttonVariant="default"
+              primaryAction={{
+                link: "/recuperacao-tributaria",
+                text: "Recuperação Tributária",
+                variant: "default"
+              }}
             />
             
             <SectorCard
               title="Tecnologia em Logística"
-              description="Otimização de rotas, gestão de frotas e controle de entregas em tempo real para maximizar a eficiência logística."
+              description="Otimização de rotas, gestão de frotas e controle de entregas em tempo real para maximizar a eficiência logística e reduzir custos operacionais."
               icon="globe"
               animationComponent="logistics"
-              actionLink="/sobre"
-              actionText="Saiba mais"
+              primaryAction={{
+                link: "/sobre",
+                text: "Saiba mais"
+              }}
             />
             
             <SectorCard
               title="Soluções Tecnológicas"
-              description="Desenvolvimento de software personalizado, consultoria em TI, implementação de infraestrutura tecnológica."
+              description="Desenvolvimento de software personalizado, consultoria em TI e implementação de infraestrutura tecnológica para impulsionar a transformação digital do seu negócio."
               icon="monitor-smartphone"
               animationComponent="custom-tech"
-              actionLink="/crie-seu-site"
-              actionText="Crie seu site"
-              buttonVariant="default"
+              primaryAction={{
+                link: "/crie-seu-site",
+                text: "Crie seu site",
+                variant: "default"
+              }}
               secondaryAction={{
                 link: "/sobre",
                 text: "Saiba mais"

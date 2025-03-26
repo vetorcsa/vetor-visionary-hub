@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Building2, FileBarChart, Globe, MonitorSmartphone, ChevronRight } from 'lucide-react';
+import { Building2, FileBarChart, Globe, MonitorSmartphone, ArrowRight } from 'lucide-react';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { 
   RealEstateAnimation, 
@@ -10,20 +11,20 @@ import {
   CustomTechAnimation 
 } from './SectorAnimations';
 
-interface SecondaryActionProps {
-  link: string;
-  text: string;
-}
-
 interface SectorCardProps {
   title: string;
   description: string;
   icon: 'building' | 'file-text' | 'globe' | 'monitor-smartphone';
   animationComponent: 'real-estate' | 'fiscal' | 'logistics' | 'custom-tech';
-  actionLink: string;
-  actionText: string;
-  buttonVariant?: 'default' | 'outline' | 'ghost' | 'link';
-  secondaryAction?: SecondaryActionProps;
+  primaryAction: {
+    link: string;
+    text: string;
+    variant?: 'default' | 'outline' | 'ghost' | 'link';
+  };
+  secondaryAction?: {
+    link: string;
+    text: string;
+  };
 }
 
 const SectorCard: React.FC<SectorCardProps> = ({
@@ -31,21 +32,19 @@ const SectorCard: React.FC<SectorCardProps> = ({
   description,
   icon,
   animationComponent,
-  actionLink,
-  actionText,
-  buttonVariant = 'ghost',
+  primaryAction,
   secondaryAction
 }) => {
   const renderIcon = () => {
     switch (icon) {
       case 'building':
-        return <Building2 className="w-8 h-8 text-vetor-green" />;
+        return <Building2 className="w-10 h-10 text-vetor-green" />;
       case 'file-text':
-        return <FileBarChart className="w-8 h-8 text-vetor-green" />;
+        return <FileBarChart className="w-10 h-10 text-vetor-green" />;
       case 'globe':
-        return <Globe className="w-8 h-8 text-vetor-green" />;
+        return <Globe className="w-10 h-10 text-vetor-green" />;
       case 'monitor-smartphone':
-        return <MonitorSmartphone className="w-8 h-8 text-vetor-green" />;
+        return <MonitorSmartphone className="w-10 h-10 text-vetor-green" />;
       default:
         return null;
     }
@@ -67,42 +66,47 @@ const SectorCard: React.FC<SectorCardProps> = ({
   };
 
   return (
-    <div className="rounded-xl overflow-hidden bg-black shadow-lg border border-vetor-green/20 transition-all duration-500 hover:border-vetor-green/40 hover:shadow-[0_0_20px_rgba(0,176,80,0.15)] group h-[400px] relative">
-      <div className="h-[200px] bg-black relative overflow-hidden">
-        {renderAnimation()}
-        <div className="absolute top-6 left-6 z-10 bg-vetor-green/10 p-3 rounded-full">
+    <Card variant="dark" className="h-full overflow-hidden transition-all duration-500 hover:shadow-[0_0_30px_rgba(0,176,80,0.2)] group">
+      <div className="relative h-56 overflow-hidden">
+        <div className="absolute inset-0">
+          {renderAnimation()}
+        </div>
+        <div className="absolute top-6 left-6 z-10 bg-black/50 p-4 rounded-full backdrop-blur-sm border border-vetor-green/30">
           {renderIcon()}
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent"></div>
       </div>
       
-      <div className="p-8 relative z-10 flex flex-col h-[200px]">
-        <h3 className="text-2xl font-bold text-vetor-green mb-4">{title}</h3>
-        <p className="text-white/80 mb-6 flex-grow">
-          {description}
-        </p>
+      <CardHeader className="pb-2">
+        <CardTitle variant="dark" className="text-2xl">
+          {title}
+        </CardTitle>
+      </CardHeader>
+      
+      <CardContent className="text-white/80">
+        <p className="mb-4 text-base">{description}</p>
+      </CardContent>
+      
+      <CardFooter className="flex flex-wrap gap-3 pt-2">
+        {primaryAction.variant === 'default' ? (
+          <Link to={primaryAction.link}>
+            <Button className="bg-vetor-green hover:bg-vetor-darkgreen text-white border-none flex items-center gap-2">
+              {primaryAction.text} <ArrowRight className="w-4 h-4" />
+            </Button>
+          </Link>
+        ) : (
+          <Link to={primaryAction.link} className="inline-flex items-center gap-2 text-vetor-green hover:text-white bg-vetor-green/10 hover:bg-vetor-green transition-colors px-4 py-2 rounded-md">
+            <span>{primaryAction.text}</span> <ArrowRight className="w-4 h-4" />
+          </Link>
+        )}
         
-        <div className="flex flex-wrap gap-3 mt-auto">
-          {buttonVariant === 'default' ? (
-            <Link to={actionLink}>
-              <Button className="bg-vetor-green hover:bg-vetor-darkgreen text-white border-none">
-                {actionText}
-              </Button>
-            </Link>
-          ) : (
-            <Link to={actionLink} className="inline-flex items-center gap-2 text-vetor-green hover:text-white bg-vetor-green/10 hover:bg-vetor-green transition-colors px-4 py-2 rounded-md">
-              <span>{actionText}</span> <ChevronRight className="w-5 h-5" />
-            </Link>
-          )}
-          
-          {secondaryAction && (
-            <Link to={secondaryAction.link} className="inline-flex items-center gap-2 text-vetor-green hover:text-white bg-vetor-green/10 hover:bg-vetor-green transition-colors px-4 py-2 rounded-md">
-              <span>{secondaryAction.text}</span> <ChevronRight className="w-5 h-5" />
-            </Link>
-          )}
-        </div>
-      </div>
-    </div>
+        {secondaryAction && (
+          <Link to={secondaryAction.link} className="inline-flex items-center gap-2 text-vetor-green hover:text-white bg-vetor-green/10 hover:bg-vetor-green transition-colors px-4 py-2 rounded-md">
+            <span>{secondaryAction.text}</span> <ArrowRight className="w-4 h-4" />
+          </Link>
+        )}
+      </CardFooter>
+    </Card>
   );
 };
 
