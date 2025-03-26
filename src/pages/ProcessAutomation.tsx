@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Cpu, ArrowRight, Code, Clock, BarChart, Bot, ExternalLink } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -212,7 +213,7 @@ while True:
               <div className="absolute top-0 right-0 w-32 h-32 bg-vetor-green/10 rounded-bl-full"></div>
               <CardHeader>
                 <CardTitle variant="dark" className="text-2xl">Automação Básica</CardTitle>
-                <p className="text-3xl font-bold text-white mt-4">R$ 2.000<span className="text-lg text-white/60">/projeto</span></p>
+                <p className="text-3xl font-bold text-white mt-4">R$ 3.000<span className="text-lg text-white/60">/projeto</span></p>
               </CardHeader>
               <CardContent className="space-y-4">
                 <ul className="space-y-3">
@@ -273,7 +274,7 @@ while True:
               <CardHeader>
                 <Badge className="bg-vetor-green/20 text-vetor-green hover:bg-vetor-green/30 mb-1 self-start">Recomendado</Badge>
                 <CardTitle variant="dark" className="text-2xl">Automação Avançada</CardTitle>
-                <p className="text-3xl font-bold text-white mt-4">R$ 5.000<span className="text-lg text-white/60">/projeto</span></p>
+                <p className="text-3xl font-bold text-white mt-4">R$ 10.000<span className="text-lg text-white/60">/projeto</span></p>
               </CardHeader>
               <CardContent className="space-y-4">
                 <ul className="space-y-3">

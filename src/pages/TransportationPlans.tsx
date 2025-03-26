@@ -84,7 +84,7 @@ const TransportationPlans: React.FC = () => {
               <ul className="space-y-4">
                 <li className="flex items-start">
                   <span className="text-vetor-green mr-2">✓</span>
-                  <span className="text-white/80">Até 30 veículos</span>
+                  <span className="text-white/80">Até 30 embarcadores</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-vetor-green mr-2">✓</span>
@@ -124,7 +124,7 @@ const TransportationPlans: React.FC = () => {
               <ul className="space-y-4">
                 <li className="flex items-start">
                   <span className="text-vetor-green mr-2">✓</span>
-                  <span className="text-white/80">Veículos ilimitados</span>
+                  <span className="text-white/80">Embarcadores ilimitados</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-vetor-green mr-2">✓</span>
