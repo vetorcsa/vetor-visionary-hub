@@ -37,7 +37,7 @@ const TransportationPlans: React.FC = () => {
             <div className="p-6 border-b border-vetor-green/20">
               <h3 className="text-xl font-semibold text-white">Plano Básico</h3>
               <div className="mt-4 flex items-baseline">
-                <span className="text-4xl font-extrabold text-white">R$299</span>
+                <span className="text-4xl font-extrabold text-white">R$500</span>
                 <span className="ml-1 text-xl text-white/70">/mês</span>
               </div>
             </div>
@@ -45,7 +45,7 @@ const TransportationPlans: React.FC = () => {
               <ul className="space-y-4">
                 <li className="flex items-start">
                   <span className="text-vetor-green mr-2">✓</span>
-                  <span className="text-white/80">Até 10 veículos</span>
+                  <span className="text-white/80">Até 10 embarcadores</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-vetor-green mr-2">✓</span>
@@ -76,7 +76,7 @@ const TransportationPlans: React.FC = () => {
             <div className="p-6 border-b border-vetor-green/20">
               <h3 className="text-xl font-semibold text-white">Plano Intermediário</h3>
               <div className="mt-4 flex items-baseline">
-                <span className="text-4xl font-extrabold text-white">R$599</span>
+                <span className="text-4xl font-extrabold text-white">R$900</span>
                 <span className="ml-1 text-xl text-white/70">/mês</span>
               </div>
             </div>
@@ -116,7 +116,7 @@ const TransportationPlans: React.FC = () => {
             <div className="p-6 border-b border-vetor-green/20">
               <h3 className="text-xl font-semibold text-white">Plano Avançado</h3>
               <div className="mt-4 flex items-baseline">
-                <span className="text-4xl font-extrabold text-white">R$999</span>
+                <span className="text-4xl font-extrabold text-white">R$1.400</span>
                 <span className="ml-1 text-xl text-white/70">/mês</span>
               </div>
             </div>

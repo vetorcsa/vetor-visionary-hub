@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Cpu, ArrowRight, Code, Clock, BarChart, Bot, ExternalLink } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -9,6 +8,11 @@ import { motion } from 'framer-motion';
 const ProcessAutomation: React.FC = () => {
   const handleWhatsAppContact = (plan: string) => {
     const message = encodeURIComponent(`Olá! Estou interessado no plano de ${plan} de automação de processos. Poderia me fornecer mais informações?`);
+    window.open(`https://wa.me/+5500000000000?text=${message}`, '_blank');
+  };
+
+  const handleDemoRequest = () => {
+    const message = encodeURIComponent("Quero ver automações na prática");
     window.open(`https://wa.me/+5500000000000?text=${message}`, '_blank');
   };
 
@@ -54,7 +58,9 @@ const ProcessAutomation: React.FC = () => {
                 Aumente a produtividade e reduza erros humanos com soluções personalizadas de automação.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Button className="bg-gradient-to-r from-vetor-green to-vetor-darkgreen hover:from-vetor-darkgreen hover:to-vetor-green text-white px-6 py-6 rounded-lg font-medium text-lg transition-all duration-300">
+                <Button 
+                  onClick={handleDemoRequest}
+                  className="bg-gradient-to-r from-vetor-green to-vetor-darkgreen hover:from-vetor-darkgreen hover:to-vetor-green text-white px-6 py-6 rounded-lg font-medium text-lg transition-all duration-300">
                   Solicitar Demonstração <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </div>
