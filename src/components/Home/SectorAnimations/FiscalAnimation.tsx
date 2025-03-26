@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 
 const FiscalAnimation: React.FC = () => {
@@ -59,7 +58,7 @@ const FiscalAnimation: React.FC = () => {
       const maxRadius = Math.min(centerX, centerY) * 0.8;
       
       // Create more circular paths for more dynamic appearance
-      const pathCount = 8;
+      const pathCount = 10; // Increased path count
       for (let i = 0; i < pathCount; i++) {
         const radius = maxRadius * (0.3 + (i / pathCount) * 0.7);
         paths.push({
@@ -67,14 +66,14 @@ const FiscalAnimation: React.FC = () => {
           endAngle: Math.random() * Math.PI * 2,
           radius,
           width: 1 + Math.random() * 2,
-          speed: 0.004 + Math.random() * 0.006, // Faster movement
+          speed: 0.005 + Math.random() * 0.008, // Faster movement
           progress: Math.random(),
-          color: `rgba(0, 176, 80, ${0.3 + Math.random() * 0.5})` // More vibrant colors
+          color: `rgba(0, 176, 80, ${0.4 + Math.random() * 0.6})` // More vibrant colors
         });
       }
       
       // Create documents - more of them and with fiscal symbols
-      const docCount = 16;
+      const docCount = 20; // Increased doc count
       const fiscalSymbols = ['$', '%', '§', '€', '£', '¥', 'R$', '+', '-', '='];
       
       for (let i = 0; i < docCount; i++) {
@@ -87,10 +86,10 @@ const FiscalAnimation: React.FC = () => {
           size: 10 + Math.random() * 12,
           rotation: Math.random() * Math.PI * 2,
           rotationSpeed: (Math.random() * 0.015 - 0.0075) * (Math.random() > 0.5 ? 1 : -1),
-          opacity: 0.35 + Math.random() * 0.45, // More vibrant
+          opacity: 0.4 + Math.random() * 0.5, // More vibrant
           pulseDirection: 1,
           pulseSpeed: 0.005 + Math.random() * 0.01,
-          symbol: Math.random() > 0.7 ? fiscalSymbols[Math.floor(Math.random() * fiscalSymbols.length)] : undefined
+          symbol: Math.random() > 0.5 ? fiscalSymbols[Math.floor(Math.random() * fiscalSymbols.length)] : undefined
         });
       }
     };
@@ -111,7 +110,10 @@ const FiscalAnimation: React.FC = () => {
     }[] = [];
 
     const generateParticles = () => {
-      const particleCount = 25; // More particles
+      // Keep adding particles without removing old ones (up to a limit)
+      if (particles.length > 50) particles.splice(0, 10);
+      
+      const particleCount = 15; // More particles per batch
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
       
@@ -129,13 +131,36 @@ const FiscalAnimation: React.FC = () => {
           size: 1 + Math.random() * 2.5, // Larger particles
           speed: 0.01 + Math.random() * 0.03, // Faster movement
           progress: Math.random(),
-          color: `rgba(0, 176, 80, ${0.5 + Math.random() * 0.5})` // More vibrant
+          color: `rgba(0, 176, 80, ${0.6 + Math.random() * 0.4})` // More vibrant
         });
       }
     };
 
     generateParticles();
-    setInterval(generateParticles, 1500); // Generate particles more frequently
+    setInterval(generateParticles, 1000); // Generate particles more frequently
+
+    // Floating numbers (more of them and more visible)
+    const floatingNumbers: {
+      x: number;
+      y: number;
+      value: string;
+      size: number;
+      speed: number;
+      opacity: number;
+    }[] = [];
+
+    // Generate a substantial number of floating numbers
+    for (let i = 0; i < 80; i++) {
+      const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '$', '%', '€'];
+      floatingNumbers.push({
+        x: Math.random() * rect.width,
+        y: Math.random() * rect.height,
+        value: numbers[Math.floor(Math.random() * numbers.length)],
+        size: 8 + Math.random() * 14,
+        speed: 0.3 + Math.random() * 0.8,
+        opacity: 0.2 + Math.random() * 0.3 // More visible but still subtle
+      });
+    }
 
     // Animation
     const animate = () => {
@@ -163,6 +188,23 @@ const FiscalAnimation: React.FC = () => {
         ctx.lineTo(canvas.width, y);
         ctx.stroke();
       }
+      
+      // Update and draw floating numbers
+      floatingNumbers.forEach(num => {
+        num.y -= num.speed;
+        
+        if (num.y < 0) {
+          num.y = canvas.height;
+          num.x = Math.random() * canvas.width;
+          const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '$', '%', '€'];
+          num.value = numbers[Math.floor(Math.random() * numbers.length)];
+        }
+        
+        ctx.fillStyle = `rgba(0, 176, 80, ${num.opacity})`;
+        ctx.font = `${num.size}px monospace`;
+        ctx.textAlign = 'center';
+        ctx.fillText(num.value, num.x, num.y);
+      });
       
       // Draw center node
       ctx.beginPath();
@@ -216,11 +258,11 @@ const FiscalAnimation: React.FC = () => {
         doc.rotation += doc.rotationSpeed;
         doc.opacity += doc.pulseDirection * doc.pulseSpeed;
         
-        if (doc.opacity > 0.8) { // More vibrant max opacity
-          doc.opacity = 0.8;
+        if (doc.opacity > 0.9) { // More vibrant max opacity
+          doc.opacity = 0.9;
           doc.pulseDirection = -1;
-        } else if (doc.opacity < 0.35) {
-          doc.opacity = 0.35;
+        } else if (doc.opacity < 0.4) {
+          doc.opacity = 0.4;
           doc.pulseDirection = 1;
         }
         
@@ -315,21 +357,6 @@ const FiscalAnimation: React.FC = () => {
           ctx.arc(trailX, trailY, particle.size * 0.5, 0, Math.PI * 2);
           ctx.fillStyle = particle.color.replace(')', ', 0.3)').replace('rgba', 'rgba');
           ctx.fill();
-        }
-      }
-      
-      // Add fiscal numbers floating around
-      for (let i = 0; i < 2; i++) {
-        if (Math.random() > 0.97) {
-          const x = Math.random() * canvas.width;
-          const y = Math.random() * canvas.height;
-          const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '$', '%'];
-          const num = numbers[Math.floor(Math.random() * numbers.length)];
-          
-          ctx.fillStyle = `rgba(0, 176, 80, ${0.4 + Math.random() * 0.2})`;
-          ctx.font = `${12 + Math.random() * 8}px monospace`;
-          ctx.textAlign = 'center';
-          ctx.fillText(num, x, y);
         }
       }
       

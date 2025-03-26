@@ -1,15 +1,35 @@
-import React, { useEffect, useRef } from 'react';
-import { Building2 } from 'lucide-react';
 
-// Define proper TypeScript interfaces for our objects
+import React, { useEffect, useRef } from 'react';
+
+// Building types
 interface Building {
   x: number;
   y: number;
   width: number;
   height: number;
+  type: 'skyscraper' | 'apartment' | 'house' | 'duplex' | 'smartBuilding';
+  windows: number[][];
+  lightsOn: boolean[];
+  hue: number;
   pulseOffset: number;
   pulseSpeed: number;
-  draw: (ctx: CanvasRenderingContext2D, pulse: number) => void;
+}
+
+interface Cloud {
+  x: number;
+  y: number;
+  width: number;
+  speed: number;
+  opacity: number;
+}
+
+interface Star {
+  x: number;
+  y: number;
+  size: number;
+  opacity: number;
+  pulseSpeed: number;
+  pulseOffset: number;
 }
 
 const RealEstateAnimation: React.FC = () => {
@@ -22,7 +42,7 @@ const RealEstateAnimation: React.FC = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Set canvas dimensions with device pixel ratio for sharp rendering
+    // Resize canvas
     const resizeCanvas = () => {
       const rect = canvas.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
@@ -36,667 +56,652 @@ const RealEstateAnimation: React.FC = () => {
 
     const rect = canvas.getBoundingClientRect();
     
-    // Animation properties
-    let frame = 0;
-    const cityHorizon = rect.height * 0.55;
+    // City horizon will be near the bottom of the canvas
+    const groundLevel = rect.height * 0.75;
     
-    // Create modern building designs with variety
-    const buildings: Building[] = [];
-    const buildingCount = 12; // Fewer, more detailed buildings
-    const buildingTypes = [
-      // Modern skyscraper
-      (x: number, y: number, width: number, height: number): Building => {
-        return {
-          x, y, width, height,
-          pulseOffset: 0,
-          pulseSpeed: 0,
-          draw: (ctx, pulse) => {
-            // Building body
-            ctx.fillStyle = `rgba(0, 176, 80, ${0.2 + pulse * 0.1})`;
-            ctx.strokeStyle = `rgba(0, 176, 80, ${0.6 + pulse * 0.2})`;
-            ctx.lineWidth = 1;
-            
-            // Main tower
-            ctx.beginPath();
-            ctx.rect(x - width/2, y - height, width, height);
-            ctx.fill();
-            ctx.stroke();
-            
-            // Glass windows pattern
-            const floorHeight = 8;
-            const floors = Math.floor(height / floorHeight);
-            const windowWidth = width / 4;
-            
-            for (let f = 0; f < floors; f++) {
-              for (let w = 0; w < 3; w++) {
-                if (Math.random() > 0.2) {
-                  ctx.fillStyle = `rgba(255, 255, 255, ${0.1 + Math.random() * 0.2})`;
-                  ctx.fillRect(
-                    x - width/2 + width/6 + w * windowWidth, 
-                    y - height + f * floorHeight + 1, 
-                    windowWidth - 2, 
-                    floorHeight - 2
-                  );
-                }
-              }
-            }
-            
-            // Rooftop details
-            ctx.beginPath();
-            ctx.moveTo(x - width/2, y - height);
-            ctx.lineTo(x - width/4, y - height - width/4);
-            ctx.lineTo(x + width/4, y - height - width/4);
-            ctx.lineTo(x + width/2, y - height);
-            ctx.closePath();
-            ctx.fill();
-            ctx.stroke();
-            
-            // Rooftop antenna with pulsing light
-            ctx.beginPath();
-            ctx.moveTo(x, y - height - width/4);
-            ctx.lineTo(x, y - height - width/4 - height/8);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(x, y - height - width/4 - height/8, 2 + pulse * 2, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(0, 176, 80, ${0.5 + pulse * 0.5})`;
-            ctx.fill();
-          }
-        };
-      },
-      
-      // Modern residential building
-      (x: number, y: number, width: number, height: number): Building => {
-        return {
-          x, y, width, height,
-          pulseOffset: 0,
-          pulseSpeed: 0,
-          draw: (ctx, pulse) => {
-            // Building base
-            ctx.fillStyle = `rgba(0, 176, 80, ${0.15 + pulse * 0.05})`;
-            ctx.strokeStyle = `rgba(0, 176, 80, ${0.5 + pulse * 0.2})`;
-            ctx.lineWidth = 1;
-            
-            // Main structure
-            const balconyDepth = width / 6;
-            
-            // Main facade
-            ctx.beginPath();
-            ctx.rect(x - width/2, y - height, width, height);
-            ctx.fill();
-            ctx.stroke();
-            
-            // Balconies
-            const floorHeight = 12;
-            const floors = Math.floor(height / floorHeight) - 1;
-            
-            for (let f = 1; f < floors; f += 2) {
-              // Left balcony
-              ctx.beginPath();
-              ctx.rect(
-                x - width/2 - balconyDepth, 
-                y - height + f * floorHeight, 
-                balconyDepth, 
-                floorHeight
-              );
-              ctx.fill();
-              ctx.stroke();
-              
-              // Rail
-              ctx.beginPath();
-              ctx.moveTo(x - width/2 - balconyDepth, y - height + f * floorHeight + 3);
-              ctx.lineTo(x - width/2, y - height + f * floorHeight + 3);
-              ctx.stroke();
-              
-              // Right balcony
-              ctx.beginPath();
-              ctx.rect(
-                x + width/2, 
-                y - height + (f+1) * floorHeight, 
-                balconyDepth, 
-                floorHeight
-              );
-              ctx.fill();
-              ctx.stroke();
-              
-              // Rail
-              ctx.beginPath();
-              ctx.moveTo(x + width/2, y - height + (f+1) * floorHeight + 3);
-              ctx.lineTo(x + width/2 + balconyDepth, y - height + (f+1) * floorHeight + 3);
-              ctx.stroke();
-            }
-            
-            // Windows
-            const windowRows = Math.floor(height / floorHeight);
-            const windowCols = 3;
-            const windowWidth = width / (windowCols + 1);
-            const windowHeight = floorHeight - 4;
-            
-            for (let r = 0; r < windowRows; r++) {
-              for (let c = 0; c < windowCols; c++) {
-                if (Math.random() > 0.3) {
-                  ctx.fillStyle = `rgba(255, 255, 255, ${0.1 + Math.random() * 0.15})`;
-                  ctx.fillRect(
-                    x - width/2 + (c+1) * (width/(windowCols+1)) - windowWidth/2,
-                    y - height + r * floorHeight + 2,
-                    windowWidth,
-                    windowHeight
-                  );
-                }
-              }
-            }
-            
-            // Rooftop garden
-            ctx.fillStyle = `rgba(20, 190, 100, ${0.3 + pulse * 0.2})`;
-            ctx.beginPath();
-            ctx.rect(x - width/3, y - height - 4, width/1.5, 4);
-            ctx.fill();
-            ctx.stroke();
-          }
-        };
-      },
-      
-      // Luxury villa/house
-      (x: number, y: number, width: number, height: number): Building => {
-        return {
-          x, y, width, height,
-          pulseOffset: 0,
-          pulseSpeed: 0,
-          draw: (ctx, pulse) => {
-            const houseHeight = height * 0.6; // Smaller than skyscrapers
-            
-            // Main house structure
-            ctx.fillStyle = `rgba(0, 176, 80, ${0.2 + pulse * 0.05})`;
-            ctx.strokeStyle = `rgba(0, 176, 80, ${0.5 + pulse * 0.1})`;
-            ctx.lineWidth = 1;
-            
-            // House body
-            ctx.beginPath();
-            ctx.rect(x - width/2, y - houseHeight, width, houseHeight);
-            ctx.fill();
-            ctx.stroke();
-            
-            // Roof
-            ctx.beginPath();
-            ctx.moveTo(x - width/2 - width/6, y - houseHeight);
-            ctx.lineTo(x, y - houseHeight - width/3);
-            ctx.lineTo(x + width/2 + width/6, y - houseHeight);
-            ctx.closePath();
-            ctx.fill();
-            ctx.stroke();
-            
-            // Windows
-            const windowSize = width / 5;
-            
-            // First floor windows
-            ctx.fillStyle = `rgba(255, 255, 255, ${0.15 + Math.random() * 0.1})`;
-            ctx.fillRect(x - width/3, y - houseHeight + houseHeight/3, windowSize, windowSize);
-            ctx.strokeRect(x - width/3, y - houseHeight + houseHeight/3, windowSize, windowSize);
-            
-            ctx.fillStyle = `rgba(255, 255, 255, ${0.15 + Math.random() * 0.1})`;
-            ctx.fillRect(x + width/3 - windowSize, y - houseHeight + houseHeight/3, windowSize, windowSize);
-            ctx.strokeRect(x + width/3 - windowSize, y - houseHeight + houseHeight/3, windowSize, windowSize);
-            
-            // Door
-            ctx.fillStyle = `rgba(0, 120, 60, ${0.3 + pulse * 0.1})`;
-            ctx.fillRect(x - windowSize/2, y - houseHeight/2, windowSize, houseHeight/2);
-            ctx.strokeRect(x - windowSize/2, y - houseHeight/2, windowSize, houseHeight/2);
-            
-            // Garden/yard
-            ctx.fillStyle = `rgba(20, 200, 100, ${0.2 + pulse * 0.1})`;
-            ctx.beginPath();
-            ctx.rect(x - width*0.8, y, width*1.6, 5);
-            ctx.fill();
-            
-            // Tree
-            const treeX = x + width*0.6;
-            ctx.fillStyle = `rgba(100, 180, 70, ${0.4 + pulse * 0.2})`;
-            ctx.beginPath();
-            ctx.arc(treeX, y - houseHeight/2, width/6, 0, Math.PI * 2);
-            ctx.fill();
-            
-            ctx.fillStyle = `rgba(80, 50, 20, ${0.5})`;
-            ctx.fillRect(treeX - 2, y - houseHeight/4, 4, houseHeight/4);
-          }
-        };
-      },
-      
-      // Smart building with IoT visualization
-      (x: number, y: number, width: number, height: number): Building => {
-        return {
-          x, y, width, height,
-          pulseOffset: 0,
-          pulseSpeed: 0,
-          draw: (ctx, pulse) => {
-            // Building shape
-            ctx.fillStyle = `rgba(0, 176, 80, ${0.15 + pulse * 0.08})`;
-            ctx.strokeStyle = `rgba(0, 176, 80, ${0.6 + pulse * 0.2})`;
-            ctx.lineWidth = 1;
-            
-            const segments = 3;
-            const segmentHeight = height / segments;
-            
-            // Draw tiered building
-            for (let i = 0; i < segments; i++) {
-              const tierWidth = width - (i * width/5);
-              const tierX = x - tierWidth/2;
-              const tierY = y - segmentHeight * (segments - i);
-              
-              ctx.beginPath();
-              ctx.rect(tierX, tierY, tierWidth, segmentHeight);
-              ctx.fill();
-              ctx.stroke();
-              
-              // Add windows to each tier
-              const windowCount = Math.floor(tierWidth / 10);
-              const windowWidth = tierWidth / (windowCount * 1.5);
-              
-              for (let w = 0; w < windowCount; w++) {
-                if (Math.random() > 0.3) {
-                  ctx.fillStyle = `rgba(255, 255, 255, ${0.1 + Math.random() * 0.2})`;
-                  ctx.fillRect(
-                    tierX + (w + 0.5) * (tierWidth / windowCount),
-                    tierY + segmentHeight/4,
-                    windowWidth,
-                    segmentHeight/2
-                  );
-                }
-              }
-            }
-            
-            // IoT connections and data
-            const dataPoints = 3;
-            for (let d = 0; d < dataPoints; d++) {
-              // Data point
-              const dpX = x - width/2 + width * Math.random();
-              const dpY = y - height * Math.random() * 0.8;
-              
-              ctx.beginPath();
-              ctx.arc(dpX, dpY, 2, 0, Math.PI * 2);
-              ctx.fillStyle = `rgba(0, 230, 100, ${0.7 + pulse * 0.3})`;
-              ctx.fill();
-              
-              // Connection line to main hub
-              ctx.beginPath();
-              ctx.moveTo(dpX, dpY);
-              ctx.lineTo(x, y - height/2);
-              ctx.strokeStyle = `rgba(0, 230, 100, ${0.1 + pulse * 0.2})`;
-              ctx.stroke();
-            }
-            
-            // Central hub
-            ctx.beginPath();
-            ctx.arc(x, y - height/2, 4 + pulse * 2, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(0, 230, 100, ${0.6 + pulse * 0.4})`;
-            ctx.fill();
-          }
-        };
-      },
-      
-      // Modern office tower
-      (x: number, y: number, width: number, height: number): Building => {
-        return {
-          x, y, width, height,
-          pulseOffset: 0,
-          pulseSpeed: 0,
-          draw: (ctx, pulse) => {
-            // Building body
-            ctx.fillStyle = `rgba(0, 176, 80, ${0.2 + pulse * 0.05})`;
-            ctx.strokeStyle = `rgba(0, 176, 80, ${0.5 + pulse * 0.2})`;
-            ctx.lineWidth = 1;
-            
-            // Glass curtain wall effect
-            ctx.beginPath();
-            ctx.rect(x - width/2, y - height, width, height);
-            ctx.fill();
-            ctx.stroke();
-            
-            // Glass facade pattern
-            const rowHeight = 6;
-            const rows = Math.floor(height / rowHeight);
-            const colWidth = width / 5;
-            const cols = Math.floor(width / colWidth);
-            
-            for (let r = 0; r < rows; r++) {
-              for (let c = 0; c < cols; c++) {
-                if (Math.random() > 0.3) { // Some windows lit
-                  ctx.fillStyle = `rgba(255, 255, 255, ${0.05 + Math.random() * 0.15})`;
-                  ctx.fillRect(
-                    x - width/2 + c * colWidth + 1,
-                    y - height + r * rowHeight + 1,
-                    colWidth - 2,
-                    rowHeight - 1
-                  );
-                }
-              }
-            }
-            
-            // Top architectural features - tapered top
-            ctx.beginPath();
-            ctx.moveTo(x - width/2, y - height);
-            ctx.lineTo(x - width/3, y - height - height/10);
-            ctx.lineTo(x + width/3, y - height - height/10);
-            ctx.lineTo(x + width/2, y - height);
-            ctx.closePath();
-            ctx.fill();
-            ctx.stroke();
-            
-            // Spire
-            ctx.beginPath();
-            ctx.moveTo(x, y - height - height/10);
-            ctx.lineTo(x, y - height - height/10 - height/8);
-            ctx.stroke();
-            
-            // Pulsing light at top
-            ctx.beginPath();
-            ctx.arc(x, y - height - height/10 - height/8, 2 + pulse * 1.5, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(0, 176, 80, ${0.6 + pulse * 0.4})`;
-            ctx.fill();
-          }
-        };
-      }
-    ];
-    
-    // Distribute buildings across the horizon
-    for (let i = 0; i < buildingCount; i++) {
-      // Create varied building types
-      const typeIndex = Math.floor(Math.random() * buildingTypes.length);
-      const buildingWidth = 15 + Math.random() * 35;
-      const buildingHeight = 30 + Math.random() * 120;
-      const xPosition = (rect.width * 0.1) + (rect.width * 0.8 * (i / buildingCount));
-      const xJitter = (Math.random() - 0.5) * (rect.width * 0.05);
-      
-      const building = buildingTypes[typeIndex](
-        xPosition + xJitter, 
-        cityHorizon, 
-        buildingWidth, 
-        buildingHeight
-      );
-      
-      building.pulseOffset = Math.random() * Math.PI * 2;
-      building.pulseSpeed = 0.02 + Math.random() * 0.03;
-      
-      buildings.push(building);
-    }
-    
-    // Create city infrastructure
-    const roads = [];
-    
-    // Main horizontal road
-    roads.push({
-      type: 'horizontal',
-      y: cityHorizon + 5,
-      width: rect.width,
-      lanes: 2,
-      vehicles: []
-    });
-    
-    // Add vertical connecting roads
-    const verticalRoadCount = 5;
-    for (let i = 0; i < verticalRoadCount; i++) {
-      const x = rect.width * (0.1 + 0.8 * (i / (verticalRoadCount - 1)));
-      roads.push({
-        type: 'vertical',
-        x: x,
-        height: rect.height - cityHorizon - 5,
-        lanes: 1,
-        vehicles: []
-      });
-    }
-    
-    // Create vehicles
-    roads.forEach(road => {
-      const vehicleCount = road.type === 'horizontal' ? 8 : 3;
-      
-      for (let i = 0; i < vehicleCount; i++) {
-        if (road.type === 'horizontal') {
-          road.vehicles.push({
-            position: Math.random() * road.width,
-            lane: Math.floor(Math.random() * road.lanes),
-            speed: 0.5 + Math.random() * 1.5,
-            direction: Math.random() > 0.5 ? 1 : -1,
-            color: Math.random() > 0.5 ? 'rgba(0, 176, 80, 0.8)' : 'rgba(120, 220, 120, 0.6)',
-            size: 4 + Math.random() * 4
-          });
-        } else {
-          road.vehicles.push({
-            position: Math.random() * road.height,
-            lane: 0,
-            speed: 0.3 + Math.random() * 0.8,
-            direction: Math.random() > 0.5 ? 1 : -1,
-            color: Math.random() > 0.5 ? 'rgba(0, 176, 80, 0.8)' : 'rgba(120, 220, 120, 0.6)',
-            size: 3 + Math.random() * 3
-          });
-        }
-      }
-    });
-    
-    // Create floating IoT/data elements
-    const dataElements = [];
-    const dataElementCount = 30;
-    
-    for (let i = 0; i < dataElementCount; i++) {
-      dataElements.push({
+    // Generate stars
+    const stars: Star[] = [];
+    for (let i = 0; i < 70; i++) {
+      stars.push({
         x: Math.random() * rect.width,
-        y: Math.random() * rect.height,
-        size: 1 + Math.random() * 2,
-        speed: 0.2 + Math.random() * 0.8,
+        y: Math.random() * groundLevel * 0.9,
+        size: 0.5 + Math.random() * 1.5,
         opacity: 0.3 + Math.random() * 0.7,
-        symbol: Math.random() > 0.7 ? (Math.random() > 0.5 ? '1' : '0') : ''
+        pulseSpeed: 0.005 + Math.random() * 0.01,
+        pulseOffset: Math.random() * Math.PI * 2
       });
     }
     
-    // Animation function
+    // Generate clouds
+    const clouds: Cloud[] = [];
+    for (let i = 0; i < 5; i++) {
+      clouds.push({
+        x: Math.random() * rect.width,
+        y: 20 + Math.random() * 60,
+        width: 30 + Math.random() * 70,
+        speed: 0.1 + Math.random() * 0.2,
+        opacity: 0.1 + Math.random() * 0.2
+      });
+    }
+    
+    // Generate buildings
+    const buildings: Building[] = [];
+    const buildingTypes = ['skyscraper', 'apartment', 'house', 'duplex', 'smartBuilding'];
+    
+    // Create buildings across the width of the canvas
+    const buildingCount = 18; 
+    const minBuildingWidth = 25;
+    const maxBuildingWidth = 60;
+    
+    for (let i = 0; i < buildingCount; i++) {
+      const buildingWidth = minBuildingWidth + Math.random() * (maxBuildingWidth - minBuildingWidth);
+      
+      // Distribute buildings evenly with some randomness
+      const spacing = rect.width / buildingCount;
+      const x = i * spacing + (Math.random() - 0.5) * spacing * 0.6;
+      
+      // Different heights based on building type
+      const type = buildingTypes[Math.floor(Math.random() * buildingTypes.length)] as Building['type'];
+      
+      let height;
+      switch (type) {
+        case 'skyscraper':
+          height = 120 + Math.random() * 180;
+          break;
+        case 'apartment':
+          height = 80 + Math.random() * 100;
+          break;
+        case 'house':
+          height = 40 + Math.random() * 30;
+          break;
+        case 'duplex':
+          height = 50 + Math.random() * 40;
+          break;
+        case 'smartBuilding':
+          height = 100 + Math.random() * 150;
+          break;
+        default:
+          height = 80 + Math.random() * 100;
+      }
+      
+      // Generate windows
+      const windowRows = Math.floor(height / 15);
+      const windowCols = Math.floor(buildingWidth / 10);
+      const windows: number[][] = [];
+      
+      for (let row = 0; row < windowRows; row++) {
+        const windowRow: number[] = [];
+        for (let col = 0; col < windowCols; col++) {
+          // Some windows will be "on" (lit)
+          windowRow.push(Math.random() > 0.6 ? 1 : 0);
+        }
+        windows.push(windowRow);
+      }
+      
+      // Generate lights on status for animation
+      const lightsOn: boolean[] = [];
+      for (let j = 0; j < 5; j++) {
+        lightsOn.push(Math.random() > 0.5);
+      }
+      
+      buildings.push({
+        x,
+        y: groundLevel,
+        width: buildingWidth,
+        height,
+        type,
+        windows,
+        lightsOn,
+        hue: Math.random() > 0.7 ? 130 : 200, // Most green, some blue
+        pulseOffset: Math.random() * Math.PI * 2,
+        pulseSpeed: 0.01 + Math.random() * 0.02
+      });
+    }
+    
+    // Sort buildings by height for correct rendering
+    buildings.sort((a, b) => b.height - a.height);
+    
+    // Animation loop
+    let frame = 0;
     const animate = () => {
       requestAnimationFrame(animate);
       ctx.clearRect(0, 0, rect.width, rect.height);
-      
       frame++;
       
-      // Subtle background gradient
-      const gradient = ctx.createLinearGradient(0, 0, 0, rect.height);
-      gradient.addColorStop(0, 'rgba(0, 20, 10, 1)');
-      gradient.addColorStop(0.5, 'rgba(0, 30, 15, 1)');
-      gradient.addColorStop(1, 'rgba(0, 10, 5, 1)');
+      // Night sky gradient
+      const skyGradient = ctx.createLinearGradient(0, 0, 0, groundLevel);
+      skyGradient.addColorStop(0, 'rgb(0, 10, 20)');
+      skyGradient.addColorStop(1, 'rgb(0, 30, 40)');
+      ctx.fillStyle = skyGradient;
+      ctx.fillRect(0, 0, rect.width, groundLevel);
       
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, rect.width, rect.height);
+      // Draw stars
+      stars.forEach(star => {
+        star.pulseOffset += star.pulseSpeed;
+        const pulse = (Math.sin(star.pulseOffset) * 0.5 + 0.5) * 0.5;
+        
+        // Star with glow
+        const gradient = ctx.createRadialGradient(
+          star.x, star.y, 0,
+          star.x, star.y, star.size * 2
+        );
+        gradient.addColorStop(0, `rgba(255, 255, 255, ${star.opacity * (0.8 + pulse)})`);
+        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size * 2, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
+        ctx.fill();
+        
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+        ctx.fill();
+      });
       
-      // Draw subtle grid
-      ctx.strokeStyle = 'rgba(0, 176, 80, 0.03)';
+      // Update and draw clouds
+      clouds.forEach(cloud => {
+        cloud.x += cloud.speed;
+        if (cloud.x > rect.width + cloud.width) {
+          cloud.x = -cloud.width;
+          cloud.y = 20 + Math.random() * 60;
+          cloud.width = 30 + Math.random() * 70;
+        }
+        
+        ctx.fillStyle = `rgba(100, 150, 180, ${cloud.opacity})`;
+        
+        // Draw cloud shape
+        const cloudHeight = cloud.width * 0.4;
+        const segments = Math.floor(cloud.width / 15);
+        
+        for (let i = 0; i < segments; i++) {
+          const segmentX = cloud.x + i * (cloud.width / segments);
+          const segmentY = cloud.y;
+          const segmentRadius = 5 + Math.random() * 10;
+          
+          ctx.beginPath();
+          ctx.arc(segmentX, segmentY, segmentRadius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+      
+      // Moon
+      const moonX = rect.width * 0.8;
+      const moonY = rect.height * 0.2;
+      const moonRadius = 15;
+      
+      // Moon glow
+      const moonGlow = ctx.createRadialGradient(
+        moonX, moonY, 0,
+        moonX, moonY, moonRadius * 3
+      );
+      moonGlow.addColorStop(0, 'rgba(255, 255, 220, 0.3)');
+      moonGlow.addColorStop(1, 'rgba(255, 255, 220, 0)');
+      
+      ctx.beginPath();
+      ctx.arc(moonX, moonY, moonRadius * 3, 0, Math.PI * 2);
+      ctx.fillStyle = moonGlow;
+      ctx.fill();
+      
+      // Moon body
+      ctx.beginPath();
+      ctx.arc(moonX, moonY, moonRadius, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255, 255, 220, 0.9)';
+      ctx.fill();
+      
+      // Ground gradient
+      const groundGradient = ctx.createLinearGradient(0, groundLevel, 0, rect.height);
+      groundGradient.addColorStop(0, 'rgb(20, 40, 30)');
+      groundGradient.addColorStop(1, 'rgb(10, 20, 15)');
+      ctx.fillStyle = groundGradient;
+      ctx.fillRect(0, groundLevel, rect.width, rect.height - groundLevel);
+      
+      // Draw grid lines on ground (like streets)
+      ctx.strokeStyle = 'rgba(0, 176, 80, 0.2)';
       ctx.lineWidth = 0.5;
       
       const gridSize = 30;
       for (let x = 0; x < rect.width; x += gridSize) {
         ctx.beginPath();
-        ctx.moveTo(x, 0);
+        ctx.moveTo(x, groundLevel);
         ctx.lineTo(x, rect.height);
         ctx.stroke();
       }
       
-      for (let y = 0; y < rect.height; y += gridSize) {
+      for (let y = groundLevel; y < rect.height; y += gridSize) {
         ctx.beginPath();
         ctx.moveTo(0, y);
         ctx.lineTo(rect.width, y);
         ctx.stroke();
       }
       
-      // Ground/horizon
-      ctx.fillStyle = 'rgba(0, 50, 25, 0.3)';
-      ctx.beginPath();
-      ctx.rect(0, cityHorizon, rect.width, rect.height - cityHorizon);
-      ctx.fill();
-      
-      // Draw roads
-      roads.forEach(road => {
-        if (road.type === 'horizontal') {
-          // Draw horizontal road
-          ctx.fillStyle = 'rgba(20, 25, 20, 0.9)';
-          ctx.fillRect(0, road.y, road.width, road.lanes * 8);
-          
-          // Lane markings
-          ctx.strokeStyle = 'rgba(0, 176, 80, 0.4)';
-          ctx.setLineDash([5, 10]);
-          ctx.beginPath();
-          ctx.moveTo(0, road.y + (road.lanes * 8) / 2);
-          ctx.lineTo(road.width, road.y + (road.lanes * 8) / 2);
-          ctx.stroke();
-          ctx.setLineDash([]);
-          
-          // Update and draw vehicles
-          road.vehicles.forEach(vehicle => {
-            // Update position
-            vehicle.position += vehicle.speed * vehicle.direction;
-            
-            // Reset if off screen
-            if (vehicle.direction > 0 && vehicle.position > road.width) {
-              vehicle.position = 0;
-            } else if (vehicle.direction < 0 && vehicle.position < 0) {
-              vehicle.position = road.width;
-            }
-            
-            // Draw vehicle
-            const yOffset = road.y + 3 + vehicle.lane * 8;
-            
-            ctx.fillStyle = vehicle.color;
-            if (vehicle.direction > 0) {
-              // Right-facing vehicle
-              ctx.beginPath();
-              ctx.rect(vehicle.position, yOffset, vehicle.size, 3);
-              ctx.fill();
-            } else {
-              // Left-facing vehicle
-              ctx.beginPath();
-              ctx.rect(vehicle.position - vehicle.size, yOffset, vehicle.size, 3);
-              ctx.fill();
-            }
-          });
-        } else {
-          // Draw vertical road
-          ctx.fillStyle = 'rgba(20, 25, 20, 0.9)';
-          ctx.fillRect(road.x - 3, road.y, 6, road.height);
-          
-          // Update and draw vehicles
-          road.vehicles.forEach(vehicle => {
-            // Update position
-            vehicle.position += vehicle.speed * vehicle.direction;
-            
-            // Reset if off screen
-            if (vehicle.direction > 0 && vehicle.position > road.height) {
-              vehicle.position = 0;
-            } else if (vehicle.direction < 0 && vehicle.position < 0) {
-              vehicle.position = road.height;
-            }
-            
-            // Draw vehicle
-            const yPos = road.y + vehicle.position;
-            
-            ctx.fillStyle = vehicle.color;
-            ctx.beginPath();
-            ctx.rect(road.x - 2, yPos, 4, vehicle.size);
-            ctx.fill();
-          });
-        }
-      });
-      
-      // Sort buildings by y-position for correct overlap rendering
-      buildings.sort((a, b) => a.y - b.y);
-      
       // Draw buildings
       buildings.forEach(building => {
-        // Update pulse
         building.pulseOffset += building.pulseSpeed;
         const pulse = Math.sin(building.pulseOffset) * 0.5 + 0.5;
         
-        // Draw the building using its custom draw method
-        building.draw(ctx, pulse);
+        // Base building color
+        const buildingColor = `hsla(${building.hue}, 70%, 40%, 0.9)`;
+        const highlightColor = `hsla(${building.hue}, 80%, 60%, 0.9)`;
         
-        // Occasionally draw data connections between buildings
-        if (Math.random() > 0.992) {
-          const targetBuilding = buildings[Math.floor(Math.random() * buildings.length)];
-          
-          if (targetBuilding !== building) {
+        // Draw different building types
+        switch(building.type) {
+          case 'skyscraper':
+            // Base
+            ctx.fillStyle = buildingColor;
+            ctx.fillRect(building.x, building.y - building.height, building.width, building.height);
+            
+            // Windows
+            building.windows.forEach((row, rowIndex) => {
+              row.forEach((window, colIndex) => {
+                // Window position
+                const windowWidth = 8;
+                const windowHeight = 12;
+                const windowSpacingX = (building.width - row.length * windowWidth) / (row.length + 1);
+                const windowX = building.x + windowSpacingX + colIndex * (windowWidth + windowSpacingX);
+                const windowY = building.y - building.height + 10 + rowIndex * 15;
+                
+                // Window light status (some randomly turn on/off)
+                if (rowIndex % 5 === 0 && colIndex % 3 === 0) {
+                  if (frame % 100 === 0 && Math.random() > 0.7) {
+                    window = window === 1 ? 0 : 1;
+                  }
+                }
+                
+                ctx.fillStyle = window === 1 ? 
+                  `rgba(255, 255, 200, ${0.5 + pulse * 0.3})` : 
+                  'rgba(30, 40, 60, 0.8)';
+                  
+                ctx.fillRect(windowX, windowY, windowWidth, windowHeight);
+              });
+            });
+            
+            // Top
+            ctx.fillStyle = highlightColor;
             ctx.beginPath();
-            ctx.moveTo(building.x, building.y - building.height / 2);
-            ctx.lineTo(targetBuilding.x, targetBuilding.y - targetBuilding.height / 2);
-            ctx.strokeStyle = `rgba(0, 176, 80, ${0.1 + pulse * 0.1})`;
-            ctx.lineWidth = 0.5;
+            ctx.moveTo(building.x, building.y - building.height);
+            ctx.lineTo(building.x + building.width/2, building.y - building.height - 20);
+            ctx.lineTo(building.x + building.width, building.y - building.height);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Antenna
+            ctx.strokeStyle = highlightColor;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(building.x + building.width/2, building.y - building.height - 20);
+            ctx.lineTo(building.x + building.width/2, building.y - building.height - 35);
             ctx.stroke();
             
-            // Data packet moving along connection
-            const progress = Math.random();
-            const packetX = building.x + (targetBuilding.x - building.x) * progress;
-            const packetY = (building.y - building.height / 2) + 
-                           ((targetBuilding.y - targetBuilding.height / 2) - 
-                            (building.y - building.height / 2)) * progress;
+            // Blinking light on top
+            if (pulse > 0.8) {
+              ctx.beginPath();
+              ctx.arc(building.x + building.width/2, building.y - building.height - 35, 2, 0, Math.PI * 2);
+              ctx.fillStyle = 'rgba(255, 50, 50, 0.9)';
+              ctx.fill();
+            }
+            break;
+          
+          case 'apartment':
+            // Base
+            ctx.fillStyle = buildingColor;
+            ctx.fillRect(building.x, building.y - building.height, building.width, building.height);
             
+            // Windows (more regular pattern for apartment)
+            const aptRows = Math.floor(building.height / 20);
+            const aptCols = Math.floor(building.width / 15);
+            
+            for (let row = 0; row < aptRows; row++) {
+              for (let col = 0; col < aptCols; col++) {
+                // Window pattern
+                const isLit = (Math.floor(frame / 50) + row + col) % 5 === 0 ? 
+                  !building.lightsOn[row % building.lightsOn.length] : 
+                  building.lightsOn[row % building.lightsOn.length];
+                
+                ctx.fillStyle = isLit ? 
+                  `rgba(255, 255, 180, ${0.6 + pulse * 0.2})` : 
+                  'rgba(40, 50, 70, 0.7)';
+                  
+                ctx.fillRect(
+                  building.x + 3 + col * 15, 
+                  building.y - building.height + 5 + row * 20, 
+                  10, 
+                  15
+                );
+              }
+            }
+            
+            // Balconies
+            for (let row = 1; row < aptRows; row += 2) {
+              ctx.fillStyle = 'rgba(50, 60, 80, 0.8)';
+              
+              // Left balconies on odd floors
+              if (row % 2 === 1) {
+                ctx.fillRect(
+                  building.x - 8, 
+                  building.y - building.height + 5 + row * 20, 
+                  8, 
+                  15
+                );
+                
+                // Railing
+                ctx.strokeStyle = 'rgba(70, 80, 100, 0.9)';
+                ctx.lineWidth = 0.5;
+                ctx.beginPath();
+                ctx.moveTo(building.x - 8, building.y - building.height + 10 + row * 20);
+                ctx.lineTo(building.x, building.y - building.height + 10 + row * 20);
+                ctx.stroke();
+              }
+              
+              // Right balconies on even floors
+              if (row % 2 === 0) {
+                ctx.fillRect(
+                  building.x + building.width, 
+                  building.y - building.height + 5 + row * 20, 
+                  8, 
+                  15
+                );
+                
+                // Railing
+                ctx.strokeStyle = 'rgba(70, 80, 100, 0.9)';
+                ctx.lineWidth = 0.5;
+                ctx.beginPath();
+                ctx.moveTo(building.x + building.width, building.y - building.height + 10 + row * 20);
+                ctx.lineTo(building.x + building.width + 8, building.y - building.height + 10 + row * 20);
+                ctx.stroke();
+              }
+            }
+            break;
+            
+          case 'house':
+            // Base
+            ctx.fillStyle = buildingColor;
+            ctx.fillRect(building.x, building.y - building.height, building.width, building.height);
+            
+            // Roof
+            ctx.fillStyle = highlightColor;
             ctx.beginPath();
-            ctx.arc(packetX, packetY, 2, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(0, 226, 130, 0.8)';
+            ctx.moveTo(building.x - 5, building.y - building.height);
+            ctx.lineTo(building.x + building.width/2, building.y - building.height - 15);
+            ctx.lineTo(building.x + building.width + 5, building.y - building.height);
+            ctx.closePath();
             ctx.fill();
-          }
+            
+            // Door
+            ctx.fillStyle = 'rgba(60, 40, 20, 0.9)';
+            ctx.fillRect(
+              building.x + building.width/2 - 5, 
+              building.y - 20, 
+              10, 
+              20
+            );
+            
+            // Windows
+            ctx.fillStyle = building.lightsOn[0] ? 
+              `rgba(255, 255, 180, ${0.7 + pulse * 0.3})` : 
+              'rgba(40, 50, 70, 0.7)';
+              
+            // Left window
+            ctx.fillRect(
+              building.x + 5, 
+              building.y - building.height/2 - 10, 
+              10, 
+              10
+            );
+            
+            // Right window
+            ctx.fillStyle = building.lightsOn[1] ? 
+              `rgba(255, 255, 180, ${0.7 + pulse * 0.3})` : 
+              'rgba(40, 50, 70, 0.7)';
+              
+            ctx.fillRect(
+              building.x + building.width - 15, 
+              building.y - building.height/2 - 10, 
+              10, 
+              10
+            );
+            
+            // Garden
+            ctx.fillStyle = 'rgba(20, 80, 40, 0.7)';
+            ctx.fillRect(
+              building.x - 10, 
+              building.y, 
+              building.width + 20, 
+              5
+            );
+            break;
+            
+          case 'duplex':
+            // Bottom unit
+            ctx.fillStyle = buildingColor;
+            ctx.fillRect(building.x, building.y - building.height/2, building.width, building.height/2);
+            
+            // Top unit (slightly different color)
+            ctx.fillStyle = `hsla(${building.hue + 20}, 70%, 40%, 0.9)`;
+            ctx.fillRect(building.x, building.y - building.height, building.width, building.height/2);
+            
+            // Windows - bottom unit
+            ctx.fillStyle = building.lightsOn[2] ? 
+              `rgba(255, 255, 180, ${0.7 + pulse * 0.3})` : 
+              'rgba(40, 50, 70, 0.7)';
+              
+            ctx.fillRect(
+              building.x + 5, 
+              building.y - building.height/4 - 10, 
+              10, 
+              10
+            );
+            
+            ctx.fillStyle = building.lightsOn[3] ? 
+              `rgba(255, 255, 180, ${0.7 + pulse * 0.3})` : 
+              'rgba(40, 50, 70, 0.7)';
+              
+            ctx.fillRect(
+              building.x + building.width - 15, 
+              building.y - building.height/4 - 10, 
+              10, 
+              10
+            );
+            
+            // Windows - top unit
+            ctx.fillStyle = building.lightsOn[0] ? 
+              `rgba(255, 255, 180, ${0.7 + pulse * 0.3})` : 
+              'rgba(40, 50, 70, 0.7)';
+              
+            ctx.fillRect(
+              building.x + 5, 
+              building.y - 3*building.height/4 - 10, 
+              10, 
+              10
+            );
+            
+            ctx.fillStyle = building.lightsOn[1] ? 
+              `rgba(255, 255, 180, ${0.7 + pulse * 0.3})` : 
+              'rgba(40, 50, 70, 0.7)';
+              
+            ctx.fillRect(
+              building.x + building.width - 15, 
+              building.y - 3*building.height/4 - 10, 
+              10, 
+              10
+            );
+            
+            // Doors
+            ctx.fillStyle = 'rgba(60, 40, 20, 0.9)';
+            // Bottom unit door
+            ctx.fillRect(
+              building.x + building.width/3 - 5, 
+              building.y - 20, 
+              10, 
+              20
+            );
+            // Top unit door (with steps)
+            ctx.fillRect(
+              building.x + 2*building.width/3 - 5, 
+              building.y - building.height/2 - 20, 
+              10, 
+              20
+            );
+            // Steps
+            ctx.strokeStyle = 'rgba(70, 70, 70, 0.9)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(building.x + 2*building.width/3 - 10, building.y - building.height/2);
+            ctx.lineTo(building.x + 2*building.width/3 + 10, building.y - building.height/2);
+            ctx.lineTo(building.x + 2*building.width/3 + 10, building.y);
+            ctx.stroke();
+            break;
+            
+          case 'smartBuilding':
+            // Base with subtle gradient
+            const smartGradient = ctx.createLinearGradient(
+              building.x, 0, 
+              building.x + building.width, 0
+            );
+            smartGradient.addColorStop(0, buildingColor);
+            smartGradient.addColorStop(0.5, highlightColor);
+            smartGradient.addColorStop(1, buildingColor);
+            
+            ctx.fillStyle = smartGradient;
+            
+            // Building with setbacks (more modern architecture)
+            const setbacks = 3;
+            const setbackHeight = building.height / setbacks;
+            
+            for (let i = 0; i < setbacks; i++) {
+              const setbackWidth = building.width - (i * 6);
+              ctx.fillRect(
+                building.x + (i * 3), 
+                building.y - building.height + (i * setbackHeight), 
+                setbackWidth, 
+                setbackHeight
+              );
+              
+              // Add some data connection lines
+              if (i > 0) {
+                ctx.strokeStyle = `rgba(0, 176, 80, ${0.3 + pulse * 0.4})`;
+                ctx.lineWidth = 0.5;
+                ctx.beginPath();
+                ctx.moveTo(building.x + setbackWidth/2, building.y - building.height + (i * setbackHeight));
+                ctx.lineTo(building.x + building.width/2, building.y - building.height + ((i-1) * setbackHeight) + setbackHeight/2);
+                ctx.stroke();
+                
+                // Data point
+                ctx.beginPath();
+                ctx.arc(
+                  building.x + building.width/2, 
+                  building.y - building.height + ((i-1) * setbackHeight) + setbackHeight/2,
+                  2, 
+                  0, 
+                  Math.PI * 2
+                );
+                ctx.fillStyle = `rgba(0, 176, 80, ${0.6 + pulse * 0.4})`;
+                ctx.fill();
+              }
+            }
+            
+            // Smart windows - digital pattern
+            const smartRows = Math.floor(building.height / 12);
+            const smartCols = Math.floor(building.width / 5);
+            
+            for (let s = 0; s < setbacks; s++) {
+              const setbackWidth = building.width - (s * 6);
+              const setbackX = building.x + (s * 3);
+              const rowStart = Math.floor((s * setbackHeight) / 12);
+              const rowEnd = Math.floor(((s+1) * setbackHeight) / 12);
+              
+              for (let row = rowStart; row < rowEnd && row < smartRows; row++) {
+                const colCount = Math.floor(setbackWidth / 5);
+                const colOffset = (smartCols - colCount) / 2;
+                
+                for (let col = 0; col < colCount; col++) {
+                  // Digital pattern for windows
+                  const isLit = ((row + col + Math.floor(frame / 20)) % 7 === 0) ? true : 
+                               (Math.random() > 0.99); // Random flicker
+                  
+                  if (isLit || building.windows[row % building.windows.length][col % building.windows[0].length] === 1) {
+                    ctx.fillStyle = `rgba(0, 230, 120, ${0.3 + pulse * 0.3})`;
+                  } else {
+                    ctx.fillStyle = 'rgba(20, 40, 50, 0.7)';
+                  }
+                  
+                  ctx.fillRect(
+                    setbackX + 2 + col * 5, 
+                    building.y - building.height + 2 + row * 12, 
+                    3, 
+                    8
+                  );
+                }
+              }
+            }
+            
+            // Add digital connections/IoT elements
+            const connectionCount = 2 + Math.floor(Math.random() * 4);
+            const centerX = building.x + building.width/2;
+            
+            for (let c = 0; c < connectionCount; c++) {
+              const angle = (c / connectionCount) * Math.PI * 2 + pulse;
+              const distance = 20 + Math.random() * 30;
+              const connX = centerX + Math.cos(angle) * distance;
+              const connY = building.y - building.height/2 + Math.sin(angle) * distance;
+              
+              // Draw connection
+              ctx.strokeStyle = `rgba(0, 176, 80, ${0.3 + pulse * 0.3})`;
+              ctx.lineWidth = 0.5;
+              ctx.beginPath();
+              ctx.moveTo(centerX, building.y - building.height/2);
+              ctx.lineTo(connX, connY);
+              ctx.stroke();
+              
+              // Connection point
+              ctx.beginPath();
+              ctx.arc(connX, connY, 2, 0, Math.PI * 2);
+              ctx.fillStyle = `rgba(0, 176, 80, ${0.5 + pulse * 0.5})`;
+              ctx.fill();
+              
+              // Data packet
+              if (Math.random() > 0.7) {
+                const packetProgress = Math.random();
+                const packetX = centerX + (connX - centerX) * packetProgress;
+                const packetY = (building.y - building.height/2) + (connY - (building.y - building.height/2)) * packetProgress;
+                
+                ctx.beginPath();
+                ctx.arc(packetX, packetY, 1.5, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(0, 230, 120, ${0.7 + pulse * 0.3})`;
+                ctx.fill();
+              }
+            }
+            break;
         }
       });
       
-      // Update and draw floating data elements
-      dataElements.forEach(element => {
-        // Move element upward
-        element.y -= element.speed;
+      // Draw floating data elements around buildings
+      if (frame % 5 === 0) {
+        const dataX = Math.random() * rect.width;
+        const dataY = groundLevel - 50 - Math.random() * 150;
         
-        // Reset position when off screen
-        if (element.y < 0) {
-          element.y = rect.height;
-          element.x = Math.random() * rect.width;
-        }
-        
-        // Draw element
-        if (element.symbol) {
-          ctx.fillStyle = `rgba(0, 176, 80, ${element.opacity})`;
-          ctx.font = `${element.size * 5}px monospace`;
+        if (Math.random() > 0.5) {
+          // "Smart home" or "IoT" label
+          ctx.fillStyle = 'rgba(0, 176, 80, 0.4)';
+          ctx.font = '8px Arial';
           ctx.textAlign = 'center';
-          ctx.fillText(element.symbol, element.x, element.y);
+          ctx.fillText(Math.random() > 0.5 ? 'SMART HOME' : 'REAL ESTATE', dataX, dataY);
         } else {
-          ctx.beginPath();
-          ctx.arc(element.x, element.y, element.size, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(0, 176, 80, ${element.opacity})`;
-          ctx.fill();
+          // Binary data
+          ctx.fillStyle = 'rgba(0, 176, 80, 0.3)';
+          ctx.font = '6px monospace';
+          ctx.textAlign = 'center';
+          ctx.fillText(Math.random() > 0.5 ? '10110' : '01001', dataX, dataY);
         }
-      });
-      
-      // Draw central feature - smart city hub
-      const centerX = rect.width / 2;
-      const centerY = rect.height * 0.7;
-      const pulseRadius = 15 + Math.sin(frame * 0.02) * 5;
-      
-      // Pulsing glow
-      const centerGlow = ctx.createRadialGradient(
-        centerX, centerY, 0, 
-        centerX, centerY, pulseRadius * 3
-      );
-      centerGlow.addColorStop(0, 'rgba(0, 176, 80, 0.2)');
-      centerGlow.addColorStop(1, 'rgba(0, 176, 80, 0)');
-      
-      ctx.fillStyle = centerGlow;
-      ctx.beginPath();
-      ctx.arc(centerX, centerY, pulseRadius * 3, 0, Math.PI * 2);
-      ctx.fill();
-      
-      // Add holographic effect
-      if (Math.random() > 0.9) {
-        const holoX = centerX + (Math.random() - 0.5) * 30;
-        const holoY = centerY - 40 + (Math.random() - 0.5) * 20;
-        
-        ctx.fillStyle = 'rgba(0, 226, 130, 0.7)';
-        ctx.font = '8px monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText(Math.random() > 0.5 ? 'PROPERTY' : 'SMART HOME', holoX, holoY);
       }
       
-      // Add scanlines effect
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.03)';
-      for (let y = 0; y < rect.height; y += 4) {
-        ctx.fillRect(0, y, rect.width, 1);
-      }
+      // City glow effect
+      const cityGlow = ctx.createLinearGradient(0, groundLevel - 50, 0, groundLevel);
+      cityGlow.addColorStop(0, 'rgba(0, 50, 100, 0)');
+      cityGlow.addColorStop(1, 'rgba(0, 50, 100, 0.2)');
+      
+      ctx.fillStyle = cityGlow;
+      ctx.fillRect(0, groundLevel - 50, rect.width, 50);
       
       // Vignette effect
       const vignette = ctx.createRadialGradient(
@@ -704,15 +709,20 @@ const RealEstateAnimation: React.FC = () => {
         rect.width / 2, rect.height / 2, rect.width / 1.5
       );
       vignette.addColorStop(0, 'rgba(0, 0, 0, 0)');
-      vignette.addColorStop(1, 'rgba(0, 0, 0, 0.4)');
+      vignette.addColorStop(1, 'rgba(0, 0, 0, 0.6)');
       
       ctx.fillStyle = vignette;
       ctx.fillRect(0, 0, rect.width, rect.height);
+      
+      // Scanlines effect for digital feel
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.03)';
+      for (let y = 0; y < rect.height; y += 4) {
+        ctx.fillRect(0, y, rect.width, 1);
+      }
     };
     
     const animationFrame = requestAnimationFrame(animate);
     
-    // Cleanup function
     return () => {
       window.removeEventListener('resize', resizeCanvas);
       cancelAnimationFrame(animationFrame);
@@ -720,15 +730,10 @@ const RealEstateAnimation: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-full">
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full z-0"
-      />
-      <div className="absolute top-6 right-6 text-vetor-green/80 animate-pulse z-10">
-        <Building2 className="w-8 h-8" />
-      </div>
-    </div>
+    <canvas 
+      ref={canvasRef} 
+      className="absolute inset-0 w-full h-full z-0"
+    />
   );
 };
 

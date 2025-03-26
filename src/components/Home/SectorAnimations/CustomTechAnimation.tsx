@@ -42,42 +42,42 @@ const CustomTechAnimation: React.FC = () => {
       computer.codeLines.push({
         width: 10 + Math.random() * 40,
         indent: Math.floor(Math.random() * 3) * 8,
-        blinkInterval: 80 + Math.random() * 150, // Faster blinking
+        blinkInterval: 70 + Math.random() * 150, // Faster blinking
         lastBlink: Math.floor(Math.random() * 100)
       });
     }
     
     // Create floating binary/code elements - more of them
     const codeElements = [];
-    const elementCount = 40; // Double the amount for more activity
+    const elementCount = 60; // Even more elements for more activity
     
     for (let i = 0; i < elementCount; i++) {
       codeElements.push({
         x: Math.random() * rect.width,
         y: Math.random() * rect.height,
-        type: Math.random() > 0.5 ? 'symbol' : 'binary', // More binary numbers
+        type: Math.random() > 0.3 ? 'binary' : 'symbol', // More binary numbers
         value: Math.random() > 0.5 ? '1' : '0',
-        size: 8 + Math.random() * 6, // Larger text
-        opacity: 0.1 + Math.random() * 0.2, // More vibrant
-        speed: 0.3 + Math.random() * 0.5 // Faster movement
+        size: 9 + Math.random() * 7, // Larger text
+        opacity: 0.15 + Math.random() * 0.25, // More visible
+        speed: 0.4 + Math.random() * 0.6 // Faster movement
       });
     }
     
     // Create connection nodes
     const nodes = [];
-    const nodeCount = 10; // More nodes
+    const nodeCount = 12; // More nodes
     
     for (let i = 0; i < nodeCount; i++) {
       const angle = (i / nodeCount) * Math.PI * 2;
-      const radius = 110; // Slightly larger radius
+      const radius = 120; // Slightly larger radius
       
       nodes.push({
         x: computer.x + Math.cos(angle) * radius,
         y: computer.y + Math.sin(angle) * radius,
-        size: 2 + Math.random() * 3, // Larger nodes
+        size: 2.5 + Math.random() * 3, // Larger nodes
         connections: [computer],
         pulseTime: Math.random() * Math.PI * 2,
-        pulseSpeed: 0.03 + Math.random() * 0.04 // Faster pulsing
+        pulseSpeed: 0.04 + Math.random() * 0.05 // Faster pulsing
       });
     }
     
@@ -89,11 +89,11 @@ const CustomTechAnimation: React.FC = () => {
       ctx.clearRect(0, 0, rect.width, rect.height);
       
       frame++;
-      computer.pulseTime += 0.06; // Faster pulsing
+      computer.pulseTime += 0.07; // Faster pulsing
       
       // Draw background grid
       ctx.lineWidth = 0.3;
-      ctx.strokeStyle = 'rgba(0, 176, 80, 0.08)'; // More visible grid
+      ctx.strokeStyle = 'rgba(0, 176, 80, 0.1)'; // More visible grid
       
       const gridSize = 30;
       for (let x = 0; x < rect.width; x += gridSize) {
@@ -120,19 +120,19 @@ const CustomTechAnimation: React.FC = () => {
         ctx.beginPath();
         ctx.moveTo(node.x, node.y);
         ctx.lineTo(computer.x, computer.y);
-        ctx.strokeStyle = `rgba(0, 176, 80, ${0.15 + pulse * 0.15})`; // More vibrant connections
+        ctx.strokeStyle = `rgba(0, 176, 80, ${0.2 + pulse * 0.2})`; // More vibrant connections
         ctx.lineWidth = 1;
         ctx.stroke();
         
         // Draw data packet moving along connection
-        if (Math.random() > 0.85) { // More frequent data packets
+        if (Math.random() > 0.8) { // More frequent data packets
           const progress = Math.random();
           const x = node.x + (computer.x - node.x) * progress;
           const y = node.y + (computer.y - node.y) * progress;
           
           // Packet with glow
           const gradient = ctx.createRadialGradient(x, y, 0, x, y, 4);
-          gradient.addColorStop(0, 'rgba(0, 230, 100, 0.8)');
+          gradient.addColorStop(0, 'rgba(0, 230, 100, 0.9)');
           gradient.addColorStop(1, 'rgba(0, 176, 80, 0)');
           
           ctx.beginPath();
@@ -142,7 +142,7 @@ const CustomTechAnimation: React.FC = () => {
           
           ctx.beginPath();
           ctx.arc(x, y, 2, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(0, 230, 100, 0.9)';
+          ctx.fillStyle = 'rgba(0, 230, 100, 1)';
           ctx.fill();
         }
         
@@ -151,7 +151,7 @@ const CustomTechAnimation: React.FC = () => {
           node.x, node.y, 0,
           node.x, node.y, node.size * 2
         );
-        nodeGradient.addColorStop(0, `rgba(0, 200, 100, ${0.4 + pulse * 0.4})`);
+        nodeGradient.addColorStop(0, `rgba(0, 200, 100, ${0.5 + pulse * 0.5})`);
         nodeGradient.addColorStop(1, 'rgba(0, 176, 80, 0)');
         
         ctx.beginPath();
@@ -161,7 +161,7 @@ const CustomTechAnimation: React.FC = () => {
         
         ctx.beginPath();
         ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 176, 80, ${0.3 + pulse * 0.5})`; // More vibrant
+        ctx.fillStyle = `rgba(0, 176, 80, ${0.4 + pulse * 0.6})`; // More vibrant
         ctx.fill();
       });
       
@@ -173,7 +173,7 @@ const CustomTechAnimation: React.FC = () => {
         computer.x, computer.y - 5, 0,
         computer.x, computer.y - 5, computer.width
       );
-      compGradient.addColorStop(0, `rgba(0, 200, 100, ${0.1 + computerGlow * 0.1})`);
+      compGradient.addColorStop(0, `rgba(0, 200, 100, ${0.15 + computerGlow * 0.15})`);
       compGradient.addColorStop(1, 'rgba(0, 176, 80, 0)');
       
       ctx.beginPath();
@@ -189,12 +189,12 @@ const CustomTechAnimation: React.FC = () => {
         computer.width, 
         computer.height
       );
-      ctx.strokeStyle = `rgba(0, 200, 100, ${0.6 + computerGlow * 0.4})`; // More vibrant
-      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = `rgba(0, 200, 100, ${0.7 + computerGlow * 0.3})`; // More vibrant
+      ctx.lineWidth = 1.8;
       ctx.stroke();
       
       // Monitor screen
-      ctx.fillStyle = 'rgba(0, 20, 5, 0.7)';
+      ctx.fillStyle = 'rgba(0, 20, 5, 0.8)';
       ctx.fillRect(
         computer.x - computer.screenWidth/2, 
         computer.y - computer.screenHeight/2 - 5, 
@@ -219,7 +219,7 @@ const CustomTechAnimation: React.FC = () => {
       // Draw code lines on screen
       computer.codeLines.forEach((line, i) => {
         const isBlinking = (frame - line.lastBlink) > line.blinkInterval;
-        if (isBlinking && Math.random() > 0.6) { // More frequent updates
+        if (isBlinking && Math.random() > 0.5) { // More frequent updates
           line.lastBlink = frame;
           line.width = 10 + Math.random() * 40;
         }
@@ -227,16 +227,16 @@ const CustomTechAnimation: React.FC = () => {
         const y = computer.y - computer.screenHeight/2 + 8 + i * 7 - 5;
         const x = computer.x - computer.screenWidth/2 + 5 + line.indent;
         
-        ctx.fillStyle = `rgba(0, 230, 120, ${0.6 + computerGlow * 0.4})`; // More vibrant
+        ctx.fillStyle = `rgba(0, 230, 120, ${0.7 + computerGlow * 0.3})`; // More vibrant
         ctx.fillRect(x, y, line.width, 2);
       });
       
-      // Add binary code to screen occasionally
-      if (Math.random() > 0.8) {
+      // Add binary code to screen more frequently
+      if (Math.random() > 0.7) {
         const x = computer.x - computer.screenWidth/2 + 5 + Math.random() * (computer.screenWidth - 10);
         const y = computer.y - computer.screenHeight/2 + 5 + Math.random() * (computer.screenHeight - 10);
         
-        ctx.fillStyle = `rgba(0, 230, 120, ${0.6 + computerGlow * 0.4})`;
+        ctx.fillStyle = `rgba(0, 230, 120, ${0.7 + computerGlow * 0.3})`;
         ctx.font = '6px monospace';
         ctx.textAlign = 'center';
         ctx.fillText(Math.random() > 0.5 ? '1' : '0', x, y);
@@ -247,7 +247,7 @@ const CustomTechAnimation: React.FC = () => {
         computer.x, computer.y - 5, 0,
         computer.x, computer.y - 5, computer.screenWidth/1.5
       );
-      screenGradient.addColorStop(0, `rgba(0, 176, 80, ${0.05 + computerGlow * 0.03})`);
+      screenGradient.addColorStop(0, `rgba(0, 176, 80, ${0.07 + computerGlow * 0.05})`);
       screenGradient.addColorStop(1, 'rgba(0, 176, 80, 0)');
       
       ctx.fillStyle = screenGradient;
@@ -270,9 +270,9 @@ const CustomTechAnimation: React.FC = () => {
         }
         
         // Draw element with glow effect for some elements
-        if (Math.random() > 0.7) {
-          ctx.shadowColor = 'rgba(0, 176, 80, 0.5)';
-          ctx.shadowBlur = 5;
+        if (Math.random() > 0.6) {
+          ctx.shadowColor = 'rgba(0, 176, 80, 0.6)';
+          ctx.shadowBlur = 6;
         } else {
           ctx.shadowColor = 'transparent';
           ctx.shadowBlur = 0;
@@ -287,14 +287,14 @@ const CustomTechAnimation: React.FC = () => {
         ctx.shadowBlur = 0;
       });
       
-      // Add occasional larger binary numbers
-      if (Math.random() > 0.98) {
+      // Add occasional larger binary numbers - more frequently
+      if (Math.random() > 0.95) {
         const x = Math.random() * rect.width;
         const y = Math.random() * rect.height;
         const value = Math.random() > 0.5 ? '1' : '0';
         
-        ctx.fillStyle = 'rgba(0, 230, 100, 0.15)';
-        ctx.font = '36px monospace';
+        ctx.fillStyle = 'rgba(0, 230, 100, 0.2)';
+        ctx.font = '42px monospace';
         ctx.textAlign = 'center';
         ctx.fillText(value, x, y);
       }

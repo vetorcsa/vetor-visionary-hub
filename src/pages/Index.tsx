@@ -43,7 +43,7 @@ const Index: React.FC = () => {
         </div>
       </section>
       
-      {/* Technology Sectors Section - Updated for more vivid animations */}
+      {/* Technology Sectors Section - Updated with reduced height and consistent styling */}
       <section className="py-24 bg-black">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-16">
@@ -57,9 +57,9 @@ const Index: React.FC = () => {
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            {/* Tecnologia Imobiliária - Enhanced appearance */}
-            <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group relative">
-              <div className="h-72 relative bg-black overflow-hidden">
+            {/* Tecnologia Imobiliária - Reduced height */}
+            <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group relative h-[420px]">
+              <div className="h-52 relative bg-black overflow-hidden">
                 <RealEstateAnimation />
                 <div className="absolute top-6 left-6 z-10 bg-vetor-green/10 p-3 rounded-full">
                   <Building2 className="w-8 h-8 text-vetor-green" />
@@ -77,9 +77,9 @@ const Index: React.FC = () => {
               </div>
             </div>
             
-            {/* Tecnologia Fiscal - Enhanced appearance */}
-            <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group relative">
-              <div className="h-64 relative bg-black overflow-hidden">
+            {/* Tecnologia Fiscal - Reduced height */}
+            <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group relative h-[420px]">
+              <div className="h-52 relative bg-black overflow-hidden">
                 <FiscalAnimation />
                 <div className="absolute top-6 left-6 z-10 bg-vetor-green/10 p-3 rounded-full">
                   <FileBarChart className="w-8 h-8 text-vetor-green" />
@@ -104,9 +104,9 @@ const Index: React.FC = () => {
               </div>
             </div>
             
-            {/* Tecnologia em Logística - Enhanced appearance */}
-            <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group relative">
-              <div className="h-64 relative bg-black overflow-hidden">
+            {/* Tecnologia em Logística - Reduced height */}
+            <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group relative h-[420px]">
+              <div className="h-52 relative bg-black overflow-hidden">
                 <LogisticsAnimation />
                 <div className="absolute top-6 left-6 z-10 bg-vetor-green/10 p-3 rounded-full">
                   <Globe className="w-8 h-8 text-vetor-green" />
@@ -124,9 +124,9 @@ const Index: React.FC = () => {
               </div>
             </div>
             
-            {/* Soluções Tecnológicas - Enhanced appearance */}
-            <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group relative">
-              <div className="h-64 relative bg-black overflow-hidden">
+            {/* Soluções Tecnológicas - Reduced height */}
+            <div className="rounded-xl overflow-hidden border border-vetor-green/10 bg-black transition-all duration-500 hover:border-vetor-green/40 hover:shadow-lg group relative h-[420px]">
+              <div className="h-52 relative bg-black overflow-hidden">
                 <CustomTechAnimation />
                 <div className="absolute top-6 left-6 z-10 bg-vetor-green/10 p-3 rounded-full">
                   <MonitorSmartphone className="w-8 h-8 text-vetor-green" />
