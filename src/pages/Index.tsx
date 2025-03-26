@@ -3,14 +3,9 @@ import React from 'react';
 import { useAdmin } from '@/contexts/AdminContext';
 import Hero from '@/components/Home/Hero';
 import ServicesCard from '@/components/Home/ServicesCard';
-import { ChevronRight, ArrowRight, Building2, FileBarChart, Globe, MonitorSmartphone } from 'lucide-react';
+import SectorCard from '@/components/Home/SectorCard';
+import { ChevronRight, ArrowRight, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { 
-  RealEstateAnimation, 
-  FiscalAnimation, 
-  LogisticsAnimation, 
-  CustomTechAnimation 
-} from '@/components/Home/SectorAnimations';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
@@ -71,94 +66,47 @@ const Index: React.FC = () => {
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            {/* Tecnologia Imobiliária */}
-            <div className="rounded-xl overflow-hidden bg-black shadow-lg border border-vetor-green/20 transition-all duration-500 hover:border-vetor-green/40 hover:shadow-[0_0_20px_rgba(0,176,80,0.15)] group h-[360px] relative">
-              <div className="h-[180px] bg-black relative overflow-hidden">
-                <RealEstateAnimation />
-                <div className="absolute top-6 left-6 z-10 bg-vetor-green/10 p-3 rounded-full">
-                  <Building2 className="w-8 h-8 text-vetor-green" />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
-              </div>
-              <div className="p-6 relative z-10">
-                <h3 className="text-2xl font-bold text-vetor-green mb-4">Tecnologia Imobiliária</h3>
-                <p className="text-white/80 mb-6">
-                  Nossas soluções para o setor imobiliário automatizam processos, desde a captação de imóveis até o pós-venda, otimizando resultados.
-                </p>
-                <Link to="/sobre" className="inline-flex items-center gap-2 text-vetor-green hover:text-white bg-vetor-green/10 hover:bg-vetor-green transition-colors px-4 py-2 rounded-md">
-                  <span>Saiba mais</span> <ChevronRight className="w-5 h-5" />
-                </Link>
-              </div>
-            </div>
+            <SectorCard
+              title="Tecnologia Imobiliária"
+              description="Nossas soluções para o setor imobiliário automatizam processos, desde a captação de imóveis até o pós-venda, otimizando resultados."
+              icon="building"
+              animationComponent="real-estate"
+              actionLink="/sobre"
+              actionText="Saiba mais"
+            />
             
-            {/* Tecnologia Fiscal */}
-            <div className="rounded-xl overflow-hidden bg-black shadow-lg border border-vetor-green/20 transition-all duration-500 hover:border-vetor-green/40 hover:shadow-[0_0_20px_rgba(0,176,80,0.15)] group h-[360px] relative">
-              <div className="h-[180px] bg-black relative overflow-hidden">
-                <FiscalAnimation />
-                <div className="absolute top-6 left-6 z-10 bg-vetor-green/10 p-3 rounded-full">
-                  <FileBarChart className="w-8 h-8 text-vetor-green" />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
-              </div>
-              <div className="p-6 relative z-10">
-                <h3 className="text-2xl font-bold text-vetor-green mb-4">Tecnologia Fiscal</h3>
-                <p className="text-white/80 mb-6">
-                  Sistemas inteligentes para gestão fiscal e tributária que garantem conformidade com a legislação, reduzem custos.
-                </p>
-                <Link to="/recuperacao-tributaria">
-                  <Button className="bg-vetor-green hover:bg-vetor-darkgreen text-white border-none">
-                    Recuperação Tributária
-                  </Button>
-                </Link>
-              </div>
-            </div>
+            <SectorCard
+              title="Tecnologia Fiscal"
+              description="Sistemas inteligentes para gestão fiscal e tributária que garantem conformidade com a legislação, reduzem custos."
+              icon="file-text"
+              animationComponent="fiscal"
+              actionLink="/recuperacao-tributaria"
+              actionText="Recuperação Tributária"
+              buttonVariant="default"
+            />
             
-            {/* Tecnologia em Logística */}
-            <div className="rounded-xl overflow-hidden bg-black shadow-lg border border-vetor-green/20 transition-all duration-500 hover:border-vetor-green/40 hover:shadow-[0_0_20px_rgba(0,176,80,0.15)] group h-[360px] relative">
-              <div className="h-[180px] bg-black relative overflow-hidden">
-                <LogisticsAnimation />
-                <div className="absolute top-6 left-6 z-10 bg-vetor-green/10 p-3 rounded-full">
-                  <Globe className="w-8 h-8 text-vetor-green" />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
-              </div>
-              <div className="p-6 relative z-10">
-                <h3 className="text-2xl font-bold text-vetor-green mb-4">Tecnologia em Logística</h3>
-                <p className="text-white/80 mb-6">
-                  Otimização de rotas, gestão de frotas e controle de entregas em tempo real para maximizar a eficiência logística.
-                </p>
-                <Link to="/sobre" className="inline-flex items-center gap-2 text-vetor-green hover:text-white bg-vetor-green/10 hover:bg-vetor-green transition-colors px-4 py-2 rounded-md">
-                  <span>Saiba mais</span> <ChevronRight className="w-5 h-5" />
-                </Link>
-              </div>
-            </div>
+            <SectorCard
+              title="Tecnologia em Logística"
+              description="Otimização de rotas, gestão de frotas e controle de entregas em tempo real para maximizar a eficiência logística."
+              icon="globe"
+              animationComponent="logistics"
+              actionLink="/sobre"
+              actionText="Saiba mais"
+            />
             
-            {/* Soluções Tecnológicas */}
-            <div className="rounded-xl overflow-hidden bg-black shadow-lg border border-vetor-green/20 transition-all duration-500 hover:border-vetor-green/40 hover:shadow-[0_0_20px_rgba(0,176,80,0.15)] group h-[360px] relative">
-              <div className="h-[180px] bg-black relative overflow-hidden">
-                <CustomTechAnimation />
-                <div className="absolute top-6 left-6 z-10 bg-vetor-green/10 p-3 rounded-full">
-                  <MonitorSmartphone className="w-8 h-8 text-vetor-green" />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
-              </div>
-              <div className="p-6 relative z-10">
-                <h3 className="text-2xl font-bold text-vetor-green mb-4">Soluções Tecnológicas</h3>
-                <p className="text-white/80 mb-6">
-                  Desenvolvimento de software personalizado, consultoria em TI, implementação de infraestrutura tecnológica.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Link to="/crie-seu-site">
-                    <Button className="bg-vetor-green hover:bg-vetor-darkgreen text-white border-none w-full sm:w-auto">
-                      Crie seu site
-                    </Button>
-                  </Link>
-                  <Link to="/sobre" className="inline-flex items-center justify-center gap-2 text-vetor-green hover:text-white bg-vetor-green/10 hover:bg-vetor-green transition-colors px-4 py-2 rounded-md w-full sm:w-auto">
-                    <span>Saiba mais</span> <ChevronRight className="w-5 h-5" />
-                  </Link>
-                </div>
-              </div>
-            </div>
+            <SectorCard
+              title="Soluções Tecnológicas"
+              description="Desenvolvimento de software personalizado, consultoria em TI, implementação de infraestrutura tecnológica."
+              icon="monitor-smartphone"
+              animationComponent="custom-tech"
+              actionLink="/crie-seu-site"
+              actionText="Crie seu site"
+              buttonVariant="default"
+              secondaryAction={{
+                link: "/sobre",
+                text: "Saiba mais"
+              }}
+            />
           </div>
         </div>
       </section>
