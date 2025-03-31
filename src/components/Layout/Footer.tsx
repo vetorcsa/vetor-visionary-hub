@@ -51,16 +51,16 @@ const Footer: React.FC = () => {
               <li className="flex items-center">
                 <Phone className="w-5 h-5 text-vetor-green mr-2" />
                 <a 
-                  href="tel:62982474117" 
+                  href="tel:6298166-3235" 
                   className="hover:text-vetor-green transition-colors duration-200"
                 >
-                  62 982474117
+                  62 98166-3235
                 </a>
               </li>
               <li className="flex items-center">
                 <MessageCircle className="w-5 h-5 text-vetor-green mr-2" />
                 <a 
-                  href="https://wa.me/62982474117" 
+                  href="https://wa.me/6298166-3235" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="hover:text-vetor-green transition-colors duration-200"
@@ -83,7 +83,7 @@ const Footer: React.FC = () => {
                 <Instagram className="w-5 h-5" />
               </a>
               <a 
-                href="https://wa.me/62982474117" 
+                href="https://wa.me/6298166-3235" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="w-10 h-10 bg-vetor-darkgray rounded-full flex items-center justify-center hover:bg-vetor-green transition-colors duration-200"

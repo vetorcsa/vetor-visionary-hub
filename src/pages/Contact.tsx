@@ -5,11 +5,13 @@ import { Mail, Phone, MapPin, MessageCircle, Send, Users, Clock } from 'lucide-r
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Contact: React.FC = () => {
   const { footerData } = useAdmin();
+  const isMobile = useIsMobile();
   
-  const whatsappNumber = "62982474117";
+  const whatsappNumber = "6298166-3235";
   const whatsappUrl = `https://wa.me/${whatsappNumber}`;
   
   return (
@@ -98,10 +100,10 @@ const Contact: React.FC = () => {
                       Telefone
                     </h3>
                     <a 
-                      href="tel:62982474117" 
+                      href="tel:6298166-3235" 
                       className="text-gray-300 hover:text-vetor-green transition-colors block mb-2"
                     >
-                      (62) 98247-4117
+                      (62) 98166-3235
                     </a>
                     <p className="text-gray-400 text-sm">
                       Disponível em horário comercial.

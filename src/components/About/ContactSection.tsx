@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 const ContactSection: React.FC = () => {
   const { footerData } = useAdmin();
   
-  const whatsappNumber = "62982474117";
+  const whatsappNumber = "6298166-3235";
   const whatsappUrl = `https://wa.me/${whatsappNumber}`;
   
   return (
@@ -81,10 +81,10 @@ const ContactSection: React.FC = () => {
                     Telefone
                   </h3>
                   <a 
-                    href="tel:62982474117" 
+                    href="tel:6298166-3235" 
                     className="text-gray-400 hover:text-vetor-green transition-colors"
                   >
-                    (62) 98247-4117
+                    (62) 98166-3235
                   </a>
                 </div>
               </div>
