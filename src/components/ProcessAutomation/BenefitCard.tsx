@@ -15,17 +15,17 @@ const BenefitCard: React.FC<BenefitCardProps> = ({ icon: Icon, title, descriptio
   
   return (
     <motion.div 
-      className="glass-card p-6 md:p-8 rounded-xl hover-card"
+      className="glass-card p-4 md:p-6 rounded-xl hover-card"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
       viewport={{ once: true }}
     >
-      <div className="bg-vetor-green/10 p-3 md:p-4 rounded-lg inline-block mb-4">
-        <Icon className="h-6 w-6 md:h-8 md:w-8 text-vetor-green" />
+      <div className="bg-vetor-green/10 p-2 md:p-3 rounded-lg inline-block mb-3">
+        <Icon className="h-5 w-5 md:h-6 md:w-6 text-vetor-green" />
       </div>
-      <h3 className="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">{title}</h3>
-      <p className="text-sm md:text-base text-white/70">{description}</p>
+      <h3 className="text-base md:text-lg font-bold text-white mb-2">{title}</h3>
+      <p className="text-xs md:text-sm text-white/70">{description}</p>
     </motion.div>
   );
 };

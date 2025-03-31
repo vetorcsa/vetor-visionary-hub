@@ -13,7 +13,11 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: '1.5rem',
+      padding: {
+        DEFAULT: '1rem',
+        sm: '1.5rem',
+        lg: '2rem'
+      },
       screens: {
         'sm': '640px',
         'md': '768px',
@@ -23,6 +27,15 @@ export default {
       }
     },
     extend: {
+      spacing: {
+        'safe-top': 'env(safe-area-inset-top)',
+        'safe-bottom': 'env(safe-area-inset-bottom)',
+        'safe-left': 'env(safe-area-inset-left)',
+        'safe-right': 'env(safe-area-inset-right)',
+      },
+      screens: {
+        'xs': '480px',
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',

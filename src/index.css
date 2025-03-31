@@ -75,40 +75,54 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    width: 100%;
+    overflow-x: hidden;
+    padding: 0;
+    margin: 0;
   }
   
   /* Smooth scrolling for the entire site */
   html {
     @apply scroll-smooth;
+    font-size: 16px;
+    width: 100%;
+    overflow-x: hidden;
+  }
+  
+  /* Improved mobile responsiveness */
+  @media (max-width: 767px) {
+    html {
+      font-size: 14px;
+    }
   }
 }
 
 @layer components {
   /* Card components */
   .service-card {
-    @apply relative overflow-hidden bg-black rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl border border-vetor-green/20 p-6;
+    @apply relative overflow-hidden bg-black rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl border border-vetor-green/20 p-4 md:p-6;
   }
   
   .service-card-title {
-    @apply font-bold text-xl mb-2 text-vetor-green transition-colors duration-300;
+    @apply font-bold text-lg md:text-xl mb-2 text-vetor-green transition-colors duration-300;
   }
   
   /* Button styles */
   .btn-primary {
-    @apply px-6 py-2 bg-vetor-green text-white rounded-md font-medium transition-all duration-300 hover:bg-vetor-darkgreen shadow-md hover:shadow-lg;
+    @apply px-4 md:px-6 py-2 bg-vetor-green text-white rounded-md font-medium transition-all duration-300 hover:bg-vetor-darkgreen shadow-md hover:shadow-lg;
   }
   
   .btn-secondary {
-    @apply px-6 py-2 bg-transparent text-white rounded-md font-medium transition-all duration-300 border border-vetor-green hover:bg-vetor-green/10;
+    @apply px-4 md:px-6 py-2 bg-transparent text-white rounded-md font-medium transition-all duration-300 border border-vetor-green hover:bg-vetor-green/10;
   }
   
   /* Layout components */
   .section {
-    @apply py-16 px-4 sm:px-6 lg:px-8;
+    @apply py-8 md:py-16 px-4 sm:px-6 lg:px-8;
   }
   
   .container-custom {
-    @apply max-w-7xl mx-auto;
+    @apply max-w-7xl mx-auto px-4 md:px-0;
   }
   
   /* Glass morphism effect */
@@ -134,6 +148,33 @@
   /* Gradient buttons */
   .btn-gradient {
     @apply bg-gradient-to-r from-vetor-green to-vetor-darkgreen hover:from-vetor-darkgreen hover:to-vetor-green transition-all duration-300;
+  }
+  
+  /* Mobile optimizations */
+  @media (max-width: 767px) {
+    .mobile-container {
+      @apply px-3 py-2;
+    }
+    
+    .mobile-text-sm {
+      @apply text-sm;
+    }
+    
+    .mobile-text-xs {
+      @apply text-xs;
+    }
+    
+    .mobile-p-sm {
+      @apply p-2;
+    }
+    
+    .mobile-stack {
+      @apply flex-col;
+    }
+    
+    .mobile-center {
+      @apply text-center flex justify-center items-center;
+    }
   }
 }
 
@@ -202,6 +243,37 @@
   
   .animate-bounce-subtle {
     animation: bounce-subtle 3s ease-in-out infinite;
+  }
+  
+  /* Mobile spacing utilities */
+  .gap-mobile {
+    gap: 0.5rem;
+  }
+  
+  @media (min-width: 768px) {
+    .gap-mobile {
+      gap: 1rem;
+    }
+  }
+  
+  .p-mobile {
+    padding: 0.5rem;
+  }
+  
+  @media (min-width: 768px) {
+    .p-mobile {
+      padding: 1rem;
+    }
+  }
+  
+  .m-mobile {
+    margin: 0.5rem;
+  }
+  
+  @media (min-width: 768px) {
+    .m-mobile {
+      margin: 1rem;
+    }
   }
 }
 
