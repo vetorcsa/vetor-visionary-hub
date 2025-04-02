@@ -1,14 +1,16 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, Lock } from 'lucide-react';
+import { Menu, X, ChevronDown, Lock, Building, Globe, ReceiptText, Settings } from 'lucide-react';
 import { useAdmin } from '@/contexts/AdminContext';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const { isAdmin, logout } = useAdmin();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,6 +30,29 @@ const Navbar: React.FC = () => {
   const closeMenu = () => setIsMenuOpen(false);
 
   const isActive = (path: string) => location.pathname === path;
+
+  const menuItems = [
+    { 
+      path: '/planos-imobiliarias', 
+      text: 'ERP Imobiliário', 
+      icon: <Building className="w-4 h-4 mr-1" /> 
+    },
+    { 
+      path: '/crie-seu-site', 
+      text: 'Criar Site', 
+      icon: <Globe className="w-4 h-4 mr-1" /> 
+    },
+    { 
+      path: '/recuperacao-tributaria', 
+      text: 'Recuperação Tributária', 
+      icon: <ReceiptText className="w-4 h-4 mr-1" /> 
+    },
+    { 
+      path: '/automacoes-processos', 
+      text: 'Automações', 
+      icon: <Settings className="w-4 h-4 mr-1" /> 
+    },
+  ];
 
   return (
     <header 
@@ -58,7 +83,7 @@ const Navbar: React.FC = () => {
           </Link>
 
           {/* Desktop Menu */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-4 lg:space-x-6">
             <Link 
               to="/" 
               className={`font-medium transition-colors duration-200 hover:text-vetor-green ${
@@ -67,6 +92,21 @@ const Navbar: React.FC = () => {
             >
               Início
             </Link>
+            
+            {/* New menu items */}
+            {menuItems.map((item) => (
+              <Link 
+                key={item.path}
+                to={item.path} 
+                className={`font-medium transition-colors duration-200 hover:text-vetor-green flex items-center ${
+                  isActive(item.path) ? 'text-vetor-green animated-underline after:w-full' : 'text-white animated-underline'
+                }`}
+              >
+                {!isMobile && item.icon}
+                <span className="text-sm">{item.text}</span>
+              </Link>
+            ))}
+            
             <Link 
               to="/sobre" 
               className={`font-medium transition-colors duration-200 hover:text-vetor-green ${
@@ -75,6 +115,7 @@ const Navbar: React.FC = () => {
             >
               Quem Somos
             </Link>
+            
             {isAdmin && (
               <div className="relative group">
                 <button 
@@ -134,6 +175,22 @@ const Navbar: React.FC = () => {
           >
             Início
           </Link>
+          
+          {/* Mobile menu items */}
+          {menuItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`py-3 px-4 rounded-md flex items-center ${
+                isActive(item.path) ? 'bg-vetor-green text-white' : 'text-white hover:bg-vetor-green/10'
+              }`}
+              onClick={closeMenu}
+            >
+              {item.icon}
+              <span className="ml-2">{item.text}</span>
+            </Link>
+          ))}
+          
           <Link
             to="/sobre"
             className={`py-3 px-4 rounded-md ${
@@ -143,6 +200,7 @@ const Navbar: React.FC = () => {
           >
             Quem Somos
           </Link>
+          
           {isAdmin && (
             <>
               <Link
