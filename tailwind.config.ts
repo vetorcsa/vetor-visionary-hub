@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -14,16 +13,18 @@ export default {
     container: {
       center: true,
       padding: {
-        DEFAULT: '1rem',
-        sm: '1.5rem',
+        DEFAULT: '0.5rem',
+        sm: '1rem',
+        md: '1.5rem',
         lg: '2rem'
       },
       screens: {
-        'sm': '640px',
-        'md': '768px',
-        'lg': '1024px',
-        'xl': '1280px',
-        '2xl': '1400px'
+        'xs': '100%',
+        'sm': '540px',
+        'md': '720px',
+        'lg': '960px',
+        'xl': '1140px',
+        '2xl': '1320px'
       }
     },
     extend: {
@@ -34,7 +35,7 @@ export default {
         'safe-right': 'env(safe-area-inset-right)',
       },
       screens: {
-        'xs': '480px',
+        'xs': '380px',
       },
       colors: {
         border: 'hsl(var(--border))',
