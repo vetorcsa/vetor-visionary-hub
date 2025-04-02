@@ -23,22 +23,26 @@ export function MobileTabView({
   className,
   fullWidth = true
 }: MobileTabViewProps) {
-  const { isMobile } = useIsMobile(); // Correctly destructuring isMobile
+  const { isMobile } = useIsMobile();
   const defaultTab = defaultValue || (tabs.length > 0 ? tabs[0].value : '');
   
   return (
     <Tabs defaultValue={defaultTab} className={className}>
-      <TabsList className={fullWidth ? "w-full" : ""}>
+      <TabsList className={`${fullWidth ? "w-full" : ""} ${isMobile ? "overflow-x-auto flex-nowrap pb-1" : ""}`}>
         {tabs.map((tab) => (
-          <TabsTrigger key={tab.value} value={tab.value} className="flex items-center">
-            {tab.icon && <span className="mr-1.5">{tab.icon}</span>}
-            {tab.label}
+          <TabsTrigger 
+            key={tab.value} 
+            value={tab.value} 
+            className={`flex items-center ${isMobile ? "px-3 py-2 whitespace-nowrap" : ""}`}
+          >
+            {tab.icon && <span className={`${isMobile ? "mr-1" : "mr-1.5"}`}>{tab.icon}</span>}
+            <span className={isMobile ? "text-sm" : ""}>{tab.label}</span>
           </TabsTrigger>
         ))}
       </TabsList>
       
       {tabs.map((tab) => (
-        <TabsContent key={tab.value} value={tab.value}>
+        <TabsContent key={tab.value} value={tab.value} className={isMobile ? "pt-4" : ""}>
           {tab.content}
         </TabsContent>
       ))}
