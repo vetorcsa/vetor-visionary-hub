@@ -11,7 +11,7 @@ const TabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
 >(({ className, ...props }, ref) => {
-  const isMobile = useIsMobile();
+  const { isMobile } = useIsMobile(); // Correctly destructuring isMobile
   
   return (
     <TabsPrimitive.List
@@ -31,7 +31,7 @@ const TabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
 >(({ className, ...props }, ref) => {
-  const isMobile = useIsMobile();
+  const { isMobile } = useIsMobile(); // Correctly destructuring isMobile
   
   return (
     <TabsPrimitive.Trigger

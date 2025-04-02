@@ -16,7 +16,7 @@ interface MobileNavProps {
 }
 
 export function MobileNav({ items, currentPath, className }: MobileNavProps) {
-  const isMobile = useIsMobile();
+  const { isMobile } = useIsMobile(); // Correctly destructuring isMobile
   
   if (!isMobile) return null;
   

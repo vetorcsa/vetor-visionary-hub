@@ -23,7 +23,7 @@ export function MobileTabView({
   className,
   fullWidth = true
 }: MobileTabViewProps) {
-  const { isMobile } = useIsMobile();
+  const { isMobile } = useIsMobile(); // Correctly destructuring isMobile
   const defaultTab = defaultValue || (tabs.length > 0 ? tabs[0].value : '');
   
   return (
