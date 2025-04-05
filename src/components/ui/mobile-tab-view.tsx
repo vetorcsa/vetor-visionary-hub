@@ -28,21 +28,41 @@ export function MobileTabView({
   
   return (
     <Tabs defaultValue={defaultTab} className={className}>
-      <TabsList className={`${fullWidth ? "w-full" : ""} ${isMobile ? "overflow-x-auto flex-nowrap pb-1" : ""}`}>
+      <TabsList 
+        className={`${fullWidth ? "w-full" : ""} ${
+          isMobile 
+            ? "overflow-x-auto scrollbar-none flex-nowrap pb-1 gap-1 px-1 justify-start" 
+            : ""
+        }`}
+      >
         {tabs.map((tab) => (
           <TabsTrigger 
             key={tab.value} 
             value={tab.value} 
-            className={`flex items-center ${isMobile ? "px-3 py-2 whitespace-nowrap" : ""}`}
+            className={`flex items-center ${
+              isMobile 
+                ? "px-3 py-2 whitespace-nowrap touch-feedback" 
+                : ""
+            }`}
           >
-            {tab.icon && <span className={`${isMobile ? "mr-1" : "mr-1.5"}`}>{tab.icon}</span>}
-            <span className={isMobile ? "text-sm" : ""}>{tab.label}</span>
+            {tab.icon && (
+              <span className={isMobile ? "mr-1.5" : "mr-2"}>
+                {tab.icon}
+              </span>
+            )}
+            <span className={isMobile ? "text-sm" : ""}>
+              {tab.label}
+            </span>
           </TabsTrigger>
         ))}
       </TabsList>
       
       {tabs.map((tab) => (
-        <TabsContent key={tab.value} value={tab.value} className={isMobile ? "pt-4" : ""}>
+        <TabsContent 
+          key={tab.value} 
+          value={tab.value} 
+          className={isMobile ? "pt-3 px-1" : ""}
+        >
           {tab.content}
         </TabsContent>
       ))}

@@ -55,7 +55,6 @@ export function useIsMobile() {
 
 // For backwards compatibility
 export function useIsTablet() {
-  const { isMobile } = useIsMobile();
   const [isTablet, setIsTablet] = React.useState<boolean>(false);
 
   React.useEffect(() => {
